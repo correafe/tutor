@@ -314,7 +314,6 @@ const Tool = ({ }) => {
     // OU se for a primeira vez do usuário aqui
     if (isTutorialMode || !hasSeenToolTour) {
       setRunToolTour(true);
-      localStorage.setItem('hasSeenToolTour', 'true');
     }
 
     fetchData();
@@ -1024,6 +1023,7 @@ const Tool = ({ }) => {
 
   const stopTour = () => {
     setRunToolTour(false);
+    localStorage.setItem('hasSeenToolTour', 'true');
     
     // Se estávamos no modo tutorial...
     if (isTutorialMode) {

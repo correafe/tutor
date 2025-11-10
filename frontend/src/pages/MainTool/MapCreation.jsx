@@ -60,7 +60,6 @@ const MapCreation = () => {
     const hasSeenTour = localStorage.getItem('hasSeenDashboardTour');
     if (!hasSeenTour) {
       setShowTourPrompt(true); // Mostra a PERGUNTA do tutorial
-      localStorage.setItem('hasSeenDashboardTour', 'true');
     }
 
     // Lógica do IntroPopup (mantida)
@@ -72,29 +71,27 @@ const MapCreation = () => {
 
   }, [reloadMaps]); // 5. Esta é a única vez que o useEffect fecha.
 
-const handleCreateNewMap = async () => {
+    const handleCreateNewMap = async () => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.uid && newMapName.trim() !== '') {
       try {
-        // Capture a resposta do backend
+        // **IMPORTANTE**: Capture a RESPOSTA do axios
         const response = await axios.post(`${import.meta.env.VITE_BACKEND}/journeyMap`, { uid: user.uid, name: newMapName });
         
-        // **IMPORTANTE**: Isso assume que seu backend retorna o ID do mapa criado,
-        // por exemplo: { id: "novo-mapa-id", name: "..." }
-        // Se seu backend não retornar o ID, esta lógica de navegação precisará ser ajustada.
+        // **IMPORTANTE**: Pelo seu backend, a resposta deve conter o ID
         const newMapId = response.data.id; 
 
+        setNewMapName('');
+
         if (isTutorialMode && newMapId) {
-          // Se for tutorial, navegue DIRETAMENTE para o novo mapa
-          // com a flag 'startTour' no estado de navegação
+          // Se for tutorial, NAVEGUE DIRETAMENTE para o novo mapa
+          // passando a flag 'startTour' no estado
+          setIsTutorialMode(false); // Reseta o modo tutorial
           navigate(`/home/${newMapId}`, { state: { startTour: true } });
         } else {
-          // Comportamento normal
+          // Comportamento normal (sem tutorial)
           setReloadMaps(prevState => !prevState);
         }
-
-        setNewMapName('');
-        setIsTutorialMode(false); // Reseta o modo tutorial
 
       } catch (error) {
         console.error('Error creating new map:', error);
@@ -248,18 +245,17 @@ const handleCreateNewMap = async () => {
   const startTour = () => {
     setShowTourPrompt(false);
     setRunDashboardTour(true);
+    localStorage.setItem('hasSeenDashboardTour', 'true');
   };
 
-const stopTour = () => {
+  const stopTour = () => {
     setRunDashboardTour(false);
     // AO FINAL DO TOUR, pergunte sobre o próximo passo
-    // (Apenas se não tivermos perguntado antes nesta sessão)
     if (!askedForMapTutorial) {
       setShowMapCreationPrompt(true);
       setAskedForMapTutorial(true); // Marca que já perguntamos
     }
   };
-
 
   return (
     <div className="map-creation-container" style={{ backgroundImage: `url(${fundomapas})`, height: "100vh", width: "100vw" }}>
