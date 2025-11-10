@@ -6,8 +6,8 @@ import ModalName from "../../components/ModalName";
 import { LogOut, Trash, Pencil, ChevronRight , ChevronLeft, ChevronsRight , ChevronsLeft } from 'lucide-react';
 import { auth } from '../../services/firebase';
 import { signOut } from 'firebase/auth';
-
-import IntroPopup from "./IntroPopup"; // Import the new popup component
+import { DashboardTour } from '../../components/Tour'; // (ou onde você o criou)
+import IntroPopup from "./IntroPopup"; //
 
 import fundomapas from "../../assets/Fundomapas.png";
 
@@ -202,8 +202,10 @@ const MapCreation = () => {
     setCurrentPage(1); // Reset to page 1 when the filter text changes
   }, [filterText]);
 
-  return (
+return (
     <div className="map-creation-container" style={{ backgroundImage: `url(${fundomapas})`, height: "100vh", width: "100vw" }}>
+      
+      {/* Todos os elementos da barra do topo vão aqui DENTRO */}
       <div className="navbar" style={{ textAlign: "left", padding: "31px", fontSize: "30px", display: "flex", alignItems: "center" }}>
         <img src="https://github.com/luca-ferro/imagestest/blob/main/mascote.png?raw=true" style={{ width: "50px", marginRight: "20px" }} alt="mascote"></img>
         <p>JEM</p>
@@ -214,8 +216,8 @@ const MapCreation = () => {
         <button className="botaologout" onClick={handleLogout}>
           <LogOut />
         </button>
-      </div>
-      {showIntroPopup && <IntroPopup onClose={() => setShowIntroPopup(false)} />} 
+      </div> {/* <-- A navbar fecha aqui */}
+      {showIntroPopup && <IntroPopup onClose={() => setShowIntroPopup(false)} />}
       {isPickerVisible && (
         <ModalName trigger={isPickerVisible} setTrigger={setPickerVisible}>
           <div style={{ textAlign: "left", display: "flex", alignItems: "center" }}>
