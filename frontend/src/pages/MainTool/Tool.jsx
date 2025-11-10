@@ -4,6 +4,7 @@ import { Stage, Layer, Rect, Circle } from "react-konva";
 import axios from "axios";
 import Popup from "../../components/Popup";
 import Navbar from "../../components/Navbar";
+import ModalName from "../../components/ModalName";
 import Matrix from "../../components/tool/Matrix";
 import { toast } from 'sonner';
 import Picker from '@emoji-mart/react';
@@ -12,7 +13,7 @@ import data from '@emoji-mart/data';
 import { auth } from '../../services/firebase';
 import { signOut } from 'firebase/auth';
 import { init, getEmojiDataFromNative, SearchIndex } from 'emoji-mart';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import { ToolTour } from "../../components/Tour"; // Importe o tour
@@ -35,6 +36,11 @@ const Tool = ({ }) => {
   const [runToolTour, setRunToolTour] = useState(false); // State para controlar o tour
   const navigate = useNavigate();
   const { id_mapa } = useParams();
+
+  const location = useLocation();
+  const isTutorialMode = location.state?.startTour;
+
+  const [showExampleMapModal, setShowExampleMapModal] = useState(false);
 
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -111,6 +117,7 @@ const Tool = ({ }) => {
       // Exportar o canvas final como imagem
       const finalImage = finalCanvas.toDataURL('image/png');
       downloadURI(finalImage, 'mapa_de_jornada.png');
+      window.location.reload();
     } catch (error) {
       console.error('Erro ao exportar o mapa de jornada:', error);
     } finally {
@@ -128,8 +135,6 @@ const Tool = ({ }) => {
     document.body.removeChild(link);
   };
   
-  
-
 
   const handlePostClick = async () => {
     try {
@@ -273,7 +278,7 @@ const Tool = ({ }) => {
       if (newMatrix.some(matrix => matrix.length > 0)) {
         setDataLoaded(true);
       } else {
-        setDataLoaded(false);
+        setDataLoaded(false); // explicitamente sete como false se vazio
       }
 
       const convertedEmojis = {};
@@ -297,17 +302,23 @@ const Tool = ({ }) => {
 
     } catch (error) {
       console.error("Erro ao buscar os dados:", error);
+      setDataLoaded(false);
     }
   };
 
-  useEffect(() => {
+      useEffect(() => {
+    // Lógica do Tour para esta página
     const hasSeenToolTour = localStorage.getItem('hasSeenToolTour');
-    if (!hasSeenToolTour) {
-      setRunToolTour(true); // Inicia o tour automaticamente
+    
+    // Inicia o tour se a flag 'isTutorialMode' estiver presente
+    // OU se for a primeira vez do usuário aqui
+    if (isTutorialMode || !hasSeenToolTour) {
+      setRunToolTour(true);
       localStorage.setItem('hasSeenToolTour', 'true');
     }
+
     fetchData();
-  }, []);
+  }, [isTutorialMode]); // Adicione 'isTutorialMode' à dependência
 
 
   const [matrix, setMatrix] = useState([]);
@@ -844,16 +855,6 @@ const Tool = ({ }) => {
     fetchData();
   };
 
-
-
-
-
-
-
-
-
-
-
   useEffect(() => {
     if (newSquareId && matrix) {
       const [journeyPhase, userAction, emotions] = matrix;
@@ -1022,12 +1023,48 @@ const Tool = ({ }) => {
   };
 
   const stopTour = () => {
-      setRunToolTour(false);
-    };
+    setRunToolTour(false);
+    
+    // Se estávamos no modo tutorial...
+    if (isTutorialMode) {
+      // Limpa o state da navegação para não rodar o tour de novo no reload
+      navigate(location.pathname, { replace: true, state: {} });
+
+      // Se 'dataLoaded' for false (mapa está vazio), carregue o exemplo
+      if (!dataLoaded) { 
+        setShowExampleMapModal(true); // Mostra o modal de "Carregando"
+        handlePostClick(); // Isso vai carregar os dados e RECARREGAR A PÁGINA
+      } else {
+        // Se o mapa já tiver dados (??), apenas mostre o modal de conclusão
+        setShowExampleMapModal(true);
+      }
+    }
+  };
 
   return (
     <div className="scrollable-container">
       <ToolTour run={runToolTour} onTourEnd={stopTour} />
+      {showExampleMapModal && (
+      <ModalName trigger={showExampleMapModal} setTrigger={setShowExampleMapModal}>
+          <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+            <h1 style={{ fontSize: "40px", marginTop: "30px", marginBottom: "30px" }}>
+              {dataLoaded ? "Tour Concluído!" : "Carregando Exemplo!"}
+            </h1>
+            <p style={{ fontSize: "24px", marginBottom: "40px" }}>
+              {dataLoaded ? 
+                "Você completou o tour!" : 
+                "Vamos carregar um mapa de exemplo para você. A página será recarregada."
+              }
+            </p>
+          </div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <button className="botaosavename" onClick={() => setShowExampleMapModal(false)}>
+              Ok
+            </button>
+          </div>
+        </ModalName>
+      )}
+
       <div style={{ width: "100vw", height: "100vh" }}>
         <>
           {loading && (
@@ -1042,7 +1079,7 @@ const Tool = ({ }) => {
             onLogoutClick={handleLogout}
             onMap={onMap}
             onDownload={handleExport}
-            onStartTour={startTour}
+            onStartTour={() => setRunToolTour(true)}
             handlePostClick={handlePostClick}
             dataLoaded={dataLoaded}
             currentJourneyMap={id_mapa}

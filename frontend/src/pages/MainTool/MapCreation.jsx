@@ -32,6 +32,11 @@ const MapCreation = () => {
   // 3. States para controlar o tour
   const [showTourPrompt, setShowTourPrompt] = useState(false);
   const [runDashboardTour, setRunDashboardTour] = useState(false);
+  const [showMapCreationPrompt, setShowMapCreationPrompt] = useState(false);
+  // Marca se estamos no modo de criação de mapa-tutorial
+  const [isTutorialMode, setIsTutorialMode] = useState(false);
+  // Evita perguntar sobre o tutorial de mapa múltiplas vezes
+  const [askedForMapTutorial, setAskedForMapTutorial] = useState(false);
 
   const mapsPerPage = 5; 
 
@@ -67,15 +72,33 @@ const MapCreation = () => {
 
   }, [reloadMaps]); // 5. Esta é a única vez que o useEffect fecha.
 
-  const handleCreateNewMap = async () => {
+const handleCreateNewMap = async () => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && user.uid && newMapName.trim() !== '') {
       try {
-        await axios.post(`${import.meta.env.VITE_BACKEND}/journeyMap`, { uid: user.uid, name: newMapName });
-        setReloadMaps(prevState => !prevState);
+        // Capture a resposta do backend
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND}/journeyMap`, { uid: user.uid, name: newMapName });
+        
+        // **IMPORTANTE**: Isso assume que seu backend retorna o ID do mapa criado,
+        // por exemplo: { id: "novo-mapa-id", name: "..." }
+        // Se seu backend não retornar o ID, esta lógica de navegação precisará ser ajustada.
+        const newMapId = response.data.id; 
+
+        if (isTutorialMode && newMapId) {
+          // Se for tutorial, navegue DIRETAMENTE para o novo mapa
+          // com a flag 'startTour' no estado de navegação
+          navigate(`/home/${newMapId}`, { state: { startTour: true } });
+        } else {
+          // Comportamento normal
+          setReloadMaps(prevState => !prevState);
+        }
+
         setNewMapName('');
+        setIsTutorialMode(false); // Reseta o modo tutorial
+
       } catch (error) {
         console.error('Error creating new map:', error);
+        setIsTutorialMode(false); // Reseta em caso de erro
       }
     }
   };
@@ -227,8 +250,14 @@ const MapCreation = () => {
     setRunDashboardTour(true);
   };
 
-  const stopTour = () => {
+const stopTour = () => {
     setRunDashboardTour(false);
+    // AO FINAL DO TOUR, pergunte sobre o próximo passo
+    // (Apenas se não tivermos perguntado antes nesta sessão)
+    if (!askedForMapTutorial) {
+      setShowMapCreationPrompt(true);
+      setAskedForMapTutorial(true); // Marca que já perguntamos
+    }
   };
 
 
@@ -275,18 +304,57 @@ const MapCreation = () => {
         </ModalName>
       )}
 
+      {showMapCreationPrompt && (
+        <ModalName trigger={showMapCreationPrompt} setTrigger={setShowMapCreationPrompt}>
+          <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+            <h1 style={{ fontSize: "40px", marginTop: "30px", marginBottom: "30px" }}>
+              Tutorial
+            </h1>
+            <p style={{ fontSize: "24px", marginBottom: "40px" }}>
+              Você gostaria de aprender a criar seu primeiro Mapa de Jornada agora?
+            </p>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <button className="botaosavename" onClick={() => {
+              setShowMapCreationPrompt(false);
+              setIsTutorialMode(true); // Ativa o modo tutorial
+              setPickerVisible(true); // Abre o modal de criar mapa
+            }}>Sim, vamos lá!</button>
+            <button className="botaocancelname" onClick={() => setShowMapCreationPrompt(false)}>Agora não</button>
+          </div>
+        </ModalName>
+      )}
+
       {/* O resto do seu JSX de 'isPickerVisible', 'maps.length > 0', etc... */}
       {isPickerVisible && (
         <ModalName trigger={isPickerVisible} setTrigger={setPickerVisible}>
           <div style={{ textAlign: "left", display: "flex", alignItems: "center" }}>
-            <h1 style={{ fontSize: "50px", marginTop: "50px", marginBottom: "30px" }}>Criar Mapa de jornada</h1>
+            {/* Texto condicional */}
+            <h1 style={{ fontSize: "50px", marginTop: "50px", marginBottom: "30px" }}>
+              {isTutorialMode ? "Tutorial: Crie seu Mapa" : "Criar Mapa de jornada"}
+            </h1>
           </div>
-          <input type="text" value={newMapName} onChange={handleMapNameChange} className="inputname" placeholder="Título do novo mapa" />
+          {isTutorialMode && (
+            <p style={{fontSize: '20px', marginBottom: '20px', marginTop: '-20px', color: '#555'}}>
+              Vamos fazer um mapa de exemplo. Dê um título, como "Pedir uma Pizza".
+            </p>
+          )}
+          <input 
+            type="text" 
+            value={newMapName} 
+            onChange={handleMapNameChange} 
+            className="inputname" 
+            // Placeholder condicional
+            placeholder={isTutorialMode ? "Ex: Pedir uma Pizza" : "Título do novo mapa"} 
+          />
           <div className="" style={{ margin: "0", textAlign: "center" }}>
-            <button className="botaosavename" onClick={() => { handleCreateNewMap(); handlePickerClose(); }} disabled={!newMapName.trim()}>Criar Novo Mapa</button>
+            <button className="botaosavename" onClick={() => { handleCreateNewMap(); handlePickerClose(); }} disabled={!newMapName.trim()}>
+              {isTutorialMode ? "Começar Tutorial do Mapa!" : "Criar Novo Mapa"}
+            </button>
           </div>
         </ModalName>
       )}
+
       {maps.length > 0 ? (
         <div className="margem">
           <div className="input-wrapper">
