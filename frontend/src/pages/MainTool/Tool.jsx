@@ -15,6 +15,8 @@ import { init, getEmojiDataFromNative, SearchIndex } from 'emoji-mart';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import html2canvas from 'html2canvas';
+import { ToolTour } from "../../components/Tour"; // Importe o tour
+import { HelpCircle } from 'lucide-react'; // Importe o ícone
 
 import './tool.css';
 
@@ -30,6 +32,7 @@ const sizeUpdated = () => {
 
 
 const Tool = ({ }) => {
+  const [runToolTour, setRunToolTour] = useState(false); // State para controlar o tour
   const navigate = useNavigate();
   const { id_mapa } = useParams();
 
@@ -1008,6 +1011,10 @@ const Tool = ({ }) => {
       console.error("Erro ao salvar o cenário:", error);
     }
   };
+
+  const stopTour = () => {
+      setRunToolTour(false);
+    };
 
   return (
     <div className="scrollable-container">

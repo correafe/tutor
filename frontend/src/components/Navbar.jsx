@@ -3,8 +3,7 @@ import { Github, LogOut } from 'lucide-react';
 import axios from 'axios';
 import './Navbar.css';
 
-const Navbar = ({ onSaveClick, onDownload, onMap, onInfoClick, onScenarioClick, onLogoutClick, dataLoaded, currentJourneyMap, handlePostClick }) => {
-  
+const Navbar = ({ onSaveClick, onDownload, onMap, onInfoClick, onScenarioClick, onLogoutClick, dataLoaded, currentJourneyMap, handlePostClick, onStartTour }) => {  
   const [nameTrue, setNameTrue] = useState(false);
   const [journeyMapName, setJourneyMapName] = useState("Clique aqui");
   const [editedName, setEditedName] = useState(journeyMapName);
@@ -63,6 +62,16 @@ const Navbar = ({ onSaveClick, onDownload, onMap, onInfoClick, onScenarioClick, 
         <button className="button save" id="saveButton" onClick={onSaveClick}>
           Salvar
         </button>
+        {onStartTour && ( // Só mostra o botão se a função for passada
+          <button 
+            className="button info" 
+            id="tourButton" 
+            style={{ marginLeft: "3vh", backgroundColor: '#6a7dfe' }} 
+            onClick={onStartTour}
+          >
+            <HelpCircle />
+          </button>
+        )}
         <button className="button info" id="infoButton" style={{ marginLeft: "3vh", marginRight: "3vh" }} onClick={onInfoClick}>
           i
         </button>

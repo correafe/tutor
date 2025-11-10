@@ -3,11 +3,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Plus, X } from 'lucide-react';
 import ModalName from "../../components/ModalName";
-import { LogOut, Trash, Pencil, ChevronRight , ChevronLeft, ChevronsRight , ChevronsLeft } from 'lucide-react';
+import { LogOut, Trash, Pencil, ChevronRight , ChevronLeft, ChevronsRight , ChevronsLeft, HelpCircle } from 'lucide-react'; // 1. Importar o HelpCircle
 import { auth } from '../../services/firebase';
 import { signOut } from 'firebase/auth';
-import { DashboardTour } from '../../components/Tour'; // (ou onde você o criou)
-import IntroPopup from "./IntroPopup"; //
+import { DashboardTour } from '../../components/Tour'; // 2. Importar o Tour
+import IntroPopup from "./IntroPopup"; 
 
 import fundomapas from "../../assets/Fundomapas.png";
 
@@ -27,9 +27,13 @@ const MapCreation = () => {
   const [mapToDelete, setMapToDelete] = useState(null);
   const [mapToUpdate, setmapToUpdate] = useState(null);
   const [filterText, setFilterText] = useState('');
-  const [showIntroPopup, setShowIntroPopup] = useState(true); // State to manage the intro popup
+  const [showIntroPopup, setShowIntroPopup] = useState(false); // Modificado
+  
+  // 3. States para controlar o tour
+  const [showTourPrompt, setShowTourPrompt] = useState(false);
+  const [runDashboardTour, setRunDashboardTour] = useState(false);
 
-  const mapsPerPage = 5; // Number of maps per page
+  const mapsPerPage = 5; 
 
   useEffect(() => {
     const fetchUserMaps = async () => {
@@ -46,7 +50,22 @@ const MapCreation = () => {
     };
 
     fetchUserMaps();
-  }, [reloadMaps]);
+
+    // 4. Lógica do Tutorial movida para DENTRO do useEffect
+    const hasSeenTour = localStorage.getItem('hasSeenDashboardTour');
+    if (!hasSeenTour) {
+      setShowTourPrompt(true); // Mostra a PERGUNTA do tutorial
+      localStorage.setItem('hasSeenDashboardTour', 'true');
+    }
+
+    // Lógica do IntroPopup (mantida)
+    const hasSeenIntro = localStorage.getItem('hasSeenIntro');
+    if (!hasSeenIntro) {
+      setShowIntroPopup(true); // Mostra o popup de boas-vindas
+      localStorage.setItem('hasSeenIntro', 'true');
+    }
+
+  }, [reloadMaps]); // 5. Esta é a única vez que o useEffect fecha.
 
   const handleCreateNewMap = async () => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -202,22 +221,61 @@ const MapCreation = () => {
     setCurrentPage(1); // Reset to page 1 when the filter text changes
   }, [filterText]);
 
-return (
+  // 6. Funções para controlar o tour
+  const startTour = () => {
+    setShowTourPrompt(false);
+    setRunDashboardTour(true);
+  };
+
+  const stopTour = () => {
+    setRunDashboardTour(false);
+  };
+
+
+  return (
     <div className="map-creation-container" style={{ backgroundImage: `url(${fundomapas})`, height: "100vh", width: "100vw" }}>
-      
-      {/* Todos os elementos da barra do topo vão aqui DENTRO */}
+      {/* 7. Adicionar o componente do Tour */}
+      <DashboardTour run={runDashboardTour} onTourEnd={stopTour} />
+
       <div className="navbar" style={{ textAlign: "left", padding: "31px", fontSize: "30px", display: "flex", alignItems: "center" }}>
         <img src="https://github.com/luca-ferro/imagestest/blob/main/mascote.png?raw=true" style={{ width: "50px", marginRight: "20px" }} alt="mascote"></img>
         <p>JEM</p>
         <div className="textoboas" style={{ flex: "1" }}>
           <h1 style={{ margin: "0", textAlign: "center" }}>Olá {usuario.displayName ? usuario.displayName : ""}, seja muito bem-vindo(a)!</h1>
         </div>
+        
+        {/* 8. Botão para iniciar o tutorial na Navbar */}
+        <button className="lixeira" onClick={startTour} style={{ marginRight: '20px', background: 'none', border: 'none' }}>
+          <HelpCircle color="white" />
+        </button>
+
         <img src={usuario.providerData[0].photoURL || "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png"} alt="Profile" style={{ width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover", marginRight: "20px" }} />
         <button className="botaologout" onClick={handleLogout}>
           <LogOut />
         </button>
-      </div> {/* <-- A navbar fecha aqui */}
+      </div>
+
       {showIntroPopup && <IntroPopup onClose={() => setShowIntroPopup(false)} />}
+      
+      {/* 9. Modal que PERGUNTA se o usuário quer o tutorial */}
+      {showTourPrompt && (
+        <ModalName trigger={showTourPrompt} setTrigger={setShowTourPrompt}>
+          <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+            <h1 style={{ fontSize: "40px", marginTop: "30px", marginBottom: "30px" }}>
+              Boas-vindas ao JEM!
+            </h1>
+            <p style={{ fontSize: "24px", marginBottom: "40px" }}>
+              Percebemos que é sua primeira vez aqui. Você gostaria de fazer um tour rápido pela ferramenta?
+            </p>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <button className="botaosavename" onClick={startTour}>Sim, por favor!</button>
+            <button className="botaocancelname" onClick={() => setShowTourPrompt(false)}>Agora não</button>
+          </div>
+        </ModalName>
+      )}
+
+      {/* O resto do seu JSX de 'isPickerVisible', 'maps.length > 0', etc... */}
       {isPickerVisible && (
         <ModalName trigger={isPickerVisible} setTrigger={setPickerVisible}>
           <div style={{ textAlign: "left", display: "flex", alignItems: "center" }}>
@@ -255,7 +313,8 @@ return (
               .map((map, index) => (
                 <div key={map.id}>
                   <div className="separar">
-                    <div className="bloco" style={{ backgroundColor: getColorAtIndex(index) }} onClick={() => handleSelectMap(map.id)} >
+                    {/* Adicionada classe 'bloco' para o tour */}
+                    <div className="bloco" style={{ backgroundColor: getColorAtIndex(index) }} onClick={() => handleSelectMap(map.id)} > 
                       <h4 className="texto">{truncateText(map.name)}</h4>
                       <div className="divbotoes">
                         <button className="lixeira" onClick={(e) => { e.stopPropagation(); handleDeleteButtonClick(map.id); }}> <Trash className='icontrash' size={40} /> </button>
