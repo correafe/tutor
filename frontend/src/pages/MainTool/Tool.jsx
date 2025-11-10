@@ -301,6 +301,11 @@ const Tool = ({ }) => {
   };
 
   useEffect(() => {
+    const hasSeenToolTour = localStorage.getItem('hasSeenToolTour');
+    if (!hasSeenToolTour) {
+      setRunToolTour(true); // Inicia o tour automaticamente
+      localStorage.setItem('hasSeenToolTour', 'true');
+    }
     fetchData();
   }, []);
 
@@ -1012,12 +1017,17 @@ const Tool = ({ }) => {
     }
   };
 
+  const startTour = () => {
+    setRunToolTour(true);
+  };
+
   const stopTour = () => {
       setRunToolTour(false);
     };
 
   return (
     <div className="scrollable-container">
+      <ToolTour run={runToolTour} onTourEnd={stopTour} />
       <div style={{ width: "100vw", height: "100vh" }}>
         <>
           {loading && (
@@ -1032,6 +1042,7 @@ const Tool = ({ }) => {
             onLogoutClick={handleLogout}
             onMap={onMap}
             onDownload={handleExport}
+            onStartTour={startTour}
             handlePostClick={handlePostClick}
             dataLoaded={dataLoaded}
             currentJourneyMap={id_mapa}
