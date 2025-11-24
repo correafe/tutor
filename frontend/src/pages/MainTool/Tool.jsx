@@ -279,7 +279,9 @@ const Tool = ({ }) => {
       if (newMatrix.some(matrix => matrix.length > 0)) {
         setDataLoaded(true);
       } else {
-        setDataLoaded(false); // explicitamente sete como false se vazio
+        // Se for tutorial, forçamos true para mostrar as linhas vazias para o tour
+        const isTutorial = localStorage.getItem('startToolTutorial') === 'true';
+        setDataLoaded(isTutorial); 
       }
 
       const convertedEmojis = {};
@@ -310,20 +312,24 @@ const Tool = ({ }) => {
   
 
   useEffect(() => {
-      const shouldStartTutorial = localStorage.getItem('startToolTutorial');
+      const tutorialFlag = localStorage.getItem('startToolTutorial');
       const hasSeenToolTour = localStorage.getItem('hasSeenToolTour');
 
-      if (shouldStartTutorial === 'true') {
-        // Se a bandeira existe, iniciamos o tour
+      if (tutorialFlag === 'true') {
+        // MODO TUTORIAL:
+        // 1. Força dataLoaded = true para mostrar a interface (linhas/título) para o tour apontar
+        setDataLoaded(true);
+        // 2. Inicia o tour
         setRunToolTour(true);
-      } else if (!hasSeenToolTour) {
-        // Se é a primeira vez do usuário (sem vir do tutorial de criação), também iniciamos
+      } 
+      else if (!hasSeenToolTour) {
+        // Primeira vez normal (sem ser pelo fluxo de criação):
         setRunToolTour(true);
         localStorage.setItem('hasSeenToolTour', 'true');
       }
 
       fetchData();
-    }, []);
+    }, []); // Array vazio, roda apenas uma vez na montagem
 
 
   const [matrix, setMatrix] = useState([]);
@@ -1026,23 +1032,20 @@ const Tool = ({ }) => {
     setRunToolTour(true);
   };
 
-  const stopTour = () => {
+const stopTour = () => {
     setRunToolTour(false);
     
-    const shouldStartTutorial = localStorage.getItem('startToolTutorial');
+    // Verificamos se esse tour era parte do fluxo de criação
+    const tutorialFlag = localStorage.getItem('startToolTutorial');
 
-    if (shouldStartTutorial === 'true') {
-      // 1. Removemos a bandeira para não rodar de novo num reload futuro
+    if (tutorialFlag === 'true') {
+      // Limpeza e conclusão
       localStorage.removeItem('startToolTutorial');
-      
-      // 2. Marcamos que o usuário já viu o tour
       localStorage.setItem('hasSeenToolTour', 'true');
-
-      // 3. Se o mapa estiver vazio, carregamos o exemplo e mostramos o modal
-      if (!dataLoaded) { 
-        setShowExampleMapModal(true); 
-        handlePostClick(); // Isso vai popular o mapa e recarregar a página
-      }
+      
+      // Mostra modal e cria o exemplo
+      setShowExampleMapModal(true);
+      handlePostClick(); // Isso vai recarregar a página no final
     }
   };
 

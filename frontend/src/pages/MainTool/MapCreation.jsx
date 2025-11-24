@@ -71,33 +71,34 @@ const MapCreation = () => {
 
   }, [reloadMaps]); // 5. Esta é a única vez que o useEffect fecha.
 
+
   const handleCreateNewMap = async () => {
-      const user = JSON.parse(localStorage.getItem('user'));
-      if (user && user.uid && newMapName.trim() !== '') {
-        try {
-          const response = await axios.post(`${import.meta.env.VITE_BACKEND}/journeyMap`, { uid: user.uid, name: newMapName });
-          const newMapId = response.data.id; 
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && user.uid && newMapName.trim() !== '') {
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_BACKEND}/journeyMap`, { uid: user.uid, name: newMapName });
+        const newMapId = response.data.id; 
 
-          setNewMapName('');
+        setNewMapName('');
 
-          if (isTutorialMode && newMapId) {
-            // [CORREÇÃO] Salvamos uma "bandeira" no localStorage avisando que o tutorial deve rodar
-            localStorage.setItem('startToolTutorial', 'true');
-            
-            setIsTutorialMode(false); 
-            
-            // Navegamos normalmente (sem passar state complexo)
-            navigate(`/home/${newMapId}`); 
-          } else {
-            setReloadMaps(prevState => !prevState);
-          }
-
-        } catch (error) {
-          console.error('Error creating new map:', error);
-          setIsTutorialMode(false);
+        if (isTutorialMode && newMapId) {
+          // [CORREÇÃO] Usar localStorage é mais seguro para persistir a intenção do tutorial
+          localStorage.setItem('startToolTutorial', 'true');
+          
+          setIsTutorialMode(false); 
+          
+          // Navegação simples, sem state
+          navigate(`/home/${newMapId}`); 
+        } else {
+          setReloadMaps(prevState => !prevState);
         }
+
+      } catch (error) {
+        console.error('Error creating new map:', error);
+        setIsTutorialMode(false);
       }
-    };
+    }
+  };
 
   const handleSelectMap = async (selectedMapId) => {
     const user = JSON.parse(localStorage.getItem('user'));
