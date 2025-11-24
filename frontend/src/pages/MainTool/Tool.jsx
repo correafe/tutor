@@ -1029,20 +1029,18 @@ const Tool = ({ }) => {
     setRunToolTour(true);
   };
 
-const stopTour = () => {
+
+  const stopTour = () => {
     setRunToolTour(false);
     
-    // Verificamos se esse tour era parte do fluxo de criação
     const tutorialFlag = localStorage.getItem('startToolTutorial');
 
     if (tutorialFlag === 'true') {
-      // Limpeza e conclusão
       localStorage.removeItem('startToolTutorial');
       localStorage.setItem('hasSeenToolTour', 'true');
       
-      // Mostra modal e cria o exemplo
+      // Apenas mostre o modal. NÃO chame handlePostClick() aqui.
       setShowExampleMapModal(true);
-      handlePostClick(); // Isso vai recarregar a página no final
     }
   };
 
@@ -1062,9 +1060,17 @@ const stopTour = () => {
               }
             </p>
           </div>
-          <div style={{ display: "flex", justifyContent: "center" }}>
-            <button className="botaosavename" onClick={() => setShowExampleMapModal(false)}>
-              Ok
+          <div style={{ display: "flex", justifyContent: "center" }}>     
+            <button 
+              className="botaosavename" 
+              onClick={() => { 
+                setShowExampleMapModal(false); // Fecha o modal visualmente
+                if (!dataLoaded) {
+                   handlePostClick(); // Cria o exemplo e recarrega a página
+                }
+              }}
+            >
+              {dataLoaded ? "Fechar" : "Gerar Exemplo e Finalizar"}
             </button>
           </div>
         </ModalName>
