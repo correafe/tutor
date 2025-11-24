@@ -71,34 +71,33 @@ const MapCreation = () => {
 
   }, [reloadMaps]); // 5. Esta é a única vez que o useEffect fecha.
 
-    const handleCreateNewMap = async () => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user && user.uid && newMapName.trim() !== '') {
-      try {
-        // **IMPORTANTE**: Capture a RESPOSTA do axios
-        const response = await axios.post(`${import.meta.env.VITE_BACKEND}/journeyMap`, { uid: user.uid, name: newMapName });
-        
-        // **IMPORTANTE**: Pelo seu backend, a resposta deve conter o ID
-        const newMapId = response.data.id; 
+  const handleCreateNewMap = async () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user && user.uid && newMapName.trim() !== '') {
+        try {
+          const response = await axios.post(`${import.meta.env.VITE_BACKEND}/journeyMap`, { uid: user.uid, name: newMapName });
+          const newMapId = response.data.id; 
 
-        setNewMapName('');
+          setNewMapName('');
 
-        if (isTutorialMode && newMapId) {
-          // Se for tutorial, NAVEGUE DIRETAMENTE para o novo mapa
-          // passando a flag 'startTour' no estado
-          setIsTutorialMode(false); // Reseta o modo tutorial
-          navigate(`/home/${newMapId}`, { state: { startTour: true } });
-        } else {
-          // Comportamento normal (sem tutorial)
-          setReloadMaps(prevState => !prevState);
+          if (isTutorialMode && newMapId) {
+            // [CORREÇÃO] Salvamos uma "bandeira" no localStorage avisando que o tutorial deve rodar
+            localStorage.setItem('startToolTutorial', 'true');
+            
+            setIsTutorialMode(false); 
+            
+            // Navegamos normalmente (sem passar state complexo)
+            navigate(`/home/${newMapId}`); 
+          } else {
+            setReloadMaps(prevState => !prevState);
+          }
+
+        } catch (error) {
+          console.error('Error creating new map:', error);
+          setIsTutorialMode(false);
         }
-
-      } catch (error) {
-        console.error('Error creating new map:', error);
-        setIsTutorialMode(false); // Reseta em caso de erro
       }
-    }
-  };
+    };
 
   const handleSelectMap = async (selectedMapId) => {
     const user = JSON.parse(localStorage.getItem('user'));

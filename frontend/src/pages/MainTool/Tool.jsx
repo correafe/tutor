@@ -33,14 +33,15 @@ const sizeUpdated = () => {
 
 
 const Tool = ({ }) => {
-  const [runToolTour, setRunToolTour] = useState(false); // State para controlar o tour
+  const [runToolTour, setRunToolTour] = useState(false);
   const navigate = useNavigate();
   const { id_mapa } = useParams();
 
+  const [dataLoaded, setDataLoaded] = useState(false); 
+  const [showExampleMapModal, setShowExampleMapModal] = useState(false);
+
   const location = useLocation();
   const isTutorialMode = location.state?.startTour;
-
-  const [showExampleMapModal, setShowExampleMapModal] = useState(false);
 
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -306,24 +307,28 @@ const Tool = ({ }) => {
     }
   };
 
-      useEffect(() => {
-    // Lógica do Tour para esta página
-    const hasSeenToolTour = localStorage.getItem('hasSeenToolTour');
-    
-    // Inicia o tour se a flag 'isTutorialMode' estiver presente
-    // OU se for a primeira vez do usuário aqui
-    if (isTutorialMode || !hasSeenToolTour) {
-      setRunToolTour(true);
-    }
+  
 
-    fetchData();
-  }, [isTutorialMode]); // Adicione 'isTutorialMode' à dependência
+  useEffect(() => {
+      const shouldStartTutorial = localStorage.getItem('startToolTutorial');
+      const hasSeenToolTour = localStorage.getItem('hasSeenToolTour');
+
+      if (shouldStartTutorial === 'true') {
+        // Se a bandeira existe, iniciamos o tour
+        setRunToolTour(true);
+      } else if (!hasSeenToolTour) {
+        // Se é a primeira vez do usuário (sem vir do tutorial de criação), também iniciamos
+        setRunToolTour(true);
+        localStorage.setItem('hasSeenToolTour', 'true');
+      }
+
+      fetchData();
+    }, []);
 
 
   const [matrix, setMatrix] = useState([]);
   const [forceUpdate, setForceUpdate] = useState(0);
   const [emojis, setEmojis] = useState({});
-  const [dataLoaded, setDataLoaded] = useState(true);
   const [selectedHouses, setSelectedHouses] = useState(1);
 
   const calculateTotalWidth = (matrix) => {
@@ -1023,20 +1028,20 @@ const Tool = ({ }) => {
 
   const stopTour = () => {
     setRunToolTour(false);
-    localStorage.setItem('hasSeenToolTour', 'true');
     
-    // Se estávamos no modo tutorial...
-    if (isTutorialMode) {
-      // Limpa o state da navegação para não rodar o tour de novo no reload
-      navigate(location.pathname, { replace: true, state: {} });
+    const shouldStartTutorial = localStorage.getItem('startToolTutorial');
 
-      // Se 'dataLoaded' for false (mapa está vazio), carregue o exemplo
+    if (shouldStartTutorial === 'true') {
+      // 1. Removemos a bandeira para não rodar de novo num reload futuro
+      localStorage.removeItem('startToolTutorial');
+      
+      // 2. Marcamos que o usuário já viu o tour
+      localStorage.setItem('hasSeenToolTour', 'true');
+
+      // 3. Se o mapa estiver vazio, carregamos o exemplo e mostramos o modal
       if (!dataLoaded) { 
-        setShowExampleMapModal(true); // Mostra o modal de "Carregando"
-        handlePostClick(); // Isso vai carregar os dados e RECARREGAR A PÁGINA
-      } else {
-        // Se o mapa já tiver dados (??), apenas mostre o modal de conclusão
-        setShowExampleMapModal(true);
+        setShowExampleMapModal(true); 
+        handlePostClick(); // Isso vai popular o mapa e recarregar a página
       }
     }
   };
