@@ -312,24 +312,21 @@ const Tool = ({ }) => {
   
 
   useEffect(() => {
+      // Lê a flag que acabamos de salvar no MapCreation
       const tutorialFlag = localStorage.getItem('startToolTutorial');
       const hasSeenToolTour = localStorage.getItem('hasSeenToolTour');
 
       if (tutorialFlag === 'true') {
-        // MODO TUTORIAL:
-        // 1. Força dataLoaded = true para mostrar a interface (linhas/título) para o tour apontar
-        setDataLoaded(true);
-        // 2. Inicia o tour
-        setRunToolTour(true);
+        setDataLoaded(true); // Garante que a tela não fique branca
+        setRunToolTour(true); // INICIA O TOUR AUTOMATICAMENTE
       } 
       else if (!hasSeenToolTour) {
-        // Primeira vez normal (sem ser pelo fluxo de criação):
         setRunToolTour(true);
         localStorage.setItem('hasSeenToolTour', 'true');
       }
 
       fetchData();
-    }, []); // Array vazio, roda apenas uma vez na montagem
+    }, []);
 
 
   const [matrix, setMatrix] = useState([]);
