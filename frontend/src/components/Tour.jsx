@@ -102,6 +102,20 @@ export const DashboardTour = ({ run, onTourEnd }) => (
         primaryColor: '#06bd2d', // Um verde similar ao seu botão
         zIndex: 10000,
       },
+      tooltipContent: {
+        fontSize: '20px', // Aumenta o texto do corpo
+        textAlign: 'left' // Opcional: alinha o texto
+      },
+      tooltipTitle: {
+        fontSize: '24px', // Aumenta o título (se houver)
+        fontWeight: 'bold'
+      },
+      buttonNext: {
+        fontSize: '18px' // Aumenta o texto do botão "Próximo"
+      },
+      buttonBack: {
+        fontSize: '18px' // Aumenta o texto do botão "Voltar"
+      }
     }}
   />
 );
@@ -130,6 +144,20 @@ export const ToolTour = ({ run, onTourEnd }) => (
         primaryColor: '#4caf50', // Botão Salvar
         zIndex: 10000,
       },
+      tooltipContent: {
+        fontSize: '20px', 
+        textAlign: 'left'
+      },
+      tooltipTitle: {
+        fontSize: '24px', 
+        fontWeight: 'bold'
+      },
+       buttonNext: {
+        fontSize: '18px'
+      },
+      buttonBack: {
+        fontSize: '18px'
+      }
     }}
   />
 );
