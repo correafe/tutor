@@ -7,7 +7,7 @@ body {
   max-height: 100vh;
   /* overflow-y: hidden; */
   overflow-y: hidden;
-  min-zoom: 70%;
+  /*zoom: 60%;*/
 }
   
 .content {

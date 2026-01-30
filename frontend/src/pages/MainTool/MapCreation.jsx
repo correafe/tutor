@@ -284,6 +284,7 @@ const MapCreation = () => {
         
         {/* 8. Botão para iniciar o tutorial na Navbar */}
         <button 
+          id="dashboard-tour-btn"
           onClick={startTour} 
           style={{ 
             marginRight: '20px', 
