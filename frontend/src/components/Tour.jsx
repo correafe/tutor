@@ -99,22 +99,22 @@ export const DashboardTour = ({ run, onTourEnd }) => (
     }}
     styles={{
       options: {
-        primaryColor: '#06bd2d', // Um verde similar ao seu botão
+        primaryColor: '#06bd2d', 
         zIndex: 10000,
       },
       tooltipContent: {
-        fontSize: '20px', // Aumenta o texto do corpo
-        textAlign: 'left' // Opcional: alinha o texto
+        fontSize: '20px', 
+        textAlign: 'left' 
       },
       tooltipTitle: {
-        fontSize: '24px', // Aumenta o título (se houver)
+        fontSize: '24px', 
         fontWeight: 'bold'
       },
       buttonNext: {
-        fontSize: '18px' // Aumenta o texto do botão "Próximo"
+        fontSize: '18px' 
       },
       buttonBack: {
-        fontSize: '18px' // Aumenta o texto do botão "Voltar"
+        fontSize: '18px'
       }
     }}
   />

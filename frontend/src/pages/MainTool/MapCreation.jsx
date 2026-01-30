@@ -9,6 +9,7 @@ import { signOut } from 'firebase/auth';
 import { DashboardTour } from '../../components/Tour'; // 2. Importar o Tour
 import IntroPopup from "./IntroPopup"; 
 
+
 import fundomapas from "../../assets/Fundomapas.png";
 
 import "./MapCreation.css";
@@ -282,8 +283,27 @@ const MapCreation = () => {
         </div>
         
         {/* 8. Botão para iniciar o tutorial na Navbar */}
-        <button className="lixeira" onClick={startTour} style={{ marginRight: '20px', background: 'none', border: 'none' }}>
-          <HelpCircle color="white" />
+        <button 
+          onClick={startTour} 
+          style={{ 
+            marginRight: '20px', 
+            backgroundColor: '#6a7dfe', 
+            color: 'white',           
+            border: 'none',
+            borderRadius: '50%',       
+            width: '50px',              
+            height: '50px',
+            fontSize: '30px',          
+            fontWeight: 'bold',         
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+            fontFamily: 'sans-serif'    
+          }}
+        >
+          ?
         </button>
 
         <img src={usuario.providerData[0].photoURL || "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png"} alt="Profile" style={{ width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover", marginRight: "20px" }} />

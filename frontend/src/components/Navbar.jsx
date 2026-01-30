@@ -62,14 +62,29 @@ const Navbar = ({ onSaveClick, onDownload, onMap, onInfoClick, onScenarioClick, 
         <button className="button save" id="saveButton" onClick={onSaveClick}>
           Salvar
         </button>
-        {onStartTour && ( // Só mostra o botão se a função for passada
+        {onStartTour && (
           <button 
             className="button info" 
             id="tourButton" 
-            style={{ marginLeft: "3vh", backgroundColor: '#6a7dfe' }} 
+            style={{ 
+              marginLeft: "3vh", 
+              backgroundColor: '#6a7dfe', 
+              color: 'white',
+              width: '50px', 
+              height: '50px',
+              borderRadius: '50%',
+              border: 'none',
+              fontSize: '30px',    
+              fontWeight: 'bold',  
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 0
+            }} 
             onClick={onStartTour}
           >
-            <HelpCircle />
+            ?
           </button>
         )}
         <button className="button info" id="infoButton" style={{ marginLeft: "3vh", marginRight: "3vh" }} onClick={onInfoClick}>
