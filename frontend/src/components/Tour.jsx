@@ -81,10 +81,15 @@ const TOOL_STEPS = [
     content: 'Estas são as 5 seções da sua jornada: Fases, Ações, Emoções, Pensamentos e Pontos de Contato.',
     placement: 'right',
   },
-  {
-    target: '#palco-mapa', 
-    content: 'Nesta área, você pode clicar com o mouse para adicionar, arrastar e editar os cards da sua jornada.',
+{
+    target: 'body',
+    content: 'Nesta área, você pode clicar para criar novos cards, ou arrastar e editar os existentes.',
     placement: 'center',
+    styles: {
+      options: {
+        zIndex: 10000, // Garante que fica por cima de tudo
+      }
+    }
   },
 ];
 
