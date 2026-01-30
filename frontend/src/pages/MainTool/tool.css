@@ -53,7 +53,7 @@ body {
   .botoes {
     display: flex;
     align-items: center;
-    justifycontent: center;
+    justify-content: center;
     text-align: center;
   }
 
@@ -79,7 +79,7 @@ body {
   .button-novo-mapa {
     display: flex;
     align-items: center;
-    justifycontent: center;
+    justify-content: center;
     background-color: #06bd2d;
     color: white;
     padding-right: 10vh;
@@ -93,7 +93,7 @@ body {
   .button-novo-mapa:hover {
     display: flex;
     align-items: center;
-    justifycontent: center;
+    justify-content: center;
     background-color: #06bd2d;
     color: white;
     border: white;
