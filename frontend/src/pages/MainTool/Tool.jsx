@@ -1263,7 +1263,8 @@ const Tool = ({ }) => {
             </Popup>
           )}
           {dataLoaded && (
-            <div className="stage-container">
+            <div className="stage-container"
+              id="palco-mapa" style={{ flexGrow: 1, overflow: 'hidden' }}>
               <Stage width={calculateTotalWidth(matrix) + 1260} height={window.innerHeight} ref={stageRef}>
                 <Layer>
                   <Matrix

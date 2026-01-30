@@ -82,7 +82,7 @@ const TOOL_STEPS = [
     placement: 'right',
   },
   {
-    target: '.stage-container',
+    target: '#palco-mapa', 
     content: 'Nesta área, você pode clicar com o mouse para adicionar, arrastar e editar os cards da sua jornada.',
     placement: 'center',
   },
