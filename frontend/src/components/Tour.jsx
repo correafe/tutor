@@ -104,7 +104,7 @@ export const DashboardTour = ({ run, onTourEnd }) => (
     steps={DASHBOARD_STEPS}
     run={run}
     continuous
-    showProgress
+    //showProgress
     showSkipButton
     locale={{
       last: 'Fim',
@@ -135,6 +135,9 @@ export const DashboardTour = ({ run, onTourEnd }) => (
       },
       buttonBack: {
         fontSize: '18px'
+      },
+      buttonSkip: {
+        fontSize: '18px'
       }
     }}
   />
@@ -146,7 +149,7 @@ export const ToolTour = ({ run, onTourEnd }) => (
     steps={TOOL_STEPS}
     run={run}
     continuous
-    showProgress
+    //showProgress
     showSkipButton
     locale={{
       last: 'Fim',
@@ -176,6 +179,9 @@ export const ToolTour = ({ run, onTourEnd }) => (
         fontSize: '18px'
       },
       buttonBack: {
+        fontSize: '18px'
+      },
+      buttonSkip: {
         fontSize: '18px'
       }
     }}
