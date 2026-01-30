@@ -46,13 +46,13 @@ const DASHBOARD_STEPS = [
   - Área de desenho: .stage-container (em Tool.jsx)
 */
 const TOOL_STEPS = [
-  {
+{
     target: 'body',
     content: 'Esta é a sua ferramenta de criação de mapas! Vamos ver como usá-la.',
     placement: 'center',
   },
   {
-    target: '.scenario span', // Pega o <span> dentro da div .scenario
+    target: '.scenario',
     content: 'Aqui fica o nome do seu Cenário. Clique nele para editar o nome e a descrição.',
     placement: 'bottom',
   },
@@ -62,7 +62,17 @@ const TOOL_STEPS = [
     placement: 'bottom',
   },
   {
-    target: '.button.map',
+    target: '#tourButton', // O seletor do botão de interrogação
+    content: 'Clique neste botão sempre que quiser rever este tutorial.',
+    placement: 'bottom',
+  },
+  {
+    target: '#aboutButton', // O seletor do botão "i" (se não mudou o ID, use .button.info:nth-of-type(2))
+    content: 'Aqui você encontra informações e definições sobre cada linha do mapa.',
+    placement: 'bottom',
+  },
+  {
+    target: '#mapsButton', // O seletor do botão de Mapas (antigo .button.map)
     content: 'Para voltar ao menu principal de mapas, clique aqui.',
     placement: 'bottom',
   },
@@ -74,7 +84,7 @@ const TOOL_STEPS = [
   {
     target: '.stage-container',
     content: 'Nesta área, você pode clicar com o mouse para adicionar, arrastar e editar os cards da sua jornada.',
-    placement: 'left',
+    placement: 'center',
   },
 ];
 

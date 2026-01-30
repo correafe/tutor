@@ -87,10 +87,10 @@ const Navbar = ({ onSaveClick, onDownload, onMap, onInfoClick, onScenarioClick, 
             ?
           </button>
         )}
-        <button className="button info" id="infoButton" style={{ marginLeft: "3vh", marginRight: "3vh" }} onClick={onInfoClick}>
+        <button className="button info" id="aboutButton" style={{ marginLeft: "3vh", marginRight: "3vh" }} onClick={onInfoClick}>
           i
         </button>
-        <button className="button map" id="infoButton" style={{ marginLeft: "1vh", marginRight: "3vh" }} onClick={onMap}>
+        <button className="button map" id="mapsButton" style={{ marginLeft: "1vh", marginRight: "3vh" }} onClick={onMap}>
           Mapas
         </button>
         <button className="button logout" onClick={onLogoutClick}>
