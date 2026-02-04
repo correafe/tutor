@@ -1,7 +1,6 @@
-// frontend/src/components/Tour.jsx
-
 import React from 'react';
 import Joyride, { STATUS } from 'react-joyride';
+
 
 /*
   TARGETS (seletores CSS) para o Dashboard (MapCreation.jsx):

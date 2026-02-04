@@ -18,6 +18,7 @@ import { useParams } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import { ToolTour } from "../../components/Tour"; // Importe o tour
 import { HelpCircle } from 'lucide-react'; // Importe o ícone
+import TutorialWizard from "../../components/TutorialWizard";
 
 import './tool.css';
 
@@ -33,6 +34,7 @@ const sizeUpdated = () => {
 
 
 const Tool = ({ }) => {
+  const [showTutorialWizard, setShowTutorialWizard] = useState(false);
   const [runToolTour, setRunToolTour] = useState(false);
   const navigate = useNavigate();
   const { id_mapa } = useParams();
@@ -1040,13 +1042,89 @@ const Tool = ({ }) => {
       localStorage.setItem('hasSeenToolTour', 'true');
       
       // Apenas mostre o modal. NÃO chame handlePostClick() aqui.
-      setShowExampleMapModal(true);
+      setShowTutorialWizard(true);
+    }
+  };
+
+  const handleTutorialComplete = async () => {
+    setShowTutorialWizard(false);
+    setLoading(true); // Ativa o loading para o usuário ver que algo está acontecendo
+
+    try {
+      // Aqui simulam-se as respostas "corretas" do cenário da Pizza sendo salvas no banco
+      // Você pode adaptar os textos conforme o seu tutorialData.js
+
+      // 1. Fase da Jornada
+      await axios.post(import.meta.env.VITE_BACKEND + '/journeyPhase', {
+        journeyMap_id: id_mapa,
+        linePos: 285,
+        posX: 20, // Posição inicial
+        length: 230,
+        description: 'Escolha do Sabor', 
+        emojiTag: '🍕',
+      });
+
+      // 2. Ação do Usuário
+      await axios.post(import.meta.env.VITE_BACKEND + '/userAction', {
+        journeyMap_id: id_mapa,
+        linePos: 285,
+        posX: 20,
+        length: 230,
+        description: 'Abre o App de Delivery',
+        emojiTag: '📱',
+      });
+
+      // 3. Emoção
+      await axios.post(import.meta.env.VITE_BACKEND + '/emotion', {
+        journeyMap_id: id_mapa,
+        posX: 20,
+        lineY: 35, // 35 costuma ser "feliz" ou "alto" no seu gráfico
+        emojiTag: '😋',
+      });
+
+      // 4. Pensamento
+      await axios.post(import.meta.env.VITE_BACKEND + '/thought', {
+        journeyMap_id: id_mapa,
+        linePos: 285,
+        posX: 20,
+        length: 230,
+        description: 'Será que pego borda recheada?',
+        emojiTag: '🤔',
+      });
+
+      // 5. Ponto de Contato
+      await axios.post(import.meta.env.VITE_BACKEND + '/contactPoint', {
+        journeyMap_id: id_mapa,
+        linePos: 285,
+        posX: 20,
+        length: 230,
+        description: 'Aplicativo Ifood/UberEats',
+        emojiTag: 'store',
+      });
+
+      toast.success('Mapa criado com sucesso! Parabéns pelo tutorial.');
+      
+      // Recarrega a página para puxar os dados novos do banco e renderizar o canvas
+      window.location.reload(); 
+
+    } catch (error) {
+      console.error("Erro ao completar tutorial:", error);
+      toast.error("Erro ao salvar o tutorial.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="scrollable-container">
       <ToolTour run={runToolTour} onTourEnd={stopTour} />
+
+      {showTutorialWizard && (
+        <TutorialWizard 
+          onClose={() => setShowTutorialWizard(false)} 
+          onComplete={handleTutorialComplete} 
+        />
+      )}
       {showExampleMapModal && (
       <ModalName trigger={showExampleMapModal} setTrigger={setShowExampleMapModal}>
           <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
