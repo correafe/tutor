@@ -1046,69 +1046,92 @@ const Tool = ({ }) => {
       setShowTutorialWizard(true);
     }
   };
-  
+
 const handleTutorialComplete = async () => {
     setShowTutorialWizard(false);
     setLoading(true);
 
+    // Definição das posições X para as 3 colunas
+    const positions = [20, 290, 560];
+
     try {
-      // Pega as respostas corretas do arquivo de dados para garantir consistência
-      const steps = PIZZA_SCENARIO.steps;
-      
-      // 1. Fase (Step 0)
-      await axios.post(import.meta.env.VITE_BACKEND + '/journeyPhase', {
-        journeyMap_id: id_mapa,
-        linePos: 285,
-        posX: 20,
-        length: 230,
-        description: steps[0].correctAnswer.description,
-        emojiTag: steps[0].correctAnswer.emojiTag,
+      const allSteps = PIZZA_SCENARIO.steps; // Todos os 15 passos com as respostas corretas
+
+      // Divide os 15 passos em 3 grupos de 5 (um grupo para cada fase)
+      // Fase 1: steps 0-4
+      // Fase 2: steps 5-9
+      // Fase 3: steps 10-14
+      const phasesData = [
+        allSteps.slice(0, 5).map(s => s.correctAnswer),
+        allSteps.slice(5, 10).map(s => s.correctAnswer),
+        allSteps.slice(10, 15).map(s => s.correctAnswer)
+      ];
+
+      // Itera sobre os 3 grupos de fases
+      const promises = phasesData.map(async (phaseAnswers, index) => {
+        const currentX = positions[index];
+        
+        // Mapeia as respostas para as variáveis (ordem fixa definida no tutorialData)
+        // 0: Phase, 1: Action, 2: Emotion, 3: Thought, 4: Contact Point
+        const [pPhase, pAction, pEmotion, pThought, pContact] = phaseAnswers;
+
+        // 1. Journey Phase
+        await axios.post(import.meta.env.VITE_BACKEND + '/journeyPhase', {
+          journeyMap_id: id_mapa,
+          linePos: 285,
+          posX: currentX,
+          length: 230,
+          description: pPhase.description,
+          emojiTag: pPhase.emojiTag,
+        });
+
+        // 2. User Action
+        await axios.post(import.meta.env.VITE_BACKEND + '/userAction', {
+          journeyMap_id: id_mapa,
+          linePos: 285,
+          posX: currentX,
+          length: 230,
+          description: pAction.description,
+          emojiTag: pAction.emojiTag,
+        });
+
+        // 3. Emotion
+        await axios.post(import.meta.env.VITE_BACKEND + '/emotion', {
+          journeyMap_id: id_mapa,
+          posX: currentX,
+          lineY: pEmotion.lineY !== undefined ? pEmotion.lineY : 0,
+          emojiTag: pEmotion.emojiTag,
+        });
+
+        // 4. Thought
+        await axios.post(import.meta.env.VITE_BACKEND + '/thought', {
+          journeyMap_id: id_mapa,
+          linePos: 285,
+          posX: currentX,
+          length: 230,
+          description: pThought.description,
+          emojiTag: pThought.emojiTag,
+        });
+
+        // 5. Contact Point
+        await axios.post(import.meta.env.VITE_BACKEND + '/contactPoint', {
+          journeyMap_id: id_mapa,
+          linePos: 285,
+          posX: currentX,
+          length: 230,
+          description: pContact.description,
+          emojiTag: pContact.emojiTag,
+        });
       });
 
-      // 2. Ação (Step 1)
-      await axios.post(import.meta.env.VITE_BACKEND + '/userAction', {
-        journeyMap_id: id_mapa,
-        linePos: 285,
-        posX: 20,
-        length: 230,
-        description: steps[1].correctAnswer.description,
-        emojiTag: steps[1].correctAnswer.emojiTag,
-      });
+      await Promise.all(promises);
 
-      // 3. Emoção (Step 2)
-      await axios.post(import.meta.env.VITE_BACKEND + '/emotion', {
-        journeyMap_id: id_mapa,
-        posX: 20,
-        lineY: steps[2].correctAnswer.lineY || 35,
-        emojiTag: steps[2].correctAnswer.emojiTag,
-      });
-
-      // 4. Pensamento (Step 3)
-      await axios.post(import.meta.env.VITE_BACKEND + '/thought', {
-        journeyMap_id: id_mapa,
-        linePos: 285,
-        posX: 20,
-        length: 230,
-        description: steps[3].correctAnswer.description,
-        emojiTag: steps[3].correctAnswer.emojiTag,
-      });
-
-      // 5. Ponto de Contato (Step 4)
-      await axios.post(import.meta.env.VITE_BACKEND + '/contactPoint', {
-        journeyMap_id: id_mapa,
-        linePos: 285,
-        posX: 20,
-        length: 230,
-        description: steps[4].correctAnswer.description,
-        emojiTag: steps[4].correctAnswer.emojiTag,
-      });
-
-      toast.success('Mapa da Pizzaria criado com sucesso!');
-      window.location.reload(); 
+      toast.success('Você completou o mapa inteiro! Parabéns!');
+      window.location.reload();
 
     } catch (error) {
       console.error("Erro ao completar tutorial:", error);
-      toast.error("Erro ao salvar o tutorial.");
+      toast.error("Erro ao salvar o mapa.");
     } finally {
       setLoading(false);
     }

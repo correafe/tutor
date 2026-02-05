@@ -3,15 +3,16 @@ import { PIZZA_SCENARIO } from './tutorialData';
 import './TutorialWizard.css';
 
 const TutorialWizard = ({ onClose, onComplete }) => {
-  // Estados: 'prompt' (quer fazer?), 'scenario' (ler texto), 'quiz' (perguntas)
   const [viewState, setViewState] = useState('prompt'); 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [feedback, setFeedback] = useState(null); // null, 'success', 'error'
+  const [feedback, setFeedback] = useState(null); 
   const [feedbackMessage, setFeedbackMessage] = useState("");
 
   const currentStep = PIZZA_SCENARIO.steps[currentStepIndex];
 
-  // 1. Tela Inicial: Pergunta se quer fazer
+  // Cálculo para saber a fase atual baseado no índice (0-4: Fase 1, 5-9: Fase 2, 10-14: Fase 3)
+  const currentPhaseNumber = Math.floor(currentStepIndex / 5) + 1;
+
   if (viewState === 'prompt') {
     return (
       <div className="wizard-overlay">
@@ -25,10 +26,10 @@ const TutorialWizard = ({ onClose, onComplete }) => {
               onClick={() => setViewState('scenario')}
               style={{backgroundColor: '#4caf50', color: 'white', border: 'none'}}
             >
-              Sim, vamos lá!
+              Vamos lá!
             </button>
             <button onClick={onClose}>
-              Agora não
+              Pular tutorial
             </button>
           </div>
         </div>
@@ -36,12 +37,11 @@ const TutorialWizard = ({ onClose, onComplete }) => {
     );
   }
 
-  // 2. Tela do Cenário: Mostra o texto
   if (viewState === 'scenario') {
     return (
       <div className="wizard-overlay">
         <div className="wizard-box" style={{maxWidth: '700px'}}>
-          <h3>Entenda o Cenário</h3>
+          <h3>O Cenário</h3>
           <div 
             style={{
               textAlign: 'left', 
@@ -50,25 +50,26 @@ const TutorialWizard = ({ onClose, onComplete }) => {
               padding: '20px', 
               borderRadius: '10px',
               margin: '20px 0',
-              fontSize: '16px',
-              lineHeight: '1.5'
+              fontSize: '15px',
+              lineHeight: '1.5',
+              maxHeight: '60vh', // Scroll se a tela for pequena
+              overflowY: 'auto'
             }}
           >
             {PIZZA_SCENARIO.scenarioText}
           </div>
           <button 
-            className="botaosavename" // Usando classe existente do seu projeto se houver, ou a do css
+            className="botaosavename" 
             onClick={() => setViewState('quiz')}
             style={{width: '100%', fontSize: '18px'}}
           >
-            Começar Mapeamento
+            Iniciar Mapeamento
           </button>
         </div>
       </div>
     );
   }
 
-  // 3. Tela do Quiz (Perguntas)
   const handleOptionClick = (option) => {
     if (option.correct) {
       setFeedback('success');
@@ -86,34 +87,68 @@ const TutorialWizard = ({ onClose, onComplete }) => {
     if (currentStepIndex < PIZZA_SCENARIO.steps.length - 1) {
       setCurrentStepIndex(prev => prev + 1);
     } else {
-      onComplete(); // Finaliza e preenche o mapa
+      onComplete(); 
     }
   };
+
+  const optionsStyle = currentStep.isEmojiSelection ? {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: '20px'
+  } : {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px'
+  };
+
+  const buttonStyle = currentStep.isEmojiSelection ? {
+    fontSize: '40px',
+    padding: '10px 20px'
+  } : {};
 
   return (
     <div className="wizard-overlay">
       <div className="wizard-box">
+        <div className="wizard-header" style={{marginBottom: '10px'}}>
+           <span style={{
+             backgroundColor: '#e3f2fd', 
+             color: '#1565c0', 
+             padding: '5px 10px', 
+             borderRadius: '15px', 
+             fontSize: '12px',
+             fontWeight: 'bold'
+           }}>
+             FASE {currentPhaseNumber} DE 3 DO MAPA
+           </span>
+        </div>
+        
         <div className="wizard-progress">
-          Etapa {currentStepIndex + 1} de {PIZZA_SCENARIO.steps.length}: {currentStep.section}
+          Pergunta {currentStepIndex + 1} de {PIZZA_SCENARIO.steps.length}
         </div>
 
-        <h4 style={{fontSize: '22px', marginBottom: '15px'}}>{currentStep.context}</h4>
+        <h4 style={{fontSize: '22px', marginBottom: '15px'}}>{currentStep.section}</h4>
+        <p className="wizard-context">{currentStep.context}</p>
 
         {!feedback ? (
-          <div className="wizard-options">
+          <div className="wizard-options" style={optionsStyle}>
             {currentStep.options.map(opt => (
-              <button key={opt.id} onClick={() => handleOptionClick(opt)}>
+              <button 
+                key={opt.id} 
+                onClick={() => handleOptionClick(opt)}
+                style={buttonStyle}
+              >
                 {opt.text}
               </button>
             ))}
           </div>
         ) : (
           <div className={`wizard-feedback ${feedback}`}>
-            <p style={{fontSize: '18px', fontWeight: '500'}}>{feedback === 'success' ? "🎉 Correto!" : "❌ Ops..."}</p>
+            <p style={{fontSize: '18px', fontWeight: '500'}}>{feedback === 'success' ? "🎉 Correto!" : "❌ Tente novamente"}</p>
             <p>{feedbackMessage}</p>
             {feedback === 'success' ? (
               <button onClick={handleNext}>
-                {currentStepIndex === PIZZA_SCENARIO.steps.length - 1 ? 'Finalizar e Ver Mapa' : 'Próxima Etapa'}
+                {currentStepIndex === PIZZA_SCENARIO.steps.length - 1 ? 'Concluir Tutorial' : 'Próxima'}
               </button>
             ) : (
               <button onClick={() => setFeedback(null)}>Tentar Novamente</button>
@@ -121,7 +156,7 @@ const TutorialWizard = ({ onClose, onComplete }) => {
           </div>
         )}
         
-        <button className="close-btn" onClick={onClose} style={{marginTop: '20px'}}>Sair do Tutorial</button>
+        <button className="close-btn" onClick={onClose} style={{marginTop: '20px'}}>Sair</button>
       </div>
     </div>
   );
