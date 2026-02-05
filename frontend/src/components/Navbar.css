@@ -11,13 +11,39 @@
   height: 40px;
   display: flex;
   z-index: 2;
+  
+  /* Adicionado do style inline original */
+  text-align: left;
+  padding: 31px;
+  font-size: 30px;
+  justify-content: space-between;
+  align-items: center;
 }
 
+/* Classes auxiliares para o Logo e Texto */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mascote-img {
+  width: 50px;
+  text-align: left;
+  margin-right: 20px;
+}
+
+.scenario-name {
+  cursor: pointer;
+}
+
+/* Container de Botões */
 .botoes {
   display: flex;
   align-items: center;
 }
 
+/* Novo Mapa */
 .button-novo-mapa {
   display: flex;
   align-items: center;
@@ -35,6 +61,7 @@
   100% { font-size: 20px; }
 }
 
+/* PADRÃO GERAL - Botões Redondos */
 .button.info {
   border-radius: 50%;
   width: 45px;
@@ -46,14 +73,45 @@
   cursor: pointer;     
   display: flex;       
   justify-content: center;  
-  align-items: center;      
+  align-items: center; 
+  padding: 0; 
 }
 
-.button.info:hover {
-  background-color: #9e9999;
+/* Tour (?) Específico */
+.button.info.tour {
+  margin-left: 3vh;
+  background-color: #6a7dfe;
+  font-size: 30px;
+  font-weight: bold;
 }
 
-/* Adicionei este estilo para o botão salvar funcionar visualmente */
+.button.info.tour:hover {
+  background-color: #5a6ce0; /* Hover Tour */
+}
+
+/* Aprender (Chapéu) Específico */
+.button.info.learn {
+  margin-left: 2vh;
+  background-color: #FF9800;
+  font-size: 30px;
+}
+
+.button.info.learn:hover {
+  background-color: #e68900; /* Hover Aprender */
+}
+
+/* Info (i) Específico */
+.button.info.about {
+  margin-left: 2vh;
+  margin-right: 3vh;
+  background-color: #C4C4C4;
+}
+
+.button.info.about:hover {
+  background-color: #9e9999; /* Hover Info */
+}
+
+/* Botão Salvar */
 .button.save {
   background-color: #4CAF50;
   color: white;
@@ -73,6 +131,7 @@
   background-color: #45a049;
 }
 
+/* Botão Mapas */
 .button.map {
   background-color: #e39a74;
   color: white;
@@ -82,14 +141,19 @@
   display: flex;       
   justify-content: center;  
   align-items: center;  
-  padding: 10px 20px; /* Adicionado para consistência */
-  border-radius: 5px; /* Adicionado para consistência */
+  padding: 10px 20px;
+  border-radius: 5px;
+  
+  /* Margens originais */
+  margin-left: 2vh; /* No seu código estava 1vh ou 2vh, ajustei para 2vh para espaçar do 'i' */
+  margin-right: 0vh; /* No seu código estava 0vh */
 }
 
 .button.map:hover {
   background-color: #d68b65;
 }
 
+/* Botão Logout */
 .button.logout {
   background-color: #FF5858;
   color: white;
@@ -101,14 +165,25 @@
   height: 45px;
   border-radius: 50%;
   display: flex;
+  padding: 0;
 }
 
 .button.logout:hover {
   background-color: #a80505;
 }
 
-/* Resto dos seus estilos originais */
-.buttonconf {
+/* Foto de Perfil */
+.profile-pic {
+  margin-left: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+/* --- Mantidos para Popups --- */
+.buttonconf, .buttonconf2 {
   border: none;       
   border-radius: 18px;
   background-color: #353535;
@@ -122,32 +197,9 @@
   font-weight: 500;
 }
 
-.buttonconf2 {
-  border: none;       
-  border-radius: 18px;
-  background-color: #353535;
-  color: white;
-  padding: 11px 120px;
-  text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
-  font-size: 32px;
-  font-family: Inter;
-  font-weight: 500;
-}
-
-.separarbotoes {
-  display: flex;
-  justify-content: space-between;
-}
-
-.buttonconf:hover {
-  background-color: #00962A;
-}
-
-.buttonconf2:hover {
-  background-color: #FF454F;
-}
+.separarbotoes { display: flex; justify-content: space-between; }
+.buttonconf:hover { background-color: #00962A; }
+.buttonconf2:hover { background-color: #FF454F; }
 
 .textolegal {
   width: 100%;
