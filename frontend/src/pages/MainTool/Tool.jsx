@@ -20,6 +20,7 @@ import { ToolTour } from "../../components/Tour"; // Importe o tour
 import { HelpCircle } from 'lucide-react'; // Importe o ícone
 import TutorialWizard from "../../components/TutorialWizard";
 import { PIZZA_SCENARIO } from "../../components/tutorialData";
+import TutorialLevelSelector from "../../components/TutorialLevelSelector";
 
 import './tool.css';
 
@@ -1161,6 +1162,13 @@ const handleTutorialComplete = async () => {
     <div className="scrollable-container">
       <ToolTour run={runToolTour} onTourEnd={stopTour} />
 
+      {showLevelSelector && (
+        <TutorialLevelSelector 
+          onClose={() => setShowLevelSelector(false)}
+          onSelectLevel={handleLevelSelect}
+        />
+      )}
+
       {showTutorialWizard && (
         <TutorialWizard 
           onClose={() => setShowTutorialWizard(false)} 
@@ -1214,6 +1222,7 @@ const handleTutorialComplete = async () => {
             handlePostClick={handlePostClick}
             dataLoaded={dataLoaded}
             currentJourneyMap={id_mapa}
+            onTutorialClick={handleOpenLevelSelector}
           />
 
           <div className="separator1" style={{ marginTop: "61.9px", width: calculateTotalWidth(matrix) + 2400 }}></div>

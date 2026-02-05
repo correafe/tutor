@@ -13,6 +13,11 @@
   z-index: 2;
 }
 
+.botoes {
+  display: flex;
+  align-items: center;
+}
+
 .button-novo-mapa {
   display: flex;
   align-items: center;
@@ -21,7 +26,7 @@
   font-size: 30px;
   padding: 50px;
   border-radius: 15px;
-  animation: blink-animation 1s infinite; /* Adiciona a animação de piscar */
+  animation: blink-animation 1s infinite;
 }
 
 @keyframes blink-animation {
@@ -45,17 +50,27 @@
 }
 
 .button.info:hover {
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
   background-color: #9e9999;
+}
+
+/* Adicionei este estilo para o botão salvar funcionar visualmente */
+.button.save {
+  background-color: #4CAF50;
   color: white;
-  border: none;        
-  font-size: 42px; 
-  cursor: pointer;     
-  display: flex;       
-  justify-content: center;  
-  align-items: center;      
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-family: Inter;
+  font-weight: 700;
+}
+
+.button.save:hover {
+  background-color: #45a049;
 }
 
 .button.map {
@@ -66,18 +81,13 @@
   cursor: pointer;     
   display: flex;       
   justify-content: center;  
-  align-items: center;      
+  align-items: center;  
+  padding: 10px 20px; /* Adicionado para consistência */
+  border-radius: 5px; /* Adicionado para consistência */
 }
 
 .button.map:hover {
   background-color: #d68b65;
-  color: white;
-  border: none;       
-  font-size: 15px; 
-  cursor: pointer;     
-  display: flex;       
-  justify-content: center;  
-  align-items: center;      
 }
 
 .button.logout {
@@ -85,17 +95,19 @@
   color: white;
   cursor: pointer;        
   justify-content: center;  
-  align-items: center;      
+  align-items: center;
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
 }
 
 .button.logout:hover {
   background-color: #a80505;
-  color: white;
-  cursor: pointer;        
-  justify-content: center;  
-  align-items: center;      
 }
 
+/* Resto dos seus estilos originais */
 .buttonconf {
   border: none;       
   border-radius: 18px;
@@ -130,31 +142,11 @@
 }
 
 .buttonconf:hover {
-  border: none;       
-  border-radius: 18px;
   background-color: #00962A;
-  color: white;
-  padding: 11px 120px;
-  text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
-  font-size: 32px;
-  font-family: Inter;
-  font-weight: 500;
 }
 
 .buttonconf2:hover {
-  border: none;       
-  border-radius: 18px;
   background-color: #FF454F;
-  color: white;
-  padding: 11px 120px;
-  text-decoration: none;
-  display: inline-block;
-  cursor: pointer;
-  font-size: 32px;
-  font-family: Inter;
-  font-weight: 500;
 }
 
 .textolegal {
