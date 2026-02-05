@@ -36,6 +36,7 @@ const sizeUpdated = () => {
 
 const Tool = ({ }) => {
   const [showTutorialWizard, setShowTutorialWizard] = useState(false);
+  const [showLevelSelector, setShowLevelSelector] = useState(false);
   const [runToolTour, setRunToolTour] = useState(false);
   const navigate = useNavigate();
   const { id_mapa } = useParams();
@@ -1033,6 +1034,19 @@ const Tool = ({ }) => {
   };
 
 
+  const handleOpenLevelSelector = () => {
+    setShowLevelSelector(true);
+  };
+
+  const handleLevelSelect = (level) => {
+    if (level === 1) {
+      setShowLevelSelector(false); // Fecha o seletor
+      setShowTutorialWizard(true); // Abre o Wizard da Pizza
+    } else {
+      toast.info("Este nível estará disponível em breve!");
+    }
+  };
+
   const stopTour = () => {
     setRunToolTour(false);
     
@@ -1042,7 +1056,6 @@ const Tool = ({ }) => {
       localStorage.removeItem('startToolTutorial');
       localStorage.setItem('hasSeenToolTour', 'true');
       
-      // Apenas mostre o modal. NÃO chame handlePostClick() aqui.
       setShowTutorialWizard(true);
     }
   };

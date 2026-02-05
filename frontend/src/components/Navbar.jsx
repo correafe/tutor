@@ -3,7 +3,7 @@ import { Github, LogOut, HelpCircle } from 'lucide-react';
 import axios from 'axios';
 import './Navbar.css';
 
-const Navbar = ({ onSaveClick, onDownload, onMap, onInfoClick, onScenarioClick, onLogoutClick, dataLoaded, currentJourneyMap, handlePostClick, onStartTour }) => {  
+const Navbar = ({ onSaveClick, onDownload, onTutorialClick, onMap, onInfoClick, onScenarioClick, onLogoutClick, dataLoaded, currentJourneyMap, handlePostClick, onStartTour }) => {  
   const [nameTrue, setNameTrue] = useState(false);
   const [journeyMapName, setJourneyMapName] = useState("Clique aqui");
   const [editedName, setEditedName] = useState(journeyMapName);
@@ -90,6 +90,12 @@ const Navbar = ({ onSaveClick, onDownload, onMap, onInfoClick, onScenarioClick, 
         <button className="button info" id="aboutButton" style={{ marginLeft: "3vh", marginRight: "3vh" }} onClick={onInfoClick}>
           i
         </button>
+
+        <button className="nav-button highlight-btn" onClick={onTutorialClick} title="Prática Guiada">
+            <GraduationCap size={20} />
+            <span>Aprender</span>
+         </button>
+         
         <button className="button map" id="mapsButton" style={{ marginLeft: "1vh", marginRight: "3vh" }} onClick={onMap}>
           Mapas
         </button>

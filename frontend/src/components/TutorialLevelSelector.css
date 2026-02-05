@@ -1,0 +1,154 @@
+.level-selector-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  backdrop-filter: blur(3px);
+}
+
+.level-selector-box {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 900px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  text-align: center;
+  animation: scaleUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.level-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.level-header h2 {
+  font-size: 28px;
+  color: #333;
+  margin: 0;
+}
+
+.close-btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  padding: 5px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.close-btn-icon:hover {
+  background: #eee;
+  color: #000;
+}
+
+.level-subtitle {
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 18px;
+  text-align: left;
+}
+
+.levels-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.level-card {
+  border: 2px solid #eee;
+  border-radius: 15px;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.level-card.available {
+  cursor: pointer;
+  border-color: #4caf50;
+  background: linear-gradient(to bottom, #fff, #f1f8e9);
+}
+
+.level-card.available:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(76, 175, 80, 0.2);
+}
+
+.level-card.locked {
+  opacity: 0.6;
+  background-color: #f9f9f9;
+  cursor: not-allowed;
+}
+
+.icon-container {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.level-card.available .icon-container {
+  background-color: #4caf50;
+}
+
+.level-card.locked .icon-container {
+  background-color: #ccc;
+  color: #888;
+}
+
+.level-card h3 {
+  margin: 10px 0;
+  font-size: 22px;
+}
+
+.level-card p {
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.status-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.status-badge.unlocked {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.locked {
+  background-color: #eee;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .levels-grid {
+    grid-template-columns: 1fr;
+  }
+}
