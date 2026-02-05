@@ -19,6 +19,7 @@ import html2canvas from 'html2canvas';
 import { ToolTour } from "../../components/Tour"; // Importe o tour
 import { HelpCircle } from 'lucide-react'; // Importe o ícone
 import TutorialWizard from "../../components/TutorialWizard";
+import { PIZZA_SCENARIO } from "../../components/tutorialData";
 
 import './tool.css';
 
@@ -1045,66 +1046,64 @@ const Tool = ({ }) => {
       setShowTutorialWizard(true);
     }
   };
-
-  const handleTutorialComplete = async () => {
+  
+const handleTutorialComplete = async () => {
     setShowTutorialWizard(false);
-    setLoading(true); // Ativa o loading para o usuário ver que algo está acontecendo
+    setLoading(true);
 
     try {
-      // Aqui simulam-se as respostas "corretas" do cenário da Pizza sendo salvas no banco
-      // Você pode adaptar os textos conforme o seu tutorialData.js
-
-      // 1. Fase da Jornada
+      // Pega as respostas corretas do arquivo de dados para garantir consistência
+      const steps = PIZZA_SCENARIO.steps;
+      
+      // 1. Fase (Step 0)
       await axios.post(import.meta.env.VITE_BACKEND + '/journeyPhase', {
         journeyMap_id: id_mapa,
         linePos: 285,
-        posX: 20, // Posição inicial
+        posX: 20,
         length: 230,
-        description: 'Escolha do Sabor', 
-        emojiTag: '🍕',
+        description: steps[0].correctAnswer.description,
+        emojiTag: steps[0].correctAnswer.emojiTag,
       });
 
-      // 2. Ação do Usuário
+      // 2. Ação (Step 1)
       await axios.post(import.meta.env.VITE_BACKEND + '/userAction', {
         journeyMap_id: id_mapa,
         linePos: 285,
         posX: 20,
         length: 230,
-        description: 'Abre o App de Delivery',
-        emojiTag: '📱',
+        description: steps[1].correctAnswer.description,
+        emojiTag: steps[1].correctAnswer.emojiTag,
       });
 
-      // 3. Emoção
+      // 3. Emoção (Step 2)
       await axios.post(import.meta.env.VITE_BACKEND + '/emotion', {
         journeyMap_id: id_mapa,
         posX: 20,
-        lineY: 35, // 35 costuma ser "feliz" ou "alto" no seu gráfico
-        emojiTag: '😋',
+        lineY: steps[2].correctAnswer.lineY || 35,
+        emojiTag: steps[2].correctAnswer.emojiTag,
       });
 
-      // 4. Pensamento
+      // 4. Pensamento (Step 3)
       await axios.post(import.meta.env.VITE_BACKEND + '/thought', {
         journeyMap_id: id_mapa,
         linePos: 285,
         posX: 20,
         length: 230,
-        description: 'Será que pego borda recheada?',
-        emojiTag: '🤔',
+        description: steps[3].correctAnswer.description,
+        emojiTag: steps[3].correctAnswer.emojiTag,
       });
 
-      // 5. Ponto de Contato
+      // 5. Ponto de Contato (Step 4)
       await axios.post(import.meta.env.VITE_BACKEND + '/contactPoint', {
         journeyMap_id: id_mapa,
         linePos: 285,
         posX: 20,
         length: 230,
-        description: 'Aplicativo Ifood/UberEats',
-        emojiTag: 'store',
+        description: steps[4].correctAnswer.description,
+        emojiTag: steps[4].correctAnswer.emojiTag,
       });
 
-      toast.success('Mapa criado com sucesso! Parabéns pelo tutorial.');
-      
-      // Recarrega a página para puxar os dados novos do banco e renderizar o canvas
+      toast.success('Mapa da Pizzaria criado com sucesso!');
       window.location.reload(); 
 
     } catch (error) {
