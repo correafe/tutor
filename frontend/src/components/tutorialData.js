@@ -3,6 +3,12 @@
 export const PIZZA_SCENARIO = {
   title: "Tutorial Completo: A Jornada da Pizza 🍕",
   introQuestion: "Você está pronto para construir o mapa completo (3 Fases) passo a passo?",
+  
+  scenarioMeta: {
+    name: "Jornada do Jantar de Sexta-Feira",
+    description: "Mapeamento da experiência do usuário João ao pedir uma pizza via aplicativo num dia cansativo de trabalho. O objetivo é identificar pontos de atrito na escolha do sabor e na espera."
+  },
+
   scenarioText: `
     CENÁRIO COMPLETO:
     

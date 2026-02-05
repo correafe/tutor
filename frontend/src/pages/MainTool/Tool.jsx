@@ -1051,31 +1051,42 @@ const handleTutorialComplete = async () => {
     setShowTutorialWizard(false);
     setLoading(true);
 
-    // Definição das posições X para as 3 colunas
     const positions = [20, 290, 560];
 
     try {
-      const allSteps = PIZZA_SCENARIO.steps; // Todos os 15 passos com as respostas corretas
+      const allSteps = PIZZA_SCENARIO.steps;
+      
+      // ===== NOVO: SALVAR O CENÁRIO =====
+      const meta = PIZZA_SCENARIO.scenarioMeta;
+      
+      if (scenarioExists) {
+        // Se já existe, atualiza (PUT)
+        await axios.put(import.meta.env.VITE_BACKEND + '/scenario', {
+          journeyMapId: id_mapa,
+          newName: meta.name,
+          newDescription: meta.description
+        });
+      } else {
+        // Se não existe, cria (POST)
+        await axios.post(import.meta.env.VITE_BACKEND + '/scenario', {
+          journeyMapId: id_mapa,
+          name: meta.name,
+          description: meta.description
+        });
+      }
+      // ==================================
 
-      // Divide os 15 passos em 3 grupos de 5 (um grupo para cada fase)
-      // Fase 1: steps 0-4
-      // Fase 2: steps 5-9
-      // Fase 3: steps 10-14
+      // Salvar os Cards do Mapa
       const phasesData = [
         allSteps.slice(0, 5).map(s => s.correctAnswer),
         allSteps.slice(5, 10).map(s => s.correctAnswer),
         allSteps.slice(10, 15).map(s => s.correctAnswer)
       ];
 
-      // Itera sobre os 3 grupos de fases
       const promises = phasesData.map(async (phaseAnswers, index) => {
         const currentX = positions[index];
-        
-        // Mapeia as respostas para as variáveis (ordem fixa definida no tutorialData)
-        // 0: Phase, 1: Action, 2: Emotion, 3: Thought, 4: Contact Point
         const [pPhase, pAction, pEmotion, pThought, pContact] = phaseAnswers;
 
-        // 1. Journey Phase
         await axios.post(import.meta.env.VITE_BACKEND + '/journeyPhase', {
           journeyMap_id: id_mapa,
           linePos: 285,
@@ -1085,7 +1096,6 @@ const handleTutorialComplete = async () => {
           emojiTag: pPhase.emojiTag,
         });
 
-        // 2. User Action
         await axios.post(import.meta.env.VITE_BACKEND + '/userAction', {
           journeyMap_id: id_mapa,
           linePos: 285,
@@ -1095,7 +1105,6 @@ const handleTutorialComplete = async () => {
           emojiTag: pAction.emojiTag,
         });
 
-        // 3. Emotion
         await axios.post(import.meta.env.VITE_BACKEND + '/emotion', {
           journeyMap_id: id_mapa,
           posX: currentX,
@@ -1103,7 +1112,6 @@ const handleTutorialComplete = async () => {
           emojiTag: pEmotion.emojiTag,
         });
 
-        // 4. Thought
         await axios.post(import.meta.env.VITE_BACKEND + '/thought', {
           journeyMap_id: id_mapa,
           linePos: 285,
@@ -1113,7 +1121,6 @@ const handleTutorialComplete = async () => {
           emojiTag: pThought.emojiTag,
         });
 
-        // 5. Contact Point
         await axios.post(import.meta.env.VITE_BACKEND + '/contactPoint', {
           journeyMap_id: id_mapa,
           linePos: 285,
@@ -1126,7 +1133,7 @@ const handleTutorialComplete = async () => {
 
       await Promise.all(promises);
 
-      toast.success('Você completou o mapa inteiro! Parabéns!');
+      toast.success('Tutorial concluído! Mapa e Cenário salvos.');
       window.location.reload();
 
     } catch (error) {
