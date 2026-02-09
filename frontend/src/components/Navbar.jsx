@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LogOut, GraduationCap } from 'lucide-react'; 
+import { LogOut, GraduationCap, HelpCircle } from 'lucide-react'; 
 import axios from 'axios';
 import './Navbar.css';
 
