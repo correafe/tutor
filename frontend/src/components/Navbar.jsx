@@ -10,6 +10,7 @@ const Navbar = ({
   onInfoClick, 
   onScenarioClick, 
   onLogoutClick, 
+  onFAQClick,
   dataLoaded, 
   currentJourneyMap, 
   handlePostClick, 
@@ -71,6 +72,15 @@ const Navbar = ({
           Mapas
         </button>
 
+        <button 
+          className="button info faq" 
+          onClick={onFAQClick} 
+          title="Perguntas Frequentes"
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+           <HelpCircle size={24} />
+        </button>
+
         {onStartTour && (
           <button 
             className="button info tour" 
@@ -81,7 +91,6 @@ const Navbar = ({
           </button>
         )}
 
-        {/* Botão APRENDER (Chapéu) */}
         <button 
           className="button info learn" 
           onClick={onTutorialClick} 
@@ -95,7 +104,7 @@ const Navbar = ({
         </button>
 
         <button className="button logout" onClick={onLogoutClick}>
-          <LogOut size={28} /> {/* Ícone aumentado */}
+          <LogOut size={28} />
         </button>
         
         <img 

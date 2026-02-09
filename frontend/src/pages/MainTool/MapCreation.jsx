@@ -8,6 +8,7 @@ import { auth } from '../../services/firebase';
 import { signOut } from 'firebase/auth';
 import { DashboardTour } from '../../components/Tour'; // 2. Importar o Tour
 import IntroPopup from "./IntroPopup"; 
+import FAQContent from "../../components/FAQContent";
 
 
 import fundomapas from "../../assets/Fundomapas.png";
@@ -15,6 +16,8 @@ import fundomapas from "../../assets/Fundomapas.png";
 import "./MapCreation.css";
 
 const MapCreation = () => {
+
+  const [showFAQ, setShowFAQ] = useState(false);
   const [maps, setMaps] = useState([]);
   const [reloadMaps, setReloadMaps] = useState(false);
   const [newMapName, setNewMapName] = useState('');
@@ -282,6 +285,27 @@ const MapCreation = () => {
           <h1 style={{ margin: "0", textAlign: "center" }}>Olá {usuario.displayName ? usuario.displayName : ""}, seja muito bem-vindo(a)!</h1>
         </div>
         
+        <button 
+          onClick={() => setShowFAQ(true)} 
+          style={{ 
+            marginRight: '20px', 
+            backgroundColor: '#FFAC81', // Uma cor diferente para destacar, ou use a mesma do tema
+            color: 'white',           
+            border: 'none',
+            borderRadius: '50%',       
+            width: '50px',              
+            height: '50px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+          }}
+          title="Perguntas Frequentes"
+        >
+          <HelpCircle size={30} />
+        </button>
+
         {/* 8. Botão para iniciar o tutorial na Navbar */}
         <button 
           id="dashboard-tour-btn"

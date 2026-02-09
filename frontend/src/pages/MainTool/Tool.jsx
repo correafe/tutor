@@ -21,6 +21,7 @@ import { HelpCircle } from 'lucide-react'; // Importe o ícone
 import TutorialWizard from "../../components/TutorialWizard";
 import { PIZZA_SCENARIO } from "../../components/tutorialData";
 import TutorialLevelSelector from "../../components/TutorialLevelSelector";
+import FAQContent from "../../components/FAQContent";
 
 import './tool.css';
 
@@ -36,6 +37,7 @@ const sizeUpdated = () => {
 
 
 const Tool = ({ }) => {
+  const [showFAQ, setShowFAQ] = useState(false);
   const [showTutorialWizard, setShowTutorialWizard] = useState(false);
   const [showLevelSelector, setShowLevelSelector] = useState(false);
   const [runToolTour, setRunToolTour] = useState(false);
@@ -1204,6 +1206,15 @@ const handleTutorialComplete = async () => {
         </ModalName>
       )}
 
+      {showFAQ && (
+        <ModalName trigger={showFAQ} setTrigger={setShowFAQ}>
+          <FAQContent />
+          <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+            <button className="botaosavename" onClick={() => setShowFAQ(false)}>Fechar</button>
+          </div>
+        </ModalName>
+      )}
+
       <div style={{ width: "100vw", height: "100vh" }}>
         <>
           {loading && (
@@ -1214,6 +1225,7 @@ const handleTutorialComplete = async () => {
           <Navbar
             onSaveClick={() => { handleSaveClick(); showAlert() }}
             onInfoClick={() => setButtonPopup(true)}
+            onFAQClick={() => setShowFAQ(true)}
             onScenarioClick={() => { setButtonPopup(true); setScenario(true) }}
             onLogoutClick={handleLogout}
             onMap={onMap}
