@@ -30,6 +30,10 @@ const DASHBOARD_STEPS = [
     content: 'Você pode filtrar seus mapas por nome aqui.',
   },
   {
+    target: '#faq-dashboard-btn',
+    content: 'Tem alguma dúvida? Clique aqui para acessar as Perguntas Frequentes (FAQ) a qualquer momento.',
+  },
+  {
     target: '.botaologout',
     content: 'E aqui você pode sair da sua conta.',
     placement: 'bottom',
@@ -66,9 +70,17 @@ const TOOL_STEPS = [
     placement: 'bottom',
   },
   {
-    target: '#tourButton', 
-    content: 'Clique neste botão sempre que quiser rever este tutorial.',
+    target: '#mapsButton',
+    content: 'Para voltar ao menu principal de mapas, clique aqui.',
     placement: 'bottom',
+  },
+  {
+    target: '#faqButton',
+    content: 'Precisa de ajuda rápida sobre como usar a ferramenta? Consulte o FAQ aqui.',
+  },
+  {
+    target: '#tutorialButton', 
+    content: 'Clique aqui para abrir a "Prática Guiada", onde você aprende a usar a ferramenta passo a passo.',
   },
   {
     target: '#aboutButton', 
@@ -76,16 +88,11 @@ const TOOL_STEPS = [
     placement: 'bottom',
   },
   {
-    target: '#mapsButton',
-    content: 'Para voltar ao menu principal de mapas, clique aqui.',
-    placement: 'bottom',
-  },
-  {
     target: '.teste-1',
     content: 'Estas são as 5 seções da sua jornada: Fases, Ações, Emoções, Pensamentos e Pontos de Contato.',
     placement: 'right',
   },
-{
+  {
     target: 'body',
     content: 'Nesta área, você pode clicar para criar novos cards, ou arrastar e editar os existentes.',
     placement: 'center',
@@ -94,6 +101,11 @@ const TOOL_STEPS = [
         zIndex: 10000, 
       }
     }
+  },
+    {
+    target: '#tourButton', 
+    content: 'Clique neste botão sempre que quiser rever este tutorial.',
+    placement: 'bottom',
   },
 ];
 

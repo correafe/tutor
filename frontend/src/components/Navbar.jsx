@@ -105,6 +105,7 @@ const Navbar = ({
 
         <button 
           className="button info learn" 
+          id="tutorialButton"
           onClick={onTutorialClick} 
           title="Prática Guiada"
         >

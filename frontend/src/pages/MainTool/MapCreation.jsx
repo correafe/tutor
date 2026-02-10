@@ -287,6 +287,7 @@ const MapCreation = () => {
         
         <button 
           // Usamos onMouseDown para garantir que o clique funcione mesmo com o mapa por baixo
+          id="faq-dashboard-btn"
           onMouseDown={(e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -348,7 +349,6 @@ const MapCreation = () => {
 
       {showIntroPopup && <IntroPopup onClose={() => setShowIntroPopup(false)} />}
       
-      {/* 9. Modal que PERGUNTA se o usuário quer o tutorial */}
       {showTourPrompt && (
         <ModalName trigger={showTourPrompt} setTrigger={setShowTourPrompt}>
           <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
