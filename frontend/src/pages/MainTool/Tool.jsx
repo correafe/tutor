@@ -1210,7 +1210,7 @@ const handleTutorialComplete = async () => {
         <ModalName trigger={showFAQ} setTrigger={setShowFAQ}>
           <FAQContent />
           <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
-            <button className="botaosavename" onClick={() => setShowFAQ(false)}>Fechar</button>
+            <button className="botaocancelname" onClick={() => setShowFAQ(false)}>Fechar</button>
           </div>
         </ModalName>
       )}

@@ -74,11 +74,23 @@ const Navbar = ({
 
         <button 
           className="button info faq" 
-          onClick={onFAQClick} 
+          id="faqButton"
+          onMouseDown={(e) => { 
+              e.preventDefault(); 
+              e.stopPropagation(); 
+              if (onFAQClick) onFAQClick(); 
+          }}
           title="Perguntas Frequentes"
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            fontSize: '16px', 
+            fontWeight: 'bold', 
+            color: '#ffffff' 
+          }}
         >
-           <HelpCircle size={24} />
+          FAQ
         </button>
 
         {onStartTour && (

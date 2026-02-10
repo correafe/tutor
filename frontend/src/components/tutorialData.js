@@ -2,7 +2,7 @@
 
 export const PIZZA_SCENARIO = {
   title: "Tutorial Completo: A Jornada da Pizza 🍕",
-  introQuestion: "Você está pronto para construir o mapa completo (3 Fases) passo a passo?",
+  introQuestion: "Você está pronto para construir o mapa completo com 3 Fases?",
   
   scenarioMeta: {
     name: "Jornada do Jantar de Sexta-Feira",
@@ -14,12 +14,12 @@ export const PIZZA_SCENARIO = {
     
     1. FASE DA FOME (19:00): João chega em casa, abre a geladeira e vê que está vazia. Ele se sente frustrado e pensa: "Vou ter que pedir algo".
     
-    2. FASE DO PEDIDO (19:10): Ele senta no sofá, abre o aplicativo de delivery. Fica indeciso entre sabores, mas acaba pedindo meia calabresa.
+    2. FASE DO PEDIDO (19:10): Ele senta no sofá, abre o aplicativo de delivery. Fica indeciso entre sabores, mas acaba pedindo de calabresa.
     
     3. FASE DA ENTREGA (19:50): A campainha toca. João recebe a pizza, o cheiro é ótimo. Ele come e se sente feliz e satisfeito.
     
     ---
-    SUA TAREFA: Você vai mapear CADA UMA dessas 3 fases, preenchendo todas as linhas (Ações, Emoções, etc).
+    SUA TAREFA: Você vai mapear cada uma dessas 3 fases, preenchendo todas as linhas (Ações, Emoções, Pensamentos e Pontos de Contato).
   `,
   steps: [
     // --- FASE 1: A FOME ---
@@ -130,10 +130,10 @@ export const PIZZA_SCENARIO = {
       id: 10,
       section: "Fase 2: Pontos de Contato",
       context: "Onde ele escolhe a pizza?",
-      correctAnswer: { description: "App iFood/Rappi", emojiTag: "🛒" },
+      correctAnswer: { description: "App", emojiTag: "🛒" },
       options: [
         { id: 'a', text: "Telefone Fixo", correct: false, feedback: "Ele está usando um app." },
-        { id: 'b', text: "App iFood/Rappi", correct: true, feedback: "Canal digital." },
+        { id: 'b', text: "App", correct: true, feedback: "Canal digital." },
         { id: 'c', text: "Panfleto de Papel", correct: false, feedback: "É um app." }
       ]
     },

@@ -286,10 +286,15 @@ const MapCreation = () => {
         </div>
         
         <button 
-          onClick={() => setShowFAQ(true)} 
+          // Usamos onMouseDown para garantir que o clique funcione mesmo com o mapa por baixo
+          onMouseDown={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setShowFAQ(true);
+          }}
           style={{ 
             marginRight: '20px', 
-            backgroundColor: '#FFAC81', // Uma cor diferente para destacar, ou use a mesma do tema
+            backgroundColor: '#ff81f9', 
             color: 'white',           
             border: 'none',
             borderRadius: '50%',       
@@ -299,11 +304,15 @@ const MapCreation = () => {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+            boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+            // Novos estilos para o texto ficar bonito
+            fontSize: '16px',
+            fontWeight: 'bold',
+            fontFamily: 'sans-serif' 
           }}
           title="Perguntas Frequentes"
         >
-          <HelpCircle size={30} />
+          FAQ
         </button>
 
         {/* 8. Botão para iniciar o tutorial na Navbar */}
@@ -486,6 +495,16 @@ const MapCreation = () => {
           <input type="text" value={newMapNameUpdate} onChange={handleMapNameChangeUpdate} className="inputname" placeholder="Novo título do mapa" />
           <div className="" style={{ margin: "0", textAlign: "center" }}>
             <button className="botaosavename" onClick={() => { handleConfirmUpdate(); }} disabled={!newMapNameUpdate.trim()}>Salvar</button>
+          </div>
+        </ModalName>
+      )}
+      {showFAQ && (
+        <ModalName trigger={showFAQ} setTrigger={setShowFAQ}>
+          <FAQContent />
+          <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+            <button className="botaocancelname" onClick={() => setShowFAQ(false)}>
+              Fechar
+            </button>
           </div>
         </ModalName>
       )}

@@ -51,14 +51,37 @@ class JourneyMapModel {
   }
 
   async deleteMap(journeyMapId) {
-    try {
-      const result = await db.execute("DELETE FROM journeyMap WHERE journeyMap_id = ?", [journeyMapId]);
-      return result.affectedRows > 0;
-    } catch (error) {
-      console.error("Error deleting user maps:", error);
-      throw error;
+      // Obtemos uma conexão específica para garantir que tudo ocorra numa transação
+      const connection = await db.getConnection(); 
+      try {
+        // Inicia a transação (tudo ou nada)
+        await connection.beginTransaction();
+
+        // 1. Primeiro apaga o Cenário vinculado a este mapa
+        await connection.execute("DELETE FROM scenario WHERE journeyMap_id = ?", [journeyMapId]);
+
+        // 2. Apaga as Fases vinculadas a este mapa
+        // Nota: Se as fases tiverem filhos (pensamentos, ações) sem delete cascade no banco, 
+        // pode ser necessário apagar eles antes das fases também.
+        await connection.execute("DELETE FROM journeyPhase WHERE journeyMap_id = ?", [journeyMapId]);
+
+        // 3. Finalmente, apaga o Mapa
+        const [result] = await connection.execute("DELETE FROM journeyMap WHERE journeyMap_id = ?", [journeyMapId]);
+
+        // Confirma as alterações
+        await connection.commit();
+        
+        return result.affectedRows > 0;
+      } catch (error) {
+        // Se der erro, desfaz tudo o que tentou apagar
+        await connection.rollback();
+        console.error("Error deleting user maps:", error);
+        throw error;
+      } finally {
+        // Libera a conexão de volta para o pool
+        connection.release();
+      }
     }
-  }
 
   getMapOwner(journeyMapId) {
     return db.query("SELECT user_id as uid FROM journeyMap WHERE journeyMap_id = ?", [journeyMapId])

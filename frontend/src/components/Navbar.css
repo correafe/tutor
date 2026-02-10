@@ -77,7 +77,6 @@
   padding: 0; 
 }
 
-/* Tour (?) Específico */
 .button.info.tour {
   margin-left: 3vh;
   background-color: #6a7dfe;
@@ -86,7 +85,7 @@
 }
 
 .button.info.tour:hover {
-  background-color: #5a6ce0; /* Hover Tour */
+  background-color: #5a6ce0; 
 }
 
 /* Aprender (Chapéu) Específico */
@@ -225,14 +224,13 @@
   border: none;
 }
 
-/* Botão FAQ Específico */
 .button.info.faq {
   margin-left: 2vh;
   margin-right: -1vh;
-  background-color: #FFAC81; /* Mesma cor usada na tela de criação de mapas */
+  background-color: #ff81f9; 
   font-size: 30px;
 }
 
 .button.info.faq:hover {
-  background-color: #e69a73; /* Cor um pouco mais escura para o hover */
+  background-color: #7d3980; 
 }
