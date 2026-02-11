@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { PIZZA_SCENARIO } from './tutorialData';
 import './TutorialWizard.css';
 
-const TutorialWizard = ({ onClose, onComplete }) => {
+const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer }) => {
   const [viewState, setViewState] = useState('prompt'); 
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [feedback, setFeedback] = useState(null); 
@@ -74,6 +74,10 @@ const TutorialWizard = ({ onClose, onComplete }) => {
     if (option.correct) {
       setFeedback('success');
       setFeedbackMessage(option.feedback);
+      if (onCorrectAnswer) {
+        onCorrectAnswer(currentStep, currentStepIndex);
+      }
+
     } else {
       setFeedback('error');
       setFeedbackMessage(option.feedback);

@@ -1160,6 +1160,50 @@ const handleTutorialComplete = async () => {
     }
   };
 
+  // Dentro de frontend/src/pages/MainTool/Tool.jsx
+
+// 1. Crie esta função auxiliar para adicionar um card individual
+const addTutorialCardToMap = async (step, currentStepIndex) => {
+  const positions = [20, 290, 560];
+  const phaseIndex = Math.floor(currentStepIndex / 5);
+  const currentX = positions[phaseIndex];
+  const answer = step.correctAnswer;
+
+  // Mapeamento de seções para endpoints
+  const sectionToEndpoint = {
+    "Fases da Jornada": 'journeyPhase',
+    "Ações do Usuário": 'userAction',
+    "Emoções": 'emotion',
+    "Pensamentos": 'thought',
+    "Pontos de Contato": 'contactPoint'
+  };
+
+  const endpoint = sectionToEndpoint[step.section.split(': ')[1]];
+
+  try {
+    const payload = {
+      journeyMap_id: id_mapa,
+      posX: currentX,
+      emojiTag: answer.emojiTag,
+    };
+
+    if (endpoint === 'emotion') {
+      payload.lineY = answer.lineY !== undefined ? answer.lineY : 0;
+    } else {
+      payload.linePos = 285;
+      payload.length = 230;
+      payload.description = answer.description;
+    }
+
+    await axios.post(`${import.meta.env.VITE_BACKEND}/${endpoint}`, payload);
+    
+    // Atualiza o mapa visualmente sem recarregar a página inteira se possível
+    fetchData(); 
+  } catch (error) {
+    console.error("Erro ao adicionar card em tempo real:", error);
+  }
+};
+
   return (
     <div className="scrollable-container">
       <ToolTour run={runToolTour} onTourEnd={stopTour} />
@@ -1175,6 +1219,7 @@ const handleTutorialComplete = async () => {
         <TutorialWizard 
           onClose={() => setShowTutorialWizard(false)} 
           onComplete={handleTutorialComplete} 
+          onCorrectAnswer={addTutorialCardToMap}
         />
       )}
       {showExampleMapModal && (
