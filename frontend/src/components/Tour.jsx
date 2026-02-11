@@ -1,14 +1,6 @@
 import React from 'react';
 import Joyride, { STATUS } from 'react-joyride';
 
-
-/*
-  TARGETS (seletores CSS) para o Dashboard (MapCreation.jsx):
-  - Botão Novo Mapa: .blocoadd
-  - Um mapa existente: .bloco
-  - Filtro de busca: .input-filter
-  - Botão Logout: .botaologout
-*/
 const DASHBOARD_STEPS = [
   {
     target: 'body',
@@ -45,14 +37,6 @@ const DASHBOARD_STEPS = [
   }
 ];
 
-/*
-  TARGETS (seletores CSS) para a Ferramenta (Tool.jsx + Navbar.jsx):
-  - Título do Cenário: .scenario span (em Navbar.jsx)
-  - Botão Salvar: #saveButton (em Navbar.jsx)
-  - Botão Mapas: .button.map (em Navbar.jsx)
-  - As 5 linhas: .teste-1 (em Tool.jsx)
-  - Área de desenho: .stage-container (em Tool.jsx)
-*/
 const TOOL_STEPS = [
 {
     target: 'body',
@@ -109,7 +93,7 @@ const TOOL_STEPS = [
   },
 ];
 
-// Componente do Tour para o Dashboard
+
 export const DashboardTour = ({ run, onTourEnd }) => (
   <Joyride
     steps={DASHBOARD_STEPS}

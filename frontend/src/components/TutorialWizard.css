@@ -4,11 +4,12 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: transparent;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   z-index: 9999;
+  pointer-events: none;
 }
 
 .wizard-box {
@@ -16,11 +17,13 @@
   padding: 30px;
   border-radius: 15px;
   width: 90%;
-  max-width: 600px;
+  max-width: 500px;
+  margin-right: 50px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
   text-align: center;
   position: relative;
   animation: fadeIn 0.3s ease;
+  pointer-events: auto;
 }
 
 @keyframes fadeIn {

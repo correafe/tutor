@@ -21,14 +21,14 @@ const TutorialWizard = ({ onClose, onComplete }) => {
           <p className="wizard-context" style={{marginTop: '20px'}}>
             {PIZZA_SCENARIO.introQuestion}
           </p>
-          <div className="wizard-options" style={{flexDirection: 'row', justifyContent: 'center', gap: '20px'}}>
+          <div className="wizard-options" style={{ display: 'flex', flexDirection: 'row', gap: '10px', marginTop: '20px' }}>
             <button 
               onClick={() => setViewState('scenario')}
-              style={{backgroundColor: '#4caf50', color: 'white', border: 'none'}}
+              style={{ backgroundColor: '#4caf50', color: 'white', border: 'none', flex: 1 }}
             >
               Vamos lá!
             </button>
-            <button onClick={onClose}>
+            <button onClick={onClose} style={{ flex: 1 }}>
               Pular tutorial
             </button>
           </div>
