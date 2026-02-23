@@ -2,27 +2,28 @@ import React, { useState } from 'react';
 import { PIZZA_SCENARIO } from './tutorialData';
 import './TutorialWizard.css';
 
-const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer }) => {
-  const [viewState, setViewState] = useState('prompt'); 
+const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial }) => {
+  const [viewState, setViewState] = useState('prompt');
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [feedback, setFeedback] = useState(null); 
+  const [feedback, setFeedback] = useState(null);
   const [feedbackMessage, setFeedbackMessage] = useState("");
 
   const currentStep = PIZZA_SCENARIO.steps[currentStepIndex];
-
-  // Cálculo para saber a fase atual baseado no índice (0-4: Fase 1, 5-9: Fase 2, 10-14: Fase 3)
   const currentPhaseNumber = Math.floor(currentStepIndex / 5) + 1;
+
+  // Define se deve aplicar o layout da direita (apenas no estado de quiz)
+  const isQuiz = viewState === 'quiz';
 
   if (viewState === 'prompt') {
     return (
       <div className="wizard-overlay">
         <div className="wizard-box">
           <h3>{PIZZA_SCENARIO.title}</h3>
-          <p className="wizard-context" style={{marginTop: '20px'}}>
+          <p className="wizard-context" style={{ marginTop: '20px' }}>
             {PIZZA_SCENARIO.introQuestion}
           </p>
           <div className="wizard-options" style={{ display: 'flex', flexDirection: 'row', gap: '10px', marginTop: '20px' }}>
-            <button 
+            <button
               onClick={() => setViewState('scenario')}
               style={{ backgroundColor: '#4caf50', color: 'white', border: 'none', flex: 1 }}
             >
@@ -40,28 +41,31 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer }) => {
   if (viewState === 'scenario') {
     return (
       <div className="wizard-overlay">
-        <div className="wizard-box" style={{maxWidth: '700px'}}>
+        <div className="wizard-box" style={{ maxWidth: '700px' }}>
           <h3>O Cenário</h3>
-          <div 
+          <div
             style={{
-              textAlign: 'left', 
-              whiteSpace: 'pre-line', 
-              backgroundColor: '#f9f9f9', 
-              padding: '20px', 
+              textAlign: 'left',
+              whiteSpace: 'pre-line',
+              backgroundColor: '#f9f9f9',
+              padding: '20px',
               borderRadius: '10px',
               margin: '20px 0',
               fontSize: '15px',
               lineHeight: '1.5',
-              maxHeight: '60vh', // Scroll se a tela for pequena
+              maxHeight: '60vh',
               overflowY: 'auto'
             }}
           >
             {PIZZA_SCENARIO.scenarioText}
           </div>
-          <button 
-            className="botaosavename" 
-            onClick={() => setViewState('quiz')}
-            style={{width: '100%', fontSize: '18px'}}
+          <button
+            className="botaosavename"
+            onClick={() => {
+              if (onStartTutorial) onStartTutorial();
+              setViewState('quiz');
+            }}
+            style={{ width: '100%', fontSize: '18px' }}
           >
             Iniciar Mapeamento
           </button>
@@ -77,7 +81,6 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer }) => {
       if (onCorrectAnswer) {
         onCorrectAnswer(currentStep, currentStepIndex);
       }
-
     } else {
       setFeedback('error');
       setFeedbackMessage(option.feedback);
@@ -87,11 +90,10 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer }) => {
   const handleNext = () => {
     setFeedback(null);
     setFeedbackMessage("");
-    
     if (currentStepIndex < PIZZA_SCENARIO.steps.length - 1) {
       setCurrentStepIndex(prev => prev + 1);
     } else {
-      onComplete(); 
+      onComplete();
     }
   };
 
@@ -112,33 +114,33 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer }) => {
   } : {};
 
   return (
-    <div className="wizard-overlay">
+    <div className={`wizard-overlay ${isQuiz ? 'quiz-mode' : ''}`}>
       <div className="wizard-box">
-        <div className="wizard-header" style={{marginBottom: '10px'}}>
-           <span style={{
-             backgroundColor: '#e3f2fd', 
-             color: '#1565c0', 
-             padding: '5px 10px', 
-             borderRadius: '15px', 
-             fontSize: '12px',
-             fontWeight: 'bold'
-           }}>
-             FASE {currentPhaseNumber} DE 3 DO MAPA
-           </span>
+        <div className="wizard-header" style={{ marginBottom: '10px' }}>
+          <span style={{
+            backgroundColor: '#e3f2fd',
+            color: '#1565c0',
+            padding: '5px 10px',
+            borderRadius: '15px',
+            fontSize: '12px',
+            fontWeight: 'bold'
+          }}>
+            FASE {currentPhaseNumber} DE 3 DO MAPA
+          </span>
         </div>
-        
+
         <div className="wizard-progress">
           Pergunta {currentStepIndex + 1} de {PIZZA_SCENARIO.steps.length}
         </div>
 
-        <h4 style={{fontSize: '22px', marginBottom: '15px'}}>{currentStep.section}</h4>
+        <h4 style={{ fontSize: '22px', marginBottom: '15px' }}>{currentStep.section}</h4>
         <p className="wizard-context">{currentStep.context}</p>
 
         {!feedback ? (
           <div className="wizard-options" style={optionsStyle}>
             {currentStep.options.map(opt => (
-              <button 
-                key={opt.id} 
+              <button
+                key={opt.id}
                 onClick={() => handleOptionClick(opt)}
                 style={buttonStyle}
               >
@@ -148,7 +150,7 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer }) => {
           </div>
         ) : (
           <div className={`wizard-feedback ${feedback}`}>
-            <p style={{fontSize: '18px', fontWeight: '500'}}>{feedback === 'success' ? "🎉 Correto!" : "❌ Tente novamente"}</p>
+            <p style={{ fontSize: '18px', fontWeight: '500' }}>{feedback === 'success' ? "🎉 Correto!" : "❌ Tente novamente"}</p>
             <p>{feedbackMessage}</p>
             {feedback === 'success' ? (
               <button onClick={handleNext}>
@@ -159,8 +161,8 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer }) => {
             )}
           </div>
         )}
-        
-        <button className="close-btn" onClick={onClose} style={{marginTop: '20px'}}>Sair</button>
+
+        <button className="close-btn" onClick={onClose} style={{ marginTop: '20px' }}>Sair</button>
       </div>
     </div>
   );

@@ -4,12 +4,26 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: transparent;
+  background-color: rgba(0, 0, 0, 0.5); /* Um fundo leve para os modais centrais */
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   z-index: 9999;
-  pointer-events: none;
+  pointer-events: auto;
+}
+
+
+.wizard-overlay.quiz-mode {
+  background-color: transparent;
+  justify-content: flex-end; 
+  pointer-events: none; 
+}
+
+.wizard-overlay.quiz-mode .wizard-box {
+  margin-right: 50px;
+  max-width: 450px;
+  pointer-events: auto; 
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
 .wizard-box {
@@ -17,13 +31,10 @@
   padding: 30px;
   border-radius: 15px;
   width: 90%;
-  max-width: 500px;
-  margin-right: 50px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  max-width: 600px;
   text-align: center;
   position: relative;
   animation: fadeIn 0.3s ease;
-  pointer-events: auto;
 }
 
 @keyframes fadeIn {
