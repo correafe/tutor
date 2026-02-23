@@ -86,9 +86,9 @@
 
 .button.info.tour:hover {
   background-color: #5a6ce0; 
+  font-size: 30px !important; 
 }
 
-/* Aprender (Chapéu) Específico */
 .button.info.learn {
   margin-left: 2vh;
   background-color: #FF9800;
@@ -96,10 +96,9 @@
 }
 
 .button.info.learn:hover {
-  background-color: #e68900; /* Hover Aprender */
+  background-color: #e68900;
 }
 
-/* Info (i) Específico */
 .button.info.about {
   margin-left: 2vh;
   margin-right: 3vh;
@@ -107,7 +106,7 @@
 }
 
 .button.info.about:hover {
-  background-color: #9e9999; /* Hover Info */
+  background-color: #9e9999; 
 }
 
 /* Botão Salvar */

@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-color: #FFFFFF;
+  color: #FFFFFF;
 }
 
 body {
@@ -121,8 +121,10 @@ body {
 }
 
 .botaologout {
-  width: 45px;
-  height: 45px;
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50% !important;
+  display: flex !important;
   border: none;
   background-color: #FF5858;
   color: white;
@@ -312,7 +314,7 @@ body {
   border-left: 1px solid #adadad;
   border-bottom: 2px solid #adadad;
   background-color: #FFF;
-  margin-right: 10px; /* Margem à direita */
+  margin-right: 10px; 
   box-sizing: border-box;
   padding: 20px;
   font-size: 25px;
@@ -322,7 +324,7 @@ body {
 
 .x{
   cursor: pointer;
-  margin-right:
+  margin-right:  10px;
   color: white;
 }
 
@@ -359,5 +361,15 @@ body {
   justify-content: center;
   align-items: center;
   margin-top: 40px;
+}
+
+#faq-dashboard-btn:hover {
+  background-color: #e065da !important;
+  transition: all 0.2s ease;
+}
+
+#dashboard-tour-btn:hover {
+  background-color: #4a5ed9 !important; 
+  transition: all 0.2s ease;
 }
 

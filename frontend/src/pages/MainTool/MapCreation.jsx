@@ -306,7 +306,6 @@ const MapCreation = () => {
             alignItems: 'center',
             justifyContent: 'center',
             boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-            // Novos estilos para o texto ficar bonito
             fontSize: '16px',
             fontWeight: 'bold',
             fontFamily: 'sans-serif' 
