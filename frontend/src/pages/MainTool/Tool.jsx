@@ -19,7 +19,7 @@ import html2canvas from 'html2canvas';
 import { ToolTour } from "../../components/Tour"; // Importe o tour
 import { HelpCircle } from 'lucide-react'; // Importe o ícone
 import TutorialWizard from "../../components/TutorialWizard";
-import { PIZZA_SCENARIO } from "../../components/tutorialData";
+import { PIZZA_SCENARIO, STREAMING_SCENARIO } from "../../components/tutorialData";
 import TutorialLevelSelector from "../../components/TutorialLevelSelector";
 import FAQContent from "../../components/FAQContent";
 
@@ -1041,13 +1041,18 @@ const Tool = ({ }) => {
     setShowLevelSelector(true);
   };
 
+  const [targetScenario, setTargetScenario] = useState('pizza');
+
   const handleLevelSelect = (level) => {
     if (level === 1) {
+      setTargetScenario('pizza');
       setShowLevelSelector(false); // Fecha o seletor
       setShowTutorialWizard(true); // Abre o Wizard da Pizza
-    } else {
-      toast.info("Este nível estará disponível em breve!");
-    }
+    } else if (level === 2) {
+    setTargetScenario('streaming'); // Define o alvo como streaming
+    setShowLevelSelector(false);
+    setShowTutorialWizard(true);
+  }
   };
 
   const stopTour = () => {
@@ -1164,7 +1169,7 @@ const handleTutorialComplete = async () => {
 
 // 1. Crie esta função auxiliar para adicionar um card individual
 const addTutorialCardToMap = async (step, currentStepIndex) => {
-  const positions = [20, 290, 560];
+  const positions = [20, 290, 560, 830];
   const phaseIndex = Math.floor(currentStepIndex / 5);
   const currentX = positions[phaseIndex];
   const answer = step.correctAnswer;
@@ -1220,6 +1225,8 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
           onClose={() => setShowTutorialWizard(false)} 
           onComplete={handleTutorialComplete} 
           onCorrectAnswer={addTutorialCardToMap}
+          onStartTutorial={saveInitialScenario}
+          scenarioType={targetScenario}
         />
       )}
       {showExampleMapModal && (

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { PIZZA_SCENARIO } from './tutorialData';
+import { PIZZA_SCENARIO, STREAMING_SCENARIO } from './tutorialData';
 import './TutorialWizard.css';
 
-const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial }) => {
+const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial, scenarioType }) => {
   const [viewState, setViewState] = useState('prompt');
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [feedback, setFeedback] = useState(null);
   const [feedbackMessage, setFeedbackMessage] = useState("");
 
-  const currentStep = PIZZA_SCENARIO.steps[currentStepIndex];
+  const scenarioData = scenarioType === 'streaming' ? STREAMING_SCENARIO : PIZZA_SCENARIO;
   const currentPhaseNumber = Math.floor(currentStepIndex / 5) + 1;
 
   // Define se deve aplicar o layout da direita (apenas no estado de quiz)
@@ -18,9 +18,9 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial 
     return (
       <div className="wizard-overlay">
         <div className="wizard-box">
-          <h3>{PIZZA_SCENARIO.title}</h3>
+          <h3>{scenarioData.title}</h3>
           <p className="wizard-context" style={{ marginTop: '20px' }}>
-            {PIZZA_SCENARIO.introQuestion}
+            {scenarioData.introQuestion}
           </p>
           <div className="wizard-options" style={{ display: 'flex', flexDirection: 'row', gap: '10px', marginTop: '20px' }}>
             <button
@@ -57,7 +57,7 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial 
               overflowY: 'auto'
             }}
           >
-            {PIZZA_SCENARIO.scenarioText}
+            {scenarioData.scenarioText}
           </div>
           <button
             className="botaosavename"
@@ -90,7 +90,7 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial 
   const handleNext = () => {
     setFeedback(null);
     setFeedbackMessage("");
-    if (currentStepIndex < PIZZA_SCENARIO.steps.length - 1) {
+    if (currentStepIndex < scenarioData.steps.length - 1) {
       setCurrentStepIndex(prev => prev + 1);
     } else {
       onComplete();
@@ -130,7 +130,7 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial 
         </div>
 
         <div className="wizard-progress">
-          Pergunta {currentStepIndex + 1} de {PIZZA_SCENARIO.steps.length}
+          Pergunta {currentStepIndex + 1} de {scenarioData.steps.length}
         </div>
 
         <h4 style={{ fontSize: '22px', marginBottom: '15px' }}>{currentStep.section}</h4>
@@ -154,7 +154,7 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial 
             <p>{feedbackMessage}</p>
             {feedback === 'success' ? (
               <button onClick={handleNext}>
-                {currentStepIndex === PIZZA_SCENARIO.steps.length - 1 ? 'Concluir Tutorial' : 'Próxima'}
+                {currentStepIndex === scenarioData.steps.length - 1 ? 'Concluir Tutorial' : 'Próxima'}
               </button>
             ) : (
               <button onClick={() => setFeedback(null)}>Tentar Novamente</button>

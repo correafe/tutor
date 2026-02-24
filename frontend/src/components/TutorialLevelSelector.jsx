@@ -23,14 +23,14 @@ const TutorialLevelSelector = ({ onClose, onSelectLevel }) => {
             <span className="status-badge unlocked"><Unlock size={14} /> Desbloqueado</span>
           </div>
 
-          {/* NÍVEL 2 - BLOQUEADO */}
-          <div className="level-card locked">
-            <div className="icon-container">
-              <Lock size={32} />
+          {/* NÍVEL 2 - AGORA DISPONÍVEL */}
+          <div className="level-card available" onClick={() => onSelectLevel(2)}>
+            <div className="icon-container" style={{ backgroundColor: '#6a7dfe' }}>
+              <Star size={32} color="#fff" fill="#fff" />
             </div>
             <h3>Nível 2: Intermediário</h3>
-            <p>Cenário: Em breve...</p>
-            <span className="status-badge locked">Bloqueado</span>
+            <p>Cenário: Assinatura de Streaming</p>
+            <span className="status-badge unlocked"><Unlock size={14} /> Desbloqueado</span>
           </div>
 
           {/* NÍVEL 3 - BLOQUEADO */}
