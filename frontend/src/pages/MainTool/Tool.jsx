@@ -40,6 +40,7 @@ const Tool = ({ }) => {
   const [showFAQ, setShowFAQ] = useState(false);
   const [showTutorialWizard, setShowTutorialWizard] = useState(false);
   const [showLevelSelector, setShowLevelSelector] = useState(false);
+  const [targetScenario, setTargetScenario] = useState('pizza');
   const [runToolTour, setRunToolTour] = useState(false);
   const navigate = useNavigate();
   const { id_mapa } = useParams();
@@ -1041,18 +1042,16 @@ const Tool = ({ }) => {
     setShowLevelSelector(true);
   };
 
-  const [targetScenario, setTargetScenario] = useState('pizza');
-
   const handleLevelSelect = (level) => {
     if (level === 1) {
       setTargetScenario('pizza');
-      setShowLevelSelector(false); // Fecha o seletor
-      setShowTutorialWizard(true); // Abre o Wizard da Pizza
+      setShowLevelSelector(false);
+      setShowTutorialWizard(true);
     } else if (level === 2) {
-    setTargetScenario('streaming'); // Define o alvo como streaming
-    setShowLevelSelector(false);
-    setShowTutorialWizard(true);
-  }
+      setTargetScenario('streaming');
+      setShowLevelSelector(false);
+      setShowTutorialWizard(true);
+    }
   };
 
   const stopTour = () => {
@@ -1072,13 +1071,14 @@ const handleTutorialComplete = async () => {
     setShowTutorialWizard(false);
     setLoading(true);
 
-    const positions = [20, 290, 560];
+    const positions = [20, 290, 560, 830];
+    const currentScenarioData = targetScenario === 'streaming' ? STREAMING_SCENARIO : PIZZA_SCENARIO;
+    const allSteps = currentScenarioData.steps;
 
     try {
-      const allSteps = PIZZA_SCENARIO.steps;
       
       // ===== NOVO: SALVAR O CENÁRIO =====
-      const meta = PIZZA_SCENARIO.scenarioMeta;
+      const meta = currentScenarioData.scenarioMeta;
       
       if (scenarioExists) {
         // Se já existe, atualiza (PUT)
@@ -1225,7 +1225,6 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
           onClose={() => setShowTutorialWizard(false)} 
           onComplete={handleTutorialComplete} 
           onCorrectAnswer={addTutorialCardToMap}
-          onStartTutorial={saveInitialScenario}
           scenarioType={targetScenario}
         />
       )}

@@ -10,6 +10,7 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
 
   const scenarioData = scenarioType === 'streaming' ? STREAMING_SCENARIO : PIZZA_SCENARIO;
   const currentPhaseNumber = Math.floor(currentStepIndex / 5) + 1;
+  const currentStep = scenarioData.steps[currentStepIndex];
 
   // Define se deve aplicar o layout da direita (apenas no estado de quiz)
   const isQuiz = viewState === 'quiz';
