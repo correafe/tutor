@@ -1063,9 +1063,9 @@ const Tool = ({ }) => {
       localStorage.removeItem('startToolTutorial');
       localStorage.setItem('hasSeenToolTour', 'true');
       
-      setShowTutorialWizard(true);
     }
   };
+
   const handleTutorialComplete = async () => {
     setShowTutorialWizard(false);
     setLoading(true);
@@ -1090,6 +1090,15 @@ const Tool = ({ }) => {
           name: meta.name,
           description: meta.description
         });
+      }
+
+      const currentUnlocked = parseInt(localStorage.getItem('unlockedTutorialLevel')) || 1;
+
+      if (targetScenario === 'pizza' && currentUnlocked < 2) {
+        localStorage.setItem('unlockedTutorialLevel', '2');
+      }
+      else if (targetScenario === 'streaming' && currentUnlocked < 3) {
+        localStorage.setItem('unlockedTutorialLevel', '3');
       }
 
       toast.success('Tutorial concluído! Mapa e Cenário salvos.');
@@ -1393,7 +1402,7 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
           {dataLoaded && (
             <div className="stage-container">
               <Stage width={calculateTotalWidth(matrix) + 1260} height={window.innerHeight} ref={stageRef}>
-                <Layer>
+                <Layer listening={!showTutorialWizard}>
                   <Matrix
                     key={forceUpdate}
                     matrix={matrix}

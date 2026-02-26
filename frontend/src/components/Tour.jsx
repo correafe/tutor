@@ -101,6 +101,8 @@ export const DashboardTour = ({ run, onTourEnd }) => (
     continuous
     //showProgress
     showSkipButton
+    hideCloseButton={true}
+    disableOverlayClose={true}
     locale={{
       last: 'Fim',
       next: 'Próximo',
@@ -146,6 +148,7 @@ export const ToolTour = ({ run, onTourEnd }) => (
     continuous
     //showProgress
     showSkipButton
+    disableOverlayClose={true}
     locale={{
       last: 'Fim',
       next: 'Próximo',
