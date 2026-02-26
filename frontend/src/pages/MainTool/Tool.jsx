@@ -1066,7 +1066,7 @@ const Tool = ({ }) => {
       setShowTutorialWizard(true);
     }
   };
-const handleTutorialComplete = async () => {
+  const handleTutorialComplete = async () => {
     setShowTutorialWizard(false);
     setLoading(true);
 
@@ -1075,10 +1075,7 @@ const handleTutorialComplete = async () => {
     else if (targetScenario === 'viagem') currentScenarioData = ADVANCED_SCENARIO;
     else currentScenarioData = PIZZA_SCENARIO;
 
-    const allSteps = currentScenarioData.steps;
-
     try {
-      const positions = [20, 290, 560, 830, 1100]; 
       const meta = currentScenarioData.scenarioMeta; 
 
       if (scenarioExists) {
@@ -1094,61 +1091,6 @@ const handleTutorialComplete = async () => {
           description: meta.description
         });
       }
-
-      const phasesData = [];
-      for (let i = 0; i < allSteps.length; i += 5) {
-        phasesData.push(allSteps.slice(i, i + 5).map(s => s.correctAnswer));
-      }
-
-      const promises = phasesData.map(async (phaseAnswers, index) => {
-        const currentX = positions[index];
-        const [pPhase, pAction, pEmotion, pThought, pContact] = phaseAnswers;
-
-        await axios.post(import.meta.env.VITE_BACKEND + '/journeyPhase', {
-          journeyMap_id: id_mapa,
-          linePos: 285,
-          posX: currentX,
-          length: 230,
-          description: pPhase.description,
-          emojiTag: pPhase.emojiTag,
-        });
-
-        await axios.post(import.meta.env.VITE_BACKEND + '/userAction', {
-          journeyMap_id: id_mapa,
-          linePos: 285,
-          posX: currentX,
-          length: 230,
-          description: pAction.description,
-          emojiTag: pAction.emojiTag,
-        });
-
-        await axios.post(import.meta.env.VITE_BACKEND + '/emotion', {
-          journeyMap_id: id_mapa,
-          posX: currentX,
-          lineY: pEmotion.lineY !== undefined ? pEmotion.lineY : 0,
-          emojiTag: pEmotion.emojiTag,
-        });
-
-        await axios.post(import.meta.env.VITE_BACKEND + '/thought', {
-          journeyMap_id: id_mapa,
-          linePos: 285,
-          posX: currentX,
-          length: 230,
-          description: pThought.description,
-          emojiTag: pThought.emojiTag,
-        });
-
-        await axios.post(import.meta.env.VITE_BACKEND + '/contactPoint', {
-          journeyMap_id: id_mapa,
-          linePos: 285,
-          posX: currentX,
-          length: 230,
-          description: pContact.description,
-          emojiTag: pContact.emojiTag,
-        });
-      });
-
-      await Promise.all(promises);
 
       toast.success('Tutorial concluído! Mapa e Cenário salvos.');
       window.location.reload();
