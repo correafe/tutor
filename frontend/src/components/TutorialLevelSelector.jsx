@@ -13,7 +13,6 @@ const TutorialLevelSelector = ({ onClose, onSelectLevel }) => {
         <p className="level-subtitle">Escolha um nível para iniciar a simulação prática:</p>
 
         <div className="levels-grid">
-          {/* NÍVEL 1 - DISPONÍVEL */}
           <div className="level-card available" onClick={() => onSelectLevel(1)}>
             <div className="icon-container">
               <Star size={32} color="#fff" fill="#fff" />
@@ -23,7 +22,6 @@ const TutorialLevelSelector = ({ onClose, onSelectLevel }) => {
             <span className="status-badge unlocked"><Unlock size={14} /> Desbloqueado</span>
           </div>
 
-          {/* NÍVEL 2 - AGORA DISPONÍVEL */}
           <div className="level-card available" onClick={() => onSelectLevel(2)}>
             <div className="icon-container" style={{ backgroundColor: '#6a7dfe' }}>
               <Star size={32} color="#fff" fill="#fff" />
@@ -33,14 +31,13 @@ const TutorialLevelSelector = ({ onClose, onSelectLevel }) => {
             <span className="status-badge unlocked"><Unlock size={14} /> Desbloqueado</span>
           </div>
 
-          {/* NÍVEL 3 - BLOQUEADO */}
-          <div className="level-card locked">
-            <div className="icon-container">
-              <Lock size={32} />
+          <div className="level-card available" onClick={() => onSelectLevel(3)}>
+            <div className="icon-container" style={{ backgroundColor: '#ff5722' }}>
+              <Star size={32} color="#fff" fill="#fff" />
             </div>
             <h3>Nível 3: Avançado</h3>
-            <p>Cenário: Em breve...</p>
-            <span className="status-badge locked">Bloqueado</span>
+            <p>Cenário: Planejamento de Viagem Internacional</p>
+            <span className="status-badge unlocked"><Unlock size={14} /> Desbloqueado</span>
           </div>
         </div>
       </div>

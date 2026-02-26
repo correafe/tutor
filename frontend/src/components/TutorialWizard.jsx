@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { PIZZA_SCENARIO, STREAMING_SCENARIO } from './tutorialData';
+import { PIZZA_SCENARIO, STREAMING_SCENARIO, ADVANCED_SCENARIO } from './tutorialData';
 import './TutorialWizard.css';
 
 const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial, scenarioType }) => {
@@ -8,11 +8,16 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
   const [feedback, setFeedback] = useState(null);
   const [feedbackMessage, setFeedbackMessage] = useState("");
 
-  const scenarioData = scenarioType === 'streaming' ? STREAMING_SCENARIO : PIZZA_SCENARIO;
-  const currentPhaseNumber = Math.floor(currentStepIndex / 5) + 1;
-  const currentStep = scenarioData.steps[currentStepIndex];
+  let scenarioData;
+    if (scenarioType === 'streaming') scenarioData = STREAMING_SCENARIO;
+    else if (scenarioType === 'viagem') scenarioData = ADVANCED_SCENARIO;
+    else scenarioData = PIZZA_SCENARIO;
 
-  // Define se deve aplicar o layout da direita (apenas no estado de quiz)
+    const currentPhaseNumber = Math.floor(currentStepIndex / 5) + 1;
+    const currentStep = scenarioData.steps[currentStepIndex];
+
+    const totalPhases = scenarioData.steps.length / 5;
+
   const isQuiz = viewState === 'quiz';
 
   if (viewState === 'prompt') {
@@ -126,7 +131,7 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
             fontSize: '12px',
             fontWeight: 'bold'
           }}>
-            FASE {currentPhaseNumber} DE 3 DO MAPA
+            FASE {currentPhaseNumber} DE {totalPhases} DO MAPA
           </span>
         </div>
 

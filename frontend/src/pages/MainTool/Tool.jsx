@@ -19,7 +19,7 @@ import html2canvas from 'html2canvas';
 import { ToolTour } from "../../components/Tour"; // Importe o tour
 import { HelpCircle } from 'lucide-react'; // Importe o ícone
 import TutorialWizard from "../../components/TutorialWizard";
-import { PIZZA_SCENARIO, STREAMING_SCENARIO } from "../../components/tutorialData";
+import { PIZZA_SCENARIO, STREAMING_SCENARIO, ADVANCED_SCENARIO } from "../../components/tutorialData";
 import TutorialLevelSelector from "../../components/TutorialLevelSelector";
 import FAQContent from "../../components/FAQContent";
 
@@ -1045,13 +1045,13 @@ const Tool = ({ }) => {
   const handleLevelSelect = (level) => {
     if (level === 1) {
       setTargetScenario('pizza');
-      setShowLevelSelector(false);
-      setShowTutorialWizard(true);
     } else if (level === 2) {
       setTargetScenario('streaming');
-      setShowLevelSelector(false);
-      setShowTutorialWizard(true);
+    } else if (level === 3) {
+      setTargetScenario('viagem');
     }
+    setShowLevelSelector(false);
+    setShowTutorialWizard(true);
   };
 
   const stopTour = () => {
@@ -1066,43 +1066,39 @@ const Tool = ({ }) => {
       setShowTutorialWizard(true);
     }
   };
-
 const handleTutorialComplete = async () => {
     setShowTutorialWizard(false);
     setLoading(true);
 
-    const positions = [20, 290, 560, 830];
-    const currentScenarioData = targetScenario === 'streaming' ? STREAMING_SCENARIO : PIZZA_SCENARIO;
+    let currentScenarioData;
+    if (targetScenario === 'streaming') currentScenarioData = STREAMING_SCENARIO;
+    else if (targetScenario === 'viagem') currentScenarioData = ADVANCED_SCENARIO;
+    else currentScenarioData = PIZZA_SCENARIO;
+
     const allSteps = currentScenarioData.steps;
 
     try {
-      
-      // ===== NOVO: SALVAR O CENÁRIO =====
-      const meta = currentScenarioData.scenarioMeta;
-      
+      const positions = [20, 290, 560, 830, 1100]; 
+      const meta = currentScenarioData.scenarioMeta; 
+
       if (scenarioExists) {
-        // Se já existe, atualiza (PUT)
         await axios.put(import.meta.env.VITE_BACKEND + '/scenario', {
           journeyMapId: id_mapa,
           newName: meta.name,
           newDescription: meta.description
         });
       } else {
-        // Se não existe, cria (POST)
         await axios.post(import.meta.env.VITE_BACKEND + '/scenario', {
           journeyMapId: id_mapa,
           name: meta.name,
           description: meta.description
         });
       }
-      // ==================================
 
-      // Salvar os Cards do Mapa
-      const phasesData = [
-        allSteps.slice(0, 5).map(s => s.correctAnswer),
-        allSteps.slice(5, 10).map(s => s.correctAnswer),
-        allSteps.slice(10, 15).map(s => s.correctAnswer)
-      ];
+      const phasesData = [];
+      for (let i = 0; i < allSteps.length; i += 5) {
+        phasesData.push(allSteps.slice(i, i + 5).map(s => s.correctAnswer));
+      }
 
       const promises = phasesData.map(async (phaseAnswers, index) => {
         const currentX = positions[index];
@@ -1165,11 +1161,9 @@ const handleTutorialComplete = async () => {
     }
   };
 
-  // Dentro de frontend/src/pages/MainTool/Tool.jsx
-
 // 1. Crie esta função auxiliar para adicionar um card individual
 const addTutorialCardToMap = async (step, currentStepIndex) => {
-  const positions = [20, 290, 560, 830];
+  const positions = [20, 290, 560, 830, 1100];
   const phaseIndex = Math.floor(currentStepIndex / 5);
   const currentX = positions[phaseIndex];
   const answer = step.correctAnswer;
