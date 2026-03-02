@@ -86,7 +86,7 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
     );
   }
 
-  // TELA FINAL DE RESULTADOS (Aparece apenas no Intermediário e Avançado)
+  // TELA FINAL DE RESULTADOS
   if (viewState === 'results') {
     const maxPoints = scenarioData.steps.length * 10;
     const isPerfect = sessionPoints === maxPoints;
@@ -110,29 +110,28 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
               : "Você foi bem, mas ainda pode melhorar algumas escolhas para alcançar a pontuação máxima."}
           </p>
 
-          <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
+          {/* BOTÕES DE FINALIZAÇÃO AJUSTADOS AQUI */}
+          <div className="wizard-options" style={{ display: 'flex', flexDirection: 'row', gap: '15px', marginTop: '20px' }}>
             {!isPerfect && (
               <button 
                 onClick={() => {
-                  // Reseta tudo para tentar novamente
                   setSessionPoints(0);
                   setCurrentStepIndex(0);
                   setViewState('quiz');
                 }}
-                style={{ backgroundColor: '#ff9800', color: '#fff', border: 'none', flex: 1 }}
+                style={{ backgroundColor: '#ff9800', color: '#fff', border: 'none', flex: 1, padding: '15px', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold' }}
               >
                 Refazer Agora
               </button>
             )}
             <button 
               onClick={() => {
-                // Ao finalizar, salva os pontos da sessão no Contexto Global
                 addPoints(sessionPoints, `Concluiu o nível ${scenarioType}`);
                 onComplete();
               }}
-              style={{ backgroundColor: '#4caf50', color: '#fff', border: 'none', flex: 1 }}
+              style={{ backgroundColor: '#4caf50', color: '#fff', border: 'none', flex: 1, padding: '15px', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold' }}
             >
-              Resgatar Pontos e Sair
+              Resgatar Pontos
             </button>
           </div>
         </div>
@@ -142,14 +141,25 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
 
   const handleOptionClick = (option) => {
     if (isAssessmentMode) {
-      // MODO AVALIAÇÃO: Soma os pontos da opção e passa direto pra próxima (sem feedback)
       const pointsScored = option.points !== undefined ? option.points : (option.correct ? 10 : 0);
       setSessionPoints(prev => prev + pointsScored);
+
+      if (onCorrectAnswer) {
+        const userSelectedStepData = {
+          ...currentStep,
+          correctAnswer: {
+            description: option.text,
+            emojiTag: option.text, 
+            lineY: currentStep.correctAnswer?.lineY || 0 
+          }
+        };
+        onCorrectAnswer(userSelectedStepData, currentStepIndex);
+      }
 
       if (currentStepIndex < scenarioData.steps.length - 1) {
         setCurrentStepIndex(prev => prev + 1);
       } else {
-        setViewState('results'); // Vai pra tela de resultados
+        setViewState('results'); 
       }
     } else {
       // MODO BÁSICO (Pizza): Dá feedback na hora
@@ -207,9 +217,14 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
         <p className="wizard-context">{currentStep.context}</p>
 
         {!feedback ? (
-          <div className="wizard-options" style={optionsStyle}>
+          /* KEY ADICIONADA NA DIV E NOS BOTÕES PARA MATAR A TRANSIÇÃO DE FORMA NATIVA */
+          <div key={`container-${currentStepIndex}`} className="wizard-options-container" style={optionsStyle}>
             {currentStep.options.map(opt => (
-              <button key={opt.id} onClick={() => handleOptionClick(opt)} style={buttonStyle}>
+              <button 
+                key={`btn-${currentStepIndex}-${opt.id}`} 
+                onClick={() => handleOptionClick(opt)} 
+                style={buttonStyle}
+              >
                 {opt.text}
               </button>
             ))}
