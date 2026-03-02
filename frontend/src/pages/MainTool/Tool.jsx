@@ -16,8 +16,8 @@ import { init, getEmojiDataFromNative, SearchIndex } from 'emoji-mart';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import html2canvas from 'html2canvas';
-import { ToolTour } from "../../components/Tour"; // Importe o tour
-import { HelpCircle } from 'lucide-react'; // Importe o ícone
+import { ToolTour } from "../../components/Tour"; 
+import { HelpCircle } from 'lucide-react'; 
 import TutorialWizard from "../../components/TutorialWizard";
 import { PIZZA_SCENARIO, STREAMING_SCENARIO, ADVANCED_SCENARIO } from "../../components/tutorialData";
 import TutorialLevelSelector from "../../components/TutorialLevelSelector";
@@ -1042,7 +1042,60 @@ const Tool = ({ }) => {
     setShowLevelSelector(true);
   };
 
-  const handleLevelSelect = (level) => {
+  const handleLevelSelect = async (level) => {
+    // 1. Verifica se existem cards em qualquer uma das 5 linhas da matriz
+    const hasCards = matrix.some(row => row.length > 0);
+
+    if (hasCards) {
+      // 2. Mostra o aviso nativo para o usuário
+      const confirmClear = window.confirm(
+        "⚠️ ATENÇÃO: Para iniciar a Prática Guiada, precisamos de um mapa em branco.\n\n" +
+        "Todos os cards atuais deste mapa serão EXCLUÍDOS PERMANENTEMENTE.\n\n" +
+        "Deseja continuar e apagar tudo?"
+      );
+      
+      // 3. Se ele clicar em "Cancelar", paramos por aqui e o mapa fica intacto
+      if (!confirmClear) {
+        return; 
+      }
+      
+      setLoading(true); // Mostra a tela de carregamento (spinner)
+      
+      // 4. Se ele confirmar, apagamos todos os cards salvos no banco de dados
+      try {
+        const deletePromises = [];
+        
+        matrix.forEach((row) => {
+          row.forEach((rect) => {
+            const squareType = rect.type;
+            const squareId = rect[`${squareType}_id`];
+            
+            if (squareType && squareId) {
+              // Adiciona a requisição de delete na fila
+              deletePromises.push(
+                axios.delete(import.meta.env.VITE_BACKEND + `/${squareType}/${squareId}`)
+              );
+            }
+          });
+        });
+        
+        // Executa todas as exclusões ao mesmo tempo (mais rápido)
+        await Promise.all(deletePromises);
+        
+        // 5. Limpa a tela localmente esvaziando as 5 linhas
+        setMatrix([[], [], [], [], []]); 
+        
+      } catch (error) {
+        console.error("Erro ao limpar o mapa:", error);
+        toast.error("Ocorreu um erro ao tentar limpar o mapa.");
+        setLoading(false);
+        return; // Aborta a abertura do tutorial se a exclusão falhar
+      }
+      
+      setLoading(false); // Esconde o spinner
+    }
+
+    // 6. Continua com a inicialização do tutorial escolhido
     if (level === 1) {
       setTargetScenario('pizza');
     } else if (level === 2) {
@@ -1050,6 +1103,7 @@ const Tool = ({ }) => {
     } else if (level === 3) {
       setTargetScenario('viagem');
     }
+    
     setShowLevelSelector(false);
     setShowTutorialWizard(true);
   };
