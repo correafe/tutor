@@ -9,17 +9,21 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [feedback, setFeedback] = useState(null);
   const [feedbackMessage, setFeedbackMessage] = useState("");
+  
+  // Novo estado para o modo de avaliação (Níveis 2 e 3)
+  const [sessionPoints, setSessionPoints] = useState(0);
 
   let scenarioData;
-    if (scenarioType === 'streaming') scenarioData = STREAMING_SCENARIO;
-    else if (scenarioType === 'viagem') scenarioData = ADVANCED_SCENARIO;
-    else scenarioData = PIZZA_SCENARIO;
+  if (scenarioType === 'streaming') scenarioData = STREAMING_SCENARIO;
+  else if (scenarioType === 'viagem') scenarioData = ADVANCED_SCENARIO;
+  else scenarioData = PIZZA_SCENARIO;
 
-    const currentPhaseNumber = Math.floor(currentStepIndex / 5) + 1;
-    const currentStep = scenarioData.steps[currentStepIndex];
+  const currentPhaseNumber = Math.floor(currentStepIndex / 5) + 1;
+  const currentStep = scenarioData.steps[currentStepIndex];
+  const totalPhases = scenarioData.steps.length / 5;
 
-    const totalPhases = scenarioData.steps.length / 5;
-
+  // Se não for pizza, é modo avaliação (sem feedback imediato)
+  const isAssessmentMode = scenarioType !== 'pizza';
   const isQuiz = viewState === 'quiz';
 
   if (viewState === 'prompt') {
@@ -82,17 +86,82 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
     );
   }
 
+  // TELA FINAL DE RESULTADOS (Aparece apenas no Intermediário e Avançado)
+  if (viewState === 'results') {
+    const maxPoints = scenarioData.steps.length * 10;
+    const isPerfect = sessionPoints === maxPoints;
+
+    return (
+      <div className="wizard-overlay">
+        <div className="wizard-box" style={{ textAlign: 'center' }}>
+          <h2>🏁 Avaliação Concluída!</h2>
+          <p style={{ fontSize: '18px', marginTop: '10px' }}>Você terminou o cenário: {scenarioData.scenarioMeta.name}</p>
+          
+          <div style={{ margin: '30px 0', padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '10px' }}>
+            <p style={{ fontSize: '20px', marginBottom: '10px' }}>Sua Pontuação:</p>
+            <h1 style={{ fontSize: '48px', color: isPerfect ? '#4caf50' : '#f5a623', margin: '0' }}>
+              {sessionPoints} <span style={{ fontSize: '24px', color: '#888' }}>/ {maxPoints}</span>
+            </h1>
+          </div>
+
+          <p style={{ fontSize: '16px', marginBottom: '20px' }}>
+            {isPerfect 
+              ? "Incrível! Você fez as melhores escolhas possíveis e gabaritou o mapa!" 
+              : "Você foi bem, mas ainda pode melhorar algumas escolhas para alcançar a pontuação máxima."}
+          </p>
+
+          <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
+            {!isPerfect && (
+              <button 
+                onClick={() => {
+                  // Reseta tudo para tentar novamente
+                  setSessionPoints(0);
+                  setCurrentStepIndex(0);
+                  setViewState('quiz');
+                }}
+                style={{ backgroundColor: '#ff9800', color: '#fff', border: 'none', flex: 1 }}
+              >
+                Refazer Agora
+              </button>
+            )}
+            <button 
+              onClick={() => {
+                // Ao finalizar, salva os pontos da sessão no Contexto Global
+                addPoints(sessionPoints, `Concluiu o nível ${scenarioType}`);
+                onComplete();
+              }}
+              style={{ backgroundColor: '#4caf50', color: '#fff', border: 'none', flex: 1 }}
+            >
+              Resgatar Pontos e Sair
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const handleOptionClick = (option) => {
-    if (option.correct) {
-      addPoints(10, 'Resposta correta no tutorial');
-      setFeedback('success');
-      setFeedbackMessage(option.feedback);
-      if (onCorrectAnswer) {
-        onCorrectAnswer(currentStep, currentStepIndex);
+    if (isAssessmentMode) {
+      // MODO AVALIAÇÃO: Soma os pontos da opção e passa direto pra próxima (sem feedback)
+      const pointsScored = option.points !== undefined ? option.points : (option.correct ? 10 : 0);
+      setSessionPoints(prev => prev + pointsScored);
+
+      if (currentStepIndex < scenarioData.steps.length - 1) {
+        setCurrentStepIndex(prev => prev + 1);
+      } else {
+        setViewState('results'); // Vai pra tela de resultados
       }
     } else {
-      setFeedback('error');
-      setFeedbackMessage(option.feedback);
+      // MODO BÁSICO (Pizza): Dá feedback na hora
+      if (option.correct) {
+        addPoints(10, 'Resposta correta no tutorial básico');
+        setFeedback('success');
+        setFeedbackMessage(option.feedback);
+        if (onCorrectAnswer) onCorrectAnswer(currentStep, currentStepIndex);
+      } else {
+        setFeedback('error');
+        setFeedbackMessage(option.feedback);
+      }
     }
   };
 
@@ -107,36 +176,27 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
   };
 
   const optionsStyle = currentStep.isEmojiSelection ? {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
-    gap: '20px'
+    display: 'flex', flexDirection: 'row', justifyContent: 'center', flexWrap: 'wrap', gap: '20px'
   } : {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px'
+    display: 'flex', flexDirection: 'column', gap: '10px'
   };
 
   const buttonStyle = currentStep.isEmojiSelection ? {
-    fontSize: '40px',
-    padding: '10px 20px'
+    fontSize: '40px', padding: '10px 20px'
   } : {};
 
   return (
     <div className={`wizard-overlay ${isQuiz ? 'quiz-mode' : ''}`}>
       <div className="wizard-box">
-        <div className="wizard-header" style={{ marginBottom: '10px' }}>
-          <span style={{
-            backgroundColor: '#e3f2fd',
-            color: '#1565c0',
-            padding: '5px 10px',
-            borderRadius: '15px',
-            fontSize: '12px',
-            fontWeight: 'bold'
-          }}>
+        <div className="wizard-header" style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
+          <span style={{ backgroundColor: '#e3f2fd', color: '#1565c0', padding: '5px 10px', borderRadius: '15px', fontSize: '12px', fontWeight: 'bold' }}>
             FASE {currentPhaseNumber} DE {totalPhases} DO MAPA
           </span>
+          {isAssessmentMode && (
+            <span style={{ fontSize: '14px', fontWeight: 'bold', color: '#666' }}>
+              Modo Avaliação ⏱️
+            </span>
+          )}
         </div>
 
         <div className="wizard-progress">
@@ -149,11 +209,7 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
         {!feedback ? (
           <div className="wizard-options" style={optionsStyle}>
             {currentStep.options.map(opt => (
-              <button
-                key={opt.id}
-                onClick={() => handleOptionClick(opt)}
-                style={buttonStyle}
-              >
+              <button key={opt.id} onClick={() => handleOptionClick(opt)} style={buttonStyle}>
                 {opt.text}
               </button>
             ))}

@@ -199,10 +199,10 @@ export const PIZZA_SCENARIO = {
 
 export const STREAMING_SCENARIO = {
   title: "Nível Intermediário: A Assinatura de Streaming 📺",
-  introQuestion: "Neste nível, vamos mapear uma jornada de 4 fases. As opções são mais parecidas, então preste atenção aos detalhes do cenário!",
+  introQuestion: "Neste nível, vamos mapear uma jornada de 4 fases. As alternativas possuem pesos diferentes (10, 5 ou 0 pontos). O feedback será dado apenas no final!",
   scenarioMeta: {
     name: "Assinatura de Serviço de Streaming",
-    description: "A jornada de Mariana, que busca um novo serviço de filmes para o final de semana. O objetivo é identificar o impacto da lentidão no cadastro e a satisfação final."
+    description: "A jornada de Mariana buscando um serviço de filmes. Identifique o impacto da lentidão no cadastro."
   },
   scenarioText: `Mariana quer assinar um novo serviço de streaming porque sua série favorita mudou de plataforma.
 
@@ -217,253 +217,209 @@ export const STREAMING_SCENARIO = {
   steps: [
     // --- FASE 1: PESQUISA ---
     {
-      id: 1,
-      section: "Fase 1: Fases da Jornada",
-      context: "Mariana percebe que precisa de um novo serviço e começa a levantar opções. Como chamamos essa etapa?",
+      id: 1, section: "Fase 1: Fases da Jornada", context: "Mariana percebe que precisa de um novo serviço e começa a levantar opções. Como chamamos essa etapa?",
       correctAnswer: { description: "Pesquisa e Aprendizado", emojiTag: "🔍" },
       options: [
-        { id: 'a', text: "Consideração", correct: false, feedback: "A consideração vem quando ela já tem uma lista curta de opções." },
-        { id: 'b', text: "Decisão de Compra", correct: false, feedback: "Ela ainda está apenas olhando o que existe no mercado." },
-        { id: 'c', text: "Pesquisa e Aprendizado", correct: true, feedback: "Correto! É a fase de descoberta e busca de informações." },
-        { id: 'd', text: "Reconhecimento do Problema", correct: false, feedback: "Isso foi o gatilho, a fase atual já é a busca ativa." }
+        { id: 'a', text: "Consideração", points: 5 }, // Meio certo
+        { id: 'b', text: "Decisão de Compra", points: 0 }, 
+        { id: 'c', text: "Pesquisa e Aprendizado", points: 10 }, // Certo
+        { id: 'd', text: "Reconhecimento do Problema", points: 0 } 
       ]
     },
     {
-      id: 2,
-      section: "Fase 1: Ações do Usuário",
-      context: "Qual a ação principal de Mariana no início dessa jornada?",
+      id: 2, section: "Fase 1: Ações do Usuário", context: "Qual a ação principal de Mariana no início dessa jornada?",
       correctAnswer: { description: "Comparar serviços em blogs", emojiTag: "📑" },
       options: [
-        { id: 'a', text: "Comparar serviços em blogs", correct: true, feedback: "Exato! Ela está buscando opiniões de terceiros." },
-        { id: 'b', text: "Acessar o site do serviço", correct: false, feedback: "Isso acontece na fase 2. Agora ela está em blogs externos." },
-        { id: 'c', text: "Baixar o aplicativo na TV", correct: false, feedback: "Ela só fará isso depois de assinar." },
-        { id: 'd', text: "Solicitar período de teste", correct: false, feedback: "O cenário não menciona testes gratuitos nesta fase." }
+        { id: 'a', text: "Comparar serviços em blogs", points: 10 },
+        { id: 'b', text: "Acessar o site do serviço", points: 5 },
+        { id: 'c', text: "Baixar o aplicativo na TV", points: 0 },
+        { id: 'd', text: "Solicitar período de teste", points: 0 }
       ]
     },
     {
-      id: 3,
-      section: "Fase 1: Emoções",
-      context: "Mariana vê muitos preços e catálogos diferentes. Como ela se sente?",
-      isEmojiSelection: true,
-      correctAnswer: { description: "Analítica e em dúvida", emojiTag: "🤨", lineY: -15 },
+      id: 3, section: "Fase 1: Emoções", context: "Mariana vê muitos preços e catálogos diferentes. Como ela se sente?",
+      isEmojiSelection: true, correctAnswer: { description: "Analítica e em dúvida", emojiTag: "🤨", lineY: -15 },
       options: [
-        { id: 'a', text: "😀", correct: false, feedback: "Ela ainda está em dúvida, não necessariamente alegre." },
-        { id: 'b', text: "😍", correct: false, feedback: "Ela ainda não se apaixonou por nenhum serviço." },
-        { id: 'c', text: "😴", correct: false, feedback: "Ela está interessada na série, não entediada." },
-        { id: 'd', text: "🤨", correct: true, feedback: "Sim, ela está analítica e confusa com as opções." }
+        { id: 'a', text: "😀", points: 0 },
+        { id: 'b', text: "😍", points: 0 },
+        { id: 'c', text: "😴", points: 5 }, // Entediada pelas opções (parcial)
+        { id: 'd', text: "🤨", points: 10 } // Analítica/Dúvida
       ]
     },
     {
-      id: 4,
-      section: "Fase 1: Pensamentos",
-      context: "O que passa pela cabeça de Mariana enquanto lê os blogs?",
+      id: 4, section: "Fase 1: Pensamentos", context: "O que passa pela cabeça de Mariana enquanto lê os blogs?",
       correctAnswer: { description: "Será que vale a pena?", emojiTag: "💭" },
       options: [
-        { id: 'a', text: "O site está travando", correct: false, feedback: "Isso só acontecerá no cadastro." },
-        { id: 'b', text: "Será que vale a pena assinar?", correct: true, feedback: "Isso! É a dúvida clássica da fase de pesquisa." },
-        { id: 'c', text: "A imagem 4K é perfeita", correct: false, feedback: "Ela só pensará nisso quando estiver assistindo." },
-        { id: 'd', text: "Vou cancelar os outros", correct: false, feedback: "Foco no levantamento inicial de custos." }
+        { id: 'a', text: "O site está travando", points: 0 },
+        { id: 'b', text: "Será que vale a pena assinar?", points: 10 },
+        { id: 'c', text: "A imagem 4K é perfeita", points: 0 },
+        { id: 'd', text: "Vou cancelar os outros", points: 5 } // Pensamento plausível, mas secundário
       ]
     },
     {
-      id: 5,
-      section: "Fase 1: Pontos de Contato",
-      context: "Qual o canal de interação Mariana está usando?",
+      id: 5, section: "Fase 1: Pontos de Contato", context: "Qual o canal de interação Mariana está usando?",
       correctAnswer: { description: "Buscadores e Blogs", emojiTag: "🌐" },
       options: [
-        { id: 'a', text: "Loja de Aplicativos", correct: false, feedback: "Ela está usando o navegador, não a loja de apps." },
-        { id: 'b', text: "Navegador da Smart TV", correct: false, feedback: "Ela está pesquisando no computador/celular." },
-        { id: 'c', text: "Buscadores e Blogs Tech", correct: true, feedback: "Correto! Canais de busca e conteúdo especializado." },
-        { id: 'd', text: "Suporte via Chat", correct: false, feedback: "Ela ainda não falou com a empresa." }
+        { id: 'a', text: "Loja de Aplicativos", points: 5 },
+        { id: 'b', text: "Navegador da Smart TV", points: 0 },
+        { id: 'c', text: "Buscadores e Blogs Tech", points: 10 },
+        { id: 'd', text: "Suporte via Chat", points: 0 }
       ]
     },
 
     // --- FASE 2: ESCOLHA ---
     {
-      id: 6,
-      section: "Fase 2: Fases da Jornada",
-      context: "Mariana agora está focada apenas no site do serviço. Que etapa é esta?",
+      id: 6, section: "Fase 2: Fases da Jornada", context: "Mariana agora está focada apenas no site do serviço. Que etapa é esta?",
       correctAnswer: { description: "Consideração da Solução", emojiTag: "⚖️" },
       options: [
-        { id: 'a', text: "Avaliação da Intenção", correct: false, feedback: "Termo incorreto. Ela está avaliando as opções da marca." },
-        { id: 'b', text: "Consideração da Solução", correct: true, feedback: "Exato! Ela reduziu as opções e está avaliando os planos." },
-        { id: 'c', text: "Engajamento Inicial", correct: false, feedback: "Engajamento costuma ser após a conversão." },
-        { id: 'd', text: "Retenção de Cliente", correct: false, feedback: "Ela ainda nem é cliente!" }
+        { id: 'a', text: "Avaliação da Intenção", points: 5 },
+        { id: 'b', text: "Consideração da Solução", points: 10 },
+        { id: 'c', text: "Engajamento Inicial", points: 0 },
+        { id: 'd', text: "Retenção de Cliente", points: 0 }
       ]
     },
     {
-      id: 7,
-      section: "Fase 2: Ações do Usuário",
-      context: "O que Mariana faz dentro do site?",
+      id: 7, section: "Fase 2: Ações do Usuário", context: "O que Mariana faz dentro do site?",
       correctAnswer: { description: "Análise de planos e recursos", emojiTag: "📊" },
       options: [
-        { id: 'a', text: "Lê a política de privacidade", correct: false, feedback: "O cenário diz que ela analisa os planos." },
-        { id: 'b', text: "Cria uma senha forte", correct: false, feedback: "Isso será na fase de cadastro." },
-        { id: 'c', text: "Assiste um trailer", correct: false, feedback: "O foco dela agora é a escolha do plano." },
-        { id: 'd', text: "Analisa planos e recursos", correct: true, feedback: "Sim, comparando Básico vs Premium." }
+        { id: 'a', text: "Lê a política de privacidade", points: 0 },
+        { id: 'b', text: "Cria uma senha forte", points: 0 },
+        { id: 'c', text: "Assiste um trailer", points: 5 }, // Plausível, mas foge do foco financeiro
+        { id: 'd', text: "Analisa planos e recursos", points: 10 }
       ]
     },
     {
-      id: 8,
-      section: "Fase 2: Emoções",
-      context: "Ela decide pelo Premium, mas o preço a incomoda um pouco. Como ela se sente?",
-      isEmojiSelection: true,
-      correctAnswer: { description: "Preocupada", emojiTag: "😟", lineY: -15 },
+      id: 8, section: "Fase 2: Emoções", context: "Ela decide pelo Premium, mas o preço a incomoda um pouco. Como ela se sente?",
+      isEmojiSelection: true, correctAnswer: { description: "Preocupada", emojiTag: "😟", lineY: -15 },
       options: [
-        { id: 'a', text: "😭", correct: false, feedback: "Muito exagerado." },
-        { id: 'b', text: "🤩", correct: false, feedback: "Ela está decidida, mas o preço é um ponto negativo." },
-        { id: 'c', text: "😟", correct: true, feedback: "Sim, uma leve preocupação com o custo." },
-        { id: 'd', text: "😡", correct: false, feedback: "Ainda não chegou a irritação com o site." }
+        { id: 'a', text: "😭", points: 5 }, // Exagerado, mas na mesma linha negativa
+        { id: 'b', text: "🤩", points: 0 },
+        { id: 'c', text: "😟", points: 10 },
+        { id: 'd', text: "😡", points: 0 }
       ]
     },
     {
-      id: 9,
-      section: "Fase 2: Pensamentos",
-      context: "O que Mariana pensa ao escolher o plano mais caro?",
+      id: 9, section: "Fase 2: Pensamentos", context: "O que Mariana pensa ao escolher o plano mais caro?",
       correctAnswer: { description: "Preciso de 4K na TV", emojiTag: "📺" },
       options: [
-        { id: 'a', text: "Vou dividir a conta", correct: false, feedback: "O cenário não menciona outras pessoas." },
-        { id: 'b', text: "O site está muito lerdo", correct: false, feedback: "Isso acontece no próximo passo." },
-        { id: 'c', text: "Preciso de 4K para minha TV", correct: true, feedback: "Correto! É a justificativa para o gasto maior." },
-        { id: 'd', text: "O suporte é bom?", correct: false, feedback: "Ela está focada na qualidade da imagem." }
+        { id: 'a', text: "Vou dividir a conta", points: 5 }, // Hipótese válida, mas não citada no texto
+        { id: 'b', text: "O site está muito lerdo", points: 0 },
+        { id: 'c', text: "Preciso de 4K para minha TV", points: 10 },
+        { id: 'd', text: "O suporte é bom?", points: 0 }
       ]
     },
     {
-      id: 10,
-      section: "Fase 2: Pontos de Contato",
-      context: "Onde essa análise de planos está ocorrendo?",
+      id: 10, section: "Fase 2: Pontos de Contato", context: "Onde essa análise de planos está ocorrendo?",
       correctAnswer: { description: "Site Oficial (Preços)", emojiTag: "💻" },
       options: [
-        { id: 'a', text: "Banner Publicitário", correct: false, feedback: "Ela já clicou e está dentro do site." },
-        { id: 'b', text: "E-mail de Boas-vindas", correct: false, feedback: "Ela ainda não se cadastrou." },
-        { id: 'c', text: "Site Oficial (Preços)", correct: true, feedback: "Isso! A página de planos do site." },
-        { id: 'd', text: "Redes Sociais", correct: false, feedback: "Ela está no domínio da empresa agora." }
+        { id: 'a', text: "Banner Publicitário", points: 0 },
+        { id: 'b', text: "E-mail de Boas-vindas", points: 0 },
+        { id: 'c', text: "Site Oficial (Preços)", points: 10 },
+        { id: 'd', text: "Redes Sociais", points: 5 } // Ela pode ter vindo de lá
       ]
     },
 
     // --- FASE 3: CADASTRO ---
     {
-      id: 11,
-      section: "Fase 3: Fases da Jornada",
-      context: "Mariana preenche os dados e paga. Como chamamos este momento?",
+      id: 11, section: "Fase 3: Fases da Jornada", context: "Mariana preenche os dados e paga. Como chamamos este momento?",
       correctAnswer: { description: "Conversão / Compra", emojiTag: "💳" },
       options: [
-        { id: 'a', text: "Inscrição em Newsletter", correct: false, feedback: "Newsletter é apenas e-mail, aqui é assinatura paga." },
-        { id: 'b', text: "Conversão / Compra", correct: true, feedback: "Exato! É o momento onde ela se torna cliente." },
-        { id: 'c', text: "Configuração de Conta", correct: false, feedback: "Isso vem após o pagamento ser aprovado." },
-        { id: 'd', text: "Adoção do Produto", correct: false, feedback: "Adoção envolve o uso recorrente, não apenas o checkout." }
+        { id: 'a', text: "Inscrição em Newsletter", points: 0 },
+        { id: 'b', text: "Conversão / Compra", points: 10 },
+        { id: 'c', text: "Configuração de Conta", points: 5 }, // Faz parte, mas o foco é o cartão
+        { id: 'd', text: "Adoção do Produto", points: 0 }
       ]
     },
     {
-      id: 12,
-      section: "Fase 3: Ações do Usuário",
-      context: "O que ela faz enquanto o site demora a carregar?",
+      id: 12, section: "Fase 3: Ações do Usuário", context: "O que ela faz enquanto o site demora a carregar?",
       correctAnswer: { description: "Preenche dados e aguarda", emojiTag: "⌨️" },
       options: [
-        { id: 'a', text: "Reinicia o computador", correct: false, feedback: "Ela insiste e espera o site carregar." },
-        { id: 'b', text: "Cancela o pagamento", correct: false, feedback: "Ela finaliza a compra apesar da lentidão." },
-        { id: 'c', text: "Limpa os cookies", correct: false, feedback: "O cenário não cita essa ação técnica." },
-        { id: 'd', text: "Preenche dados e aguarda", correct: true, feedback: "Sim, ela está no processo de checkout." }
+        { id: 'a', text: "Reinicia o computador", points: 0 },
+        { id: 'b', text: "Cancela o pagamento", points: 0 },
+        { id: 'c', text: "Limpa os cookies", points: 5 },
+        { id: 'd', text: "Preenche dados e aguarda", points: 10 }
       ]
     },
     {
-      id: 13,
-      section: "Fase 3: Emoções",
-      context: "O site demora muito. Qual o sentimento de Mariana?",
-      isEmojiSelection: true,
-      correctAnswer: { description: "Irritada", emojiTag: "😡", lineY: -60 },
+      id: 13, section: "Fase 3: Emoções", context: "O site demora muito. Qual o sentimento de Mariana?",
+      isEmojiSelection: true, correctAnswer: { description: "Irritada", emojiTag: "😡", lineY: -60 },
       options: [
-        { id: 'a', text: "🤩", correct: false, feedback: "Ninguém fica maravilhado com um site lento." },
-        { id: 'b', text: "😴", correct: false, feedback: "Ela está irritada, não com sono." },
-        { id: 'c', text: "🤨", correct: false, feedback: "A dúvida da fase 1 virou raiva pela má performance." },
-        { id: 'd', text: "😡", correct: true, feedback: "Isso! Impaciência e irritação." }
+        { id: 'a', text: "🤩", points: 0 },
+        { id: 'b', text: "😴", points: 0 },
+        { id: 'c', text: "🤨", points: 5 }, // Fraco para a situação
+        { id: 'd', text: "😡", points: 10 }
       ]
     },
     {
-      id: 14,
-      section: "Fase 3: Pensamentos",
-      context: "O que ela pensa enquanto a barra de carregamento trava?",
+      id: 14, section: "Fase 3: Pensamentos", context: "O que ela pensa enquanto a barra de carregamento trava?",
       correctAnswer: { description: "Que site horrível!", emojiTag: "💢" },
       options: [
-        { id: 'a', text: "Será que meu cartão tem limite?", correct: false, feedback: "A irritação é com a lentidão do site." },
-        { id: 'b', text: "Vou pedir uma pizza", correct: false, feedback: "Cenário errado! Aqui é streaming." },
-        { id: 'c', text: "Que site horrível!", correct: true, feedback: "Sim, a má experiência técnica gera esse pensamento." },
-        { id: 'd', text: "Amanhã eu tento de novo", correct: false, feedback: "Ela insiste até conseguir hoje." }
+        { id: 'a', text: "Será que meu cartão tem limite?", points: 5 }, // Dúvida comum no checkout
+        { id: 'b', text: "Vou pedir uma pizza", points: 0 },
+        { id: 'c', text: "Que site horrível!", points: 10 },
+        { id: 'd', text: "Amanhã eu tento de novo", points: 0 }
       ]
     },
     {
-      id: 15,
-      section: "Fase 3: Pontos de Contato",
-      context: "Com qual parte do sistema ela interage agora?",
+      id: 15, section: "Fase 3: Pontos de Contato", context: "Com qual parte do sistema ela interage agora?",
       correctAnswer: { description: "Gateway de Pagamento", emojiTag: "🔒" },
       options: [
-        { id: 'a', text: "Gateway de Pagamento", correct: true, feedback: "Correto! É a interface de inserção do cartão." },
-        { id: 'b', text: "Fórum de Usuários", correct: false, feedback: "Ela está no ambiente oficial de compra." },
-        { id: 'c', text: "Página inicial do buscador", correct: false, feedback: "Ela já saiu da busca faz tempo." },
-        { id: 'd', text: "Aplicativo da Smart TV", correct: false, feedback: "Ela ainda está no site para pagar." }
+        { id: 'a', text: "Gateway de Pagamento", points: 10 },
+        { id: 'b', text: "Fórum de Usuários", points: 0 },
+        { id: 'c', text: "Página inicial do buscador", points: 0 },
+        { id: 'd', text: "Aplicativo da Smart TV", points: 5 } // Ela usará no futuro
       ]
     },
 
     // --- FASE 4: USO ---
     {
-      id: 16,
-      section: "Fase 4: Fases da Jornada",
-      context: "Mariana finalmente utiliza o serviço na TV. Que etapa é esta?",
+      id: 16, section: "Fase 4: Fases da Jornada", context: "Mariana finalmente utiliza o serviço na TV. Que etapa é esta?",
       correctAnswer: { description: "Experiência de Uso", emojiTag: "🎬" },
       options: [
-        { id: 'a', text: "Suporte ao Cliente", correct: false, feedback: "Ela não teve problemas no uso, apenas usou." },
-        { id: 'b', text: "Pós-Venda", correct: false, feedback: "Pós-venda costuma envolver feedback direto para a empresa." },
-        { id: 'c', text: "Experiência de Uso", correct: true, feedback: "Exato! É o momento do consumo do produto." },
-        { id: 'd', text: "Fidelização", correct: false, feedback: "Ela está gostando, mas fidelizar leva tempo." }
+        { id: 'a', text: "Suporte ao Cliente", points: 0 },
+        { id: 'b', text: "Pós-Venda", points: 5 }, // Uso é parte do pós-venda
+        { id: 'c', text: "Experiência de Uso", points: 10 },
+        { id: 'd', text: "Fidelização", points: 0 }
       ]
     },
     {
-      id: 17,
-      section: "Fase 4: Ações do Usuário",
-      context: "O que Mariana faz ao abrir o app na TV?",
+      id: 17, section: "Fase 4: Ações do Usuário", context: "O que Mariana faz ao abrir o app na TV?",
       correctAnswer: { description: "Encontra o filme e assiste", emojiTag: "🍿" },
       options: [
-        { id: 'a', text: "Cria um novo perfil", correct: false, feedback: "O cenário foca na facilidade de achar o filme." },
-        { id: 'b', text: "Muda a senha", correct: false, feedback: "Não há motivo para isso agora." },
-        { id: 'c', text: "Luta com o controle remoto", correct: false, feedback: "O cenário diz que a interface é intuitiva." },
-        { id: 'd', text: "Encontra o filme e assiste", correct: true, feedback: "Isso! Ação direta de consumo." }
+        { id: 'a', text: "Cria um novo perfil", points: 5 }, // Ela até poderia fazer, mas o texto foca no filme
+        { id: 'b', text: "Muda a senha", points: 0 },
+        { id: 'c', text: "Luta com o controle remoto", points: 0 },
+        { id: 'd', text: "Encontra o filme e assiste", points: 10 }
       ]
     },
     {
-      id: 18,
-      section: "Fase 4: Emoções",
-      context: "Mariana está relaxada e o filme é ótimo. Como ela se sente?",
-      isEmojiSelection: true,
-      correctAnswer: { description: "Satisfeita", emojiTag: "🥰", lineY: 35 },
+      id: 18, section: "Fase 4: Emoções", context: "Mariana está relaxada e o filme é ótimo. Como ela se sente?",
+      isEmojiSelection: true, correctAnswer: { description: "Satisfeita", emojiTag: "🥰", lineY: 35 },
       options: [
-        { id: 'a', text: "😟", correct: false, feedback: "A preocupação com o preço sumiu ao ver a qualidade." },
-        { id: 'b', text: "🥰", correct: true, feedback: "Correto! Satisfação total após o estresse do cadastro." },
-        { id: 'c', text: "😡", correct: false, feedback: "Ela já esqueceu a lentidão do site." },
-        { id: 'd', text: "🤨", correct: false, feedback: "Ela não tem mais dúvidas." }
+        { id: 'a', text: "😟", points: 0 },
+        { id: 'b', text: "🥰", points: 10 },
+        { id: 'c', text: "😡", points: 0 },
+        { id: 'd', text: "🤨", points: 5 }
       ]
     },
     {
-      id: 19,
-      section: "Fase 4: Pensamentos",
-      context: "Qual a conclusão de Mariana no final da noite?",
+      id: 19, section: "Fase 4: Pensamentos", context: "Qual a conclusão de Mariana no final da noite?",
       correctAnswer: { description: "Valeu o investimento!", emojiTag: "💎" },
       options: [
-        { id: 'a', text: "Vou cancelar amanhã", correct: false, feedback: "Ela está satisfeita." },
-        { id: 'b', text: "O Básico era melhor", correct: false, feedback: "Ela está feliz com o Premium e o 4K." },
-        { id: 'c', text: "Valeu o investimento!", correct: true, feedback: "Sim! A qualidade compensou o custo e o esforço." },
-        { id: 'd', text: "O site ainda está lento", correct: false, feedback: "Ela está no App agora, que funciona bem." }
+        { id: 'a', text: "Vou cancelar amanhã", points: 0 },
+        { id: 'b', text: "O Básico era melhor", points: 5 }, // Falso, pois ela curtiu o 4K
+        { id: 'c', text: "Valeu o investimento!", points: 10 },
+        { id: 'd', text: "O site ainda está lento", points: 0 }
       ]
     },
     {
-      id: 20,
-      section: "Fase 4: Pontos de Contato",
-      context: "Qual o canal final de interação?",
+      id: 20, section: "Fase 4: Pontos de Contato", context: "Qual o canal final de interação?",
       correctAnswer: { description: "App na Smart TV", emojiTag: "📺" },
       options: [
-        { id: 'a', text: "Site no Navegador", correct: false, feedback: "Agora ela está na TV." },
-        { id: 'b', text: "Controle Remoto", correct: false, feedback: "O controle é um acessório, o canal é o App." },
-        { id: 'c', text: "Notificação Push", correct: false, feedback: "Ela que abriu o app, não foi chamada por notificação." },
-        { id: 'd', text: "App na Smart TV", correct: true, feedback: "Correto! É onde a experiência final acontece." }
+        { id: 'a', text: "Site no Navegador", points: 0 },
+        { id: 'b', text: "Controle Remoto", points: 5 }, // Dispositivo de apoio, mas não o canal
+        { id: 'c', text: "Notificação Push", points: 0 },
+        { id: 'd', text: "App na Smart TV", points: 10 }
       ]
     }
   ]
@@ -472,365 +428,310 @@ export const STREAMING_SCENARIO = {
 
 export const ADVANCED_SCENARIO = {
   title: "Nível Avançado: Planejamento de Viagem Internacional ✈️",
-  introQuestion: "Este é o desafio final! Vamos mapear 5 fases completas. As alternativas foram elaboradas para confundir com outras etapas, então preste muita atenção ao que está acontecendo AGORA.",
+  introQuestion: "Este é o desafio final! Você terá que mapear as 5 fases sem receber feedback até o fim. Cuidado, alternativas erradas podem dar zero pontos ou meio ponto!",
   
   scenarioMeta: {
     name: "Planejamento de Viagem Internacional",
-    description: "A jornada complexa e demorada desde a idealização da viagem até o momento de embarcar no aeroporto."
+    description: "A jornada desde a idealização da viagem até o momento de embarcar."
   },
 
   scenarioText: `
     CENÁRIO COMPLETO:
     
-    1. FASE DE INSPIRAÇÃO: Mariana decide que quer viajar nas férias, mas não sabe para onde. Ela passa horas em redes sociais visuais e em buscadores de voos pesquisando destinos exóticos e baratos, sonhando acordada.
+    1. FASE DE INSPIRAÇÃO: Mariana decide que quer viajar nas férias. Ela passa horas em redes sociais e buscadores de voos pesquisando destinos exóticos e baratos, sonhando acordada.
     
-    2. FASE DE PLANEJAMENTO FINANCEIRO: Ela finalmente escolhe a Itália. Porém, ao ver os custos base, percebe que precisa economizar muito. Ela cria uma planilha e se sente preocupada com os cortes de gastos.
+    2. FASE DE PLANEJAMENTO: Ela escolhe a Itália. Ao ver os custos base, percebe que precisa economizar. Ela cria uma planilha e se sente preocupada com os cortes de gastos.
     
-    3. FASE DE COMPRA: O mês da viagem se aproxima. Mariana entra no site da companhia aérea para fechar o voo. Ela sente uma enorme tensão ao digitar os dados do cartão de crédito (é muito dinheiro!), mas após 1 minuto a tela mostra "Compra Aprovada".
+    3. FASE DE COMPRA: Mariana entra no site da companhia aérea. Ela sente uma enorme tensão ao digitar os dados do cartão (é muito dinheiro!), mas após 1 min a tela mostra "Aprovada".
     
-    4. FASE DE RESERVA DE HOSPEDAGEM: Passagens garantidas, ela entra em aplicativos de hospedagem para procurar estadia perto do centro. Fica sobrecarregada com a quantidade de opções e com medo de escolher um lugar ruim, mas opta pelo mais bem avaliado.
+    4. FASE DE HOSPEDAGEM: Passagens garantidas, ela entra em apps de hospedagem. Fica sobrecarregada com as opções e com medo de escolher lugar ruim, optando pelo mais bem avaliado.
     
-    5. DIA DO EMBARQUE: O grande dia chega! Mariana chega ao aeroporto, despacha a mala no balcão físico, passa pelo raio-X e senta no portão de embarque. Ela está radiante e aliviada por tudo ter dado certo.
+    5. DIA DO EMBARQUE: Mariana despacha a mala no balcão e senta no portão de embarque. Ela está radiante e aliviada por tudo ter dado certo.
   `,
   
   steps: [
-    // --- FASE 1: INSPIRAÇÃO ---
+    // FASE 1
     {
-      id: 1,
-      section: "Fase 1: Fases da Jornada",
-      context: "Mariana quer viajar e começou a buscar destinos sem ter nada definido ainda. Como essa fase inicial se chama?",
+      id: 1, section: "Fase 1: Fases da Jornada", context: "Mariana busca destinos sem ter nada definido. Qual o nome dessa etapa?",
       correctAnswer: { description: "Pesquisa e Inspiração", emojiTag: "💡" },
       options: [
-        { id: 'a', text: "Planejamento Logístico", correct: false, feedback: "Planejar a logística vem depois de saber para onde vai." },
-        { id: 'b', text: "Conscientização de Compra", correct: false, feedback: "Termo de marketing. 'Inspiração' define melhor a exploração inicial de destinos." },
-        { id: 'c', text: "Avaliação de Custos", correct: false, feedback: "Isso é o tema principal da Fase 2." },
-        { id: 'd', text: "Pesquisa e Inspiração", correct: true, feedback: "Exato! Fase de exploração, onde o usuário está aberto a possibilidades." },
-        { id: 'e', text: "Decisão de Destino", correct: false, feedback: "Ela está em dúvida, ainda não decidiu nada." }
+        { id: 'a', text: "Planejamento Logístico", points: 0 },
+        { id: 'b', text: "Conscientização de Compra", points: 5 },
+        { id: 'c', text: "Avaliação de Custos", points: 0 },
+        { id: 'd', text: "Pesquisa e Inspiração", points: 10 },
+        { id: 'e', text: "Decisão de Destino", points: 0 }
       ]
     },
     {
-      id: 2,
-      section: "Fase 1: Ações do Usuário",
-      context: "O que Mariana faz para encontrar seu destino ideal?",
+      id: 2, section: "Fase 1: Ações do Usuário", context: "O que Mariana faz para encontrar seu destino ideal?",
       correctAnswer: { description: "Navega em redes visuais e buscadores", emojiTag: "🖱️" },
       options: [
-        { id: 'a', text: "Navega em redes visuais e buscadores", correct: true, feedback: "Correto! É a ação observável dela nos buscadores e redes." },
-        { id: 'b', text: "Cria uma planilha de despesas", correct: false, feedback: "A planilha só entra na Fase 2 (Planejamento Financeiro)." },
-        { id: 'c', text: "Lê avaliações de hotéis", correct: false, feedback: "Hospedagem é apenas na Fase 4. Ela nem tem o voo ainda." },
-        { id: 'd', text: "Entra em contato com agência", correct: false, feedback: "O cenário diz que ela pesquisa sozinha." },
-        { id: 'e', text: "Verifica o limite do cartão", correct: false, feedback: "Ela fará isso na fase de compra, não na inspiração." }
+        { id: 'a', text: "Navega em redes visuais e buscadores", points: 10 },
+        { id: 'b', text: "Cria uma planilha de despesas", points: 0 },
+        { id: 'c', text: "Lê avaliações de hotéis", points: 0 },
+        { id: 'd', text: "Entra em contato com agência", points: 5 },
+        { id: 'e', text: "Verifica o limite do cartão", points: 0 }
       ]
     },
     {
-      id: 3,
-      section: "Fase 1: Emoções",
-      context: "Imaginando-se em lugares incríveis, qual o sentimento de Mariana?",
-      isEmojiSelection: true,
-      correctAnswer: { description: "Sonhadora", emojiTag: "🤩", lineY: 35 }, 
+      id: 3, section: "Fase 1: Emoções", context: "Imaginando-se em lugares incríveis, qual o sentimento de Mariana?",
+      isEmojiSelection: true, correctAnswer: { description: "Sonhadora", emojiTag: "🤩", lineY: 35 }, 
       options: [
-        { id: 'a', text: "😰", correct: false, feedback: "A tensão só vem na hora de passar o cartão (Fase 3)." },
-        { id: 'b', text: "🤩", correct: true, feedback: "Perfeito! A fase de inspiração costuma ser um ponto alto emocionalmente.", emojiTag: "🤩", lineY: 35 },
-        { id: 'c', text: "🧐", correct: false, feedback: "Ela ficará analítica assim na Fase 2 (planilha)." },
-        { id: 'd', text: "😵‍💫", correct: false, feedback: "Ela não está confusa ou tonta ainda, está apenas sonhando." },
-        { id: 'e', text: "😌", correct: false, feedback: "O alívio é o sentimento da Fase 5, após o embarque." }
+        { id: 'a', text: "😰", points: 0 },
+        { id: 'b', text: "🤩", points: 10 },
+        { id: 'c', text: "🧐", points: 0 },
+        { id: 'd', text: "😵‍💫", points: 5 }, // Leve confusão pelas opções, mas menos provável
+        { id: 'e', text: "😌", points: 0 }
       ]
     },
     {
-      id: 4,
-      section: "Fase 1: Pensamentos",
-      context: "Durante essa busca aberta, qual é o pensamento dominante dela?",
+      id: 4, section: "Fase 1: Pensamentos", context: "Durante essa busca aberta, qual é o pensamento dominante dela?",
       correctAnswer: { description: "Qual destino cabe no orçamento?", emojiTag: "💭" },
       options: [
-        { id: 'a', text: "Vou precisar cortar o delivery", correct: false, feedback: "Isso acontece quando ela começa a preencher a planilha na Fase 2." },
-        { id: 'b', text: "A transação vai aprovar?", correct: false, feedback: "Esse é o medo específico da Fase 3 (Compra)." },
-        { id: 'c', text: "Qual destino cabe no orçamento?", correct: true, feedback: "Exato! A intersecção entre o sonho e a realidade financeira inicial." },
-        { id: 'd', text: "Espero que o hotel seja bom", correct: false, feedback: "Hospedagem é Fase 4." },
-        { id: 'e', text: "Será que meu voo atrasa?", correct: false, feedback: "Pensamento muito precoce, isso seria na Fase 5." }
+        { id: 'a', text: "Vou precisar cortar o delivery", points: 0 },
+        { id: 'b', text: "A transação vai aprovar?", points: 0 },
+        { id: 'c', text: "Qual destino cabe no orçamento?", points: 10 },
+        { id: 'd', text: "Espero que o hotel seja bom", points: 5 }, // Tão longe que não é o foco principal
+        { id: 'e', text: "Será que meu voo atrasa?", points: 0 }
       ]
     },
     {
-      id: 5,
-      section: "Fase 1: Pontos de Contato",
-      context: "Onde ocorre a interação de Mariana com a ideia de viagem nesta fase?",
+      id: 5, section: "Fase 1: Pontos de Contato", context: "Onde ocorre a interação de Mariana nesta fase?",
       correctAnswer: { description: "Buscadores e Redes Sociais", emojiTag: "📱" },
       options: [
-        { id: 'a', text: "Planilha de Gastos", correct: false, feedback: "A planilha entra na Fase 2." },
-        { id: 'b', text: "Aplicativo de Hospedagem", correct: false, feedback: "Isso é Fase 4." },
-        { id: 'c', text: "Balcão do Aeroporto", correct: false, feedback: "O aeroporto físico só aparece na Fase 5." },
-        { id: 'd', text: "Sistema de Checkout Aéreo", correct: false, feedback: "Ela não está comprando passagem ainda." },
-        { id: 'e', text: "Buscadores e Redes Sociais", correct: true, feedback: "Canais digitais abertos onde ela pesquisa opções." }
+        { id: 'a', text: "Planilha de Gastos", points: 0 },
+        { id: 'b', text: "Aplicativo de Hospedagem", points: 0 },
+        { id: 'c', text: "Balcão do Aeroporto", points: 0 },
+        { id: 'd', text: "Sistema de Checkout Aéreo", points: 5 },
+        { id: 'e', text: "Buscadores e Redes Sociais", points: 10 }
       ]
     },
 
-    // --- FASE 2: PLANEJAMENTO FINANCEIRO ---
+    // FASE 2
     {
-      id: 7,
-      section: "Fase 2: Fases da Jornada",
-      context: "Mariana escolheu a Itália, mas agora precisa lidar com o dinheiro. Que fase é esta?",
+      id: 7, section: "Fase 2: Fases da Jornada", context: "Mariana escolheu a Itália e analisa custos. Que fase é esta?",
       correctAnswer: { description: "Planejamento Financeiro", emojiTag: "📈" },
       options: [
-        { id: 'a', text: "Pagamento do Voo", correct: false, feedback: "A compra real só acontece na Fase 3." },
-        { id: 'b', text: "Planejamento Financeiro", correct: true, feedback: "Correto! Momento de equilibrar as finanças para realizar a viagem." },
-        { id: 'c', text: "Organização do Roteiro", correct: false, feedback: "O roteiro diz respeito aos passeios lá, aqui ela está cuidando do dinheiro." },
-        { id: 'd', text: "Avaliação Pós-Compra", correct: false, feedback: "Ela não comprou nada ainda." },
-        { id: 'e', text: "Reserva de Serviços", correct: false, feedback: "Reservas ocorrem mais à frente." }
+        { id: 'a', text: "Pagamento do Voo", points: 0 },
+        { id: 'b', text: "Planejamento Financeiro", points: 10 },
+        { id: 'c', text: "Organização do Roteiro", points: 5 }, // Faz parte do plano geral, mas o foco é financeiro
+        { id: 'd', text: "Avaliação Pós-Compra", points: 0 },
+        { id: 'e', text: "Reserva de Serviços", points: 0 }
       ]
     },
     {
-      id: 8,
-      section: "Fase 2: Ações do Usuário",
-      context: "O que ela precisa fazer ativamente nesta etapa?",
+      id: 8, section: "Fase 2: Ações do Usuário", context: "O que ela precisa fazer ativamente nesta etapa?",
       correctAnswer: { description: "Cria planilha e corta gastos", emojiTag: "📝" },
       options: [
-        { id: 'a', text: "Passa pela segurança", correct: false, feedback: "Fase 5!" },
-        { id: 'b', text: "Pesquisa fotos do Coliseu", correct: false, feedback: "Ela já passou da fase de inspiração visual." },
-        { id: 'c', text: "Filtra hotéis por avaliação", correct: false, feedback: "Isso acontecerá na Fase 4." },
-        { id: 'd', text: "Digita o cartão no site", correct: false, feedback: "Isso é a Fase 3 (Checkout)." },
-        { id: 'e', text: "Cria planilha e corta gastos", correct: true, feedback: "Exato! Ação clara e tática para economizar." }
+        { id: 'a', text: "Passa pela segurança", points: 0 },
+        { id: 'b', text: "Pesquisa fotos do Coliseu", points: 5 },
+        { id: 'c', text: "Filtra hotéis por avaliação", points: 0 },
+        { id: 'd', text: "Digita o cartão no site", points: 0 },
+        { id: 'e', text: "Cria planilha e corta gastos", points: 10 }
       ]
     },
     {
-      id: 9,
-      section: "Fase 2: Emoções",
-      context: "Ver o quanto custa viajar para a Itália mexe com ela. Qual a emoção predominante?",
-      isEmojiSelection: true,
-      correctAnswer: { description: "Preocupada", emojiTag: "🧐", lineY: -15 }, 
+      id: 9, section: "Fase 2: Emoções", context: "Ver o quanto custa a viagem mexe com ela. Qual a emoção?",
+      isEmojiSelection: true, correctAnswer: { description: "Preocupada", emojiTag: "🧐", lineY: -15 }, 
       options: [
-        { id: 'a', text: "😌", correct: false, feedback: "Ela não está aliviada, está calculando sob certa pressão." },
-        { id: 'b', text: "😡", correct: false, feedback: "Ela não está irritada com nenhuma falha de sistema." },
-        { id: 'c', text: "🧐", correct: true, feedback: "Sim, ela está analítica, focada e levemente preocupada.", emojiTag: "🧐", lineY: -15 },
-        { id: 'd', text: "🥰", correct: false, feedback: "Fazer planilhas de corte de gastos não costuma ser tão maravilhoso assim." },
-        { id: 'e', text: "😰", correct: false, feedback: "O pico de ansiedade financeira virá no momento exato de passar o cartão (Fase 3)." }
+        { id: 'a', text: "😌", points: 0 },
+        { id: 'b', text: "😡", points: 0 },
+        { id: 'c', text: "🧐", points: 10 },
+        { id: 'd', text: "🥰", points: 0 },
+        { id: 'e', text: "😰", points: 5 } // Muito tensa para ser só planilha
       ]
     },
     {
-      id: 10,
-      section: "Fase 2: Pensamentos",
-      context: "Diante dos números da viagem, o que Mariana pensa?",
+      id: 10, section: "Fase 2: Pensamentos", context: "Diante dos números da viagem, o que Mariana pensa?",
       correctAnswer: { description: "Onde posso cortar despesas?", emojiTag: "✂️" },
       options: [
-        { id: 'a', text: "Onde fica o portão 8?", correct: false, feedback: "Isso é no dia do embarque." },
-        { id: 'b', text: "Qual país devo escolher?", correct: false, feedback: "Ela já escolheu: Itália." },
-        { id: 'c', text: "Onde posso cortar despesas?", correct: true, feedback: "Perfeito. O pensamento que guia a ação de economizar." },
-        { id: 'd', text: "Esse anfitrião é confiável?", correct: false, feedback: "Pensamento ligado a hospedagem (Fase 4)." },
-        { id: 'e', text: "Espero que o pagamento passe", correct: false, feedback: "Isso é pensamento de checkout de compra (Fase 3)." }
+        { id: 'a', text: "Onde fica o portão 8?", points: 0 },
+        { id: 'b', text: "Qual país devo escolher?", points: 0 },
+        { id: 'c', text: "Onde posso cortar despesas?", points: 10 },
+        { id: 'd', text: "Esse anfitrião é confiável?", points: 0 },
+        { id: 'e', text: "Espero que o pagamento passe", points: 5 }
       ]
     },
     {
-      id: 11,
-      section: "Fase 2: Pontos de Contato",
-      context: "Qual é a ferramenta que ela usa para realizar essa fase?",
+      id: 11, section: "Fase 2: Pontos de Contato", context: "Qual é a ferramenta que ela usa para realizar essa fase?",
       correctAnswer: { description: "Planilha de Orçamento", emojiTag: "📊" },
       options: [
-        { id: 'a', text: "Aplicativo de Hospedagem", correct: false, feedback: "Será o ponto de contato da Fase 4." },
-        { id: 'b', text: "Buscador de Voos", correct: false, feedback: "Ela usou voos para inspirar custos na Fase 1." },
-        { id: 'c', text: "Planilha de Orçamento", correct: true, feedback: "A ferramenta de controle financeiro dela." },
-        { id: 'd', text: "Check-in Eletrônico", correct: false, feedback: "Fase 5." },
-        { id: 'e', text: "E-mail de confirmação", correct: false, feedback: "Ela ainda não comprou nada." }
+        { id: 'a', text: "Aplicativo de Hospedagem", points: 0 },
+        { id: 'b', text: "Buscador de Voos", points: 5 },
+        { id: 'c', text: "Planilha de Orçamento", points: 10 },
+        { id: 'd', text: "Check-in Eletrônico", points: 0 },
+        { id: 'e', text: "E-mail de confirmação", points: 0 }
       ]
     },
 
-    // --- FASE 3: COMPRA ---
+    // FASE 3
     {
-      id: 13,
-      section: "Fase 3: Fases da Jornada",
-      context: "Mês da viagem chegou. Ela está no site da companhia aérea inserindo os dados para pagar. Que etapa é essa?",
+      id: 13, section: "Fase 3: Fases da Jornada", context: "Mês da viagem chegou, hora de pagar. Que etapa é essa?",
       correctAnswer: { description: "Checkout e Compra", emojiTag: "💳" },
       options: [
-        { id: 'a', text: "Emissão do Cartão de Embarque", correct: false, feedback: "O cartão de embarque só é emitido no check-in, perto da viagem." },
-        { id: 'b', text: "Planejamento Financeiro", correct: false, feedback: "Isso acabou de acontecer (Fase 2)." },
-        { id: 'c', text: "Checkout e Compra", correct: true, feedback: "A fase de conversão final da passagem." },
-        { id: 'd', text: "Serviço de Bordo", correct: false, feedback: "Ela ainda nem pisou no avião." },
-        { id: 'e', text: "Reserva de Acomodação", correct: false, feedback: "A hospedagem vem logo depois (Fase 4)." }
+        { id: 'a', text: "Emissão do Cartão de Embarque", points: 0 },
+        { id: 'b', text: "Planejamento Financeiro", points: 5 },
+        { id: 'c', text: "Checkout e Compra", points: 10 },
+        { id: 'd', text: "Serviço de Bordo", points: 0 },
+        { id: 'e', text: "Reserva de Acomodação", points: 0 }
       ]
     },
     {
-      id: 14,
-      section: "Fase 3: Ações do Usuário",
-      context: "O que Mariana faz concretamente nesse momento de tensão?",
+      id: 14, section: "Fase 3: Ações do Usuário", context: "O que Mariana faz concretamente nesse momento?",
       correctAnswer: { description: "Digita dados e confirma compra", emojiTag: "💻" },
       options: [
-        { id: 'a', text: "Pesquisa sobre o clima na Itália", correct: false, feedback: "Isso seria Fase 1." },
-        { id: 'b', text: "Envia mensagem ao anfitrião", correct: false, feedback: "Fase 4 (Hospedagem)." },
-        { id: 'c', text: "Despacha a bagagem", correct: false, feedback: "Fase 5." },
-        { id: 'd', text: "Abre o banco e vê o extrato", correct: false, feedback: "Fase 2." },
-        { id: 'e', text: "Digita dados e confirma compra", correct: true, feedback: "O preenchimento do formulário de pagamento." }
+        { id: 'a', text: "Pesquisa sobre o clima na Itália", points: 0 },
+        { id: 'b', text: "Envia mensagem ao anfitrião", points: 0 },
+        { id: 'c', text: "Despacha a bagagem", points: 0 },
+        { id: 'd', text: "Abre o banco e vê o extrato", points: 5 },
+        { id: 'e', text: "Digita dados e confirma compra", points: 10 }
       ]
     },
     {
-      id: 15,
-      section: "Fase 3: Emoções",
-      context: "Sendo um valor muito alto, Mariana fica apreensiva esperando a tela de aprovação. Qual a emoção?",
-      isEmojiSelection: true,
-      correctAnswer: { description: "Ansiosa/Tensa", emojiTag: "😰", lineY: -30 }, 
+      id: 15, section: "Fase 3: Emoções", context: "Sendo um valor muito alto, qual a emoção?",
+      isEmojiSelection: true, correctAnswer: { description: "Ansiosa/Tensa", emojiTag: "😰", lineY: -30 }, 
       options: [
-        { id: 'a', text: "😰", correct: true, feedback: "Exato! Pagamentos de alto valor causam picos de ansiedade.", emojiTag: "😰", lineY: -30 },
-        { id: 'b', text: "🤩", correct: false, feedback: "Ela estava assim na pesquisa (Fase 1)." },
-        { id: 'c', text: "😵‍💫", correct: false, feedback: "Ela não está confusa, sabe muito bem o que está fazendo." },
-        { id: 'd', text: "😡", correct: false, feedback: "O sistema não falhou, ela só está nervosa." },
-        { id: 'e', text: "😌", correct: false, feedback: "O alívio vem DEPOIS que a tela aprova, mas a emoção dominante da ação é a tensão." }
+        { id: 'a', text: "😰", points: 10 },
+        { id: 'b', text: "🤩", points: 0 },
+        { id: 'c', text: "😵‍💫", points: 5 },
+        { id: 'd', text: "😡", points: 0 },
+        { id: 'e', text: "😌", points: 0 }
       ]
     },
     {
-      id: 16,
-      section: "Fase 3: Pensamentos",
-      context: "Enquanto a 'bolinha' do site carrega o pagamento, qual é o pensamento dela?",
+      id: 16, section: "Fase 3: Pensamentos", context: "Enquanto o site carrega o pagamento, o que ela pensa?",
       correctAnswer: { description: "Aprova logo, por favor!", emojiTag: "🙏" },
       options: [
-        { id: 'a', text: "Qual a senha do meu Wi-Fi?", correct: false, feedback: "Nada a ver com o contexto." },
-        { id: 'b', text: "Espero que o hotel tenha café", correct: false, feedback: "Ela ainda está comprando o voo!" },
-        { id: 'c', text: "Quero comer massa e pizza", correct: false, feedback: "Isso é inspiração, agora o foco é a transação bancária." },
-        { id: 'd', text: "Aprova logo, por favor!", correct: true, feedback: "O clássico pensamento durante o processamento do cartão." },
-        { id: 'e', text: "Esqueci de trancar a casa", correct: false, feedback: "Ela não saiu de casa ainda." }
+        { id: 'a', text: "Qual a senha do meu Wi-Fi?", points: 0 },
+        { id: 'b', text: "Espero que o hotel tenha café", points: 5 },
+        { id: 'c', text: "Quero comer massa e pizza", points: 0 },
+        { id: 'd', text: "Aprova logo, por favor!", points: 10 },
+        { id: 'e', text: "Esqueci de trancar a casa", points: 0 }
       ]
     },
     {
-      id: 17,
-      section: "Fase 3: Pontos de Contato",
-      context: "Onde o pagamento está sendo processado fisicamente/digitalmente?",
+      id: 17, section: "Fase 3: Pontos de Contato", context: "Onde o pagamento está sendo processado?",
       correctAnswer: { description: "Site da Companhia Aérea", emojiTag: "✈️" },
       options: [
-        { id: 'a', text: "Balcão de Check-in", correct: false, feedback: "Isso é físico, no aeroporto (Fase 5)." },
-        { id: 'b', text: "App de Hospedagem", correct: false, feedback: "App de hospedagem é Fase 4." },
-        { id: 'c', text: "Planilha Financeira", correct: false, feedback: "Fase 2." },
-        { id: 'd', text: "Site da Companhia Aérea", correct: true, feedback: "O ambiente digital de checkout da empresa aérea." },
-        { id: 'e', text: "Máquina de Cartão Física", correct: false, feedback: "Ela está comprando em casa, online." }
+        { id: 'a', text: "Balcão de Check-in", points: 0 },
+        { id: 'b', text: "App de Hospedagem", points: 0 },
+        { id: 'c', text: "Planilha Financeira", points: 5 },
+        { id: 'd', text: "Site da Companhia Aérea", points: 10 },
+        { id: 'e', text: "Máquina de Cartão Física", points: 0 }
       ]
     },
 
-    // --- FASE 4: RESERVA DE HOSPEDAGEM ---
+    // FASE 4
     {
-      id: 19,
-      section: "Fase 4: Fases da Jornada",
-      context: "Voo garantido! Mariana vai buscar onde dormir. Como definir esta fase?",
+      id: 19, section: "Fase 4: Fases da Jornada", context: "Voo garantido! Mariana vai buscar onde dormir. Como definir esta fase?",
       correctAnswer: { description: "Seleção de Hospedagem", emojiTag: "🏨" },
       options: [
-        { id: 'a', text: "Pagamento de Voo", correct: false, feedback: "Ela acabou de fazer isso na Fase 3." },
-        { id: 'b', text: "Corte de Despesas", correct: false, feedback: "Fase 2." },
-        { id: 'c', text: "Decisão do Roteiro Turístico", correct: false, feedback: "Roteiro é passeios, aqui ela procura cama e banho." },
-        { id: 'd', text: "Inspeção de Bagagem", correct: false, feedback: "Fase 5." },
-        { id: 'e', text: "Seleção de Hospedagem", correct: true, feedback: "A busca e reserva de um hotel/acomodação." }
+        { id: 'a', text: "Pagamento de Voo", points: 0 },
+        { id: 'b', text: "Corte de Despesas", points: 0 },
+        { id: 'c', text: "Decisão do Roteiro Turístico", points: 5 },
+        { id: 'd', text: "Inspeção de Bagagem", points: 0 },
+        { id: 'e', text: "Seleção de Hospedagem", points: 10 }
       ]
     },
     {
-      id: 20,
-      section: "Fase 4: Ações do Usuário",
-      context: "Como ela resolve a questão de onde ficar hospedada?",
+      id: 20, section: "Fase 4: Ações do Usuário", context: "Como ela resolve a questão de onde ficar hospedada?",
       correctAnswer: { description: "Filtra opções em apps de hospedagem", emojiTag: "🎛️" },
       options: [
-        { id: 'a', text: "Adiciona dados do passaporte", correct: false, feedback: "Ação de check-in." },
-        { id: 'b', text: "Liga para agências locais", correct: false, feedback: "O texto afirma que ela entra em aplicativos digitais." },
-        { id: 'c', text: "Filtra opções em apps de hospedagem", correct: true, feedback: "Ação direta e operacional nos aplicativos." },
-        { id: 'd', text: "Cria pastas de referências visuais", correct: false, feedback: "Isso é ação de inspiração (Fase 1)." },
-        { id: 'e', text: "Despacha as malas", correct: false, feedback: "Fase 5." }
+        { id: 'a', text: "Adiciona dados do passaporte", points: 0 },
+        { id: 'b', text: "Liga para agências locais", points: 5 },
+        { id: 'c', text: "Filtra opções em apps de hospedagem", points: 10 },
+        { id: 'd', text: "Cria pastas de referências visuais", points: 0 },
+        { id: 'e', text: "Despacha as malas", points: 0 }
       ]
     },
     {
-      id: 21,
-      section: "Fase 4: Emoções",
-      context: "Existem centenas de hotéis, locais e preços diferentes. Como Mariana se sente lendo os reviews?",
-      isEmojiSelection: true,
-      correctAnswer: { description: "Sobrecarregada/Confusa", emojiTag: "😵‍💫", lineY: -15 }, 
+      id: 21, section: "Fase 4: Emoções", context: "Com centenas de hotéis e preços, como ela se sente?",
+      isEmojiSelection: true, correctAnswer: { description: "Sobrecarregada/Confusa", emojiTag: "😵‍💫", lineY: -15 }, 
       options: [
-        { id: 'a', text: "🥰", correct: false, feedback: "A alegria profunda vem no embarque." },
-        { id: 'b', text: "😵‍💫", correct: true, feedback: "Isso! A sobrecarga de informações (paradoxo da escolha).", emojiTag: "😵‍💫", lineY: -15 },
-        { id: 'c', text: "🤩", correct: false, feedback: "Ela estava assim no começo, agora é muito detalhe chato para analisar." },
-        { id: 'd', text: "😡", correct: false, feedback: "Ela não está com raiva, apenas confusa com as opções." },
-        { id: 'e', text: "😰", correct: false, feedback: "Ela estava com medo era do cartão recusar o voo." }
+        { id: 'a', text: "🥰", points: 0 },
+        { id: 'b', text: "😵‍💫", points: 10 },
+        { id: 'c', text: "🤩", points: 0 },
+        { id: 'd', text: "😡", points: 5 },
+        { id: 'e', text: "😰", points: 0 }
       ]
     },
     {
-      id: 22,
-      section: "Fase 4: Pensamentos",
-      context: "Lendo comentários de usuários antigos, o que preocupa Mariana?",
+      id: 22, section: "Fase 4: Pensamentos", context: "Lendo comentários de usuários antigos, o que preocupa Mariana?",
       correctAnswer: { description: "E se a cama for horrível?", emojiTag: "🛏️" },
       options: [
-        { id: 'a', text: "E se cancelarem meu voo?", correct: false, feedback: "O foco atual é o hotel." },
-        { id: 'b', text: "Vou tirar muitas fotos", correct: false, feedback: "Pensamento de Fase 1 ou da viagem em si." },
-        { id: 'c', text: "Como vou levar meus euros?", correct: false, feedback: "Isso é planejamento financeiro geral." },
-        { id: 'd', text: "A senha do cartão está certa?", correct: false, feedback: "Problema da Fase 3." },
-        { id: 'e', text: "E se a cama for horrível?", correct: true, feedback: "O medo de escolher uma hospedagem ruim com base nas avaliações." }
+        { id: 'a', text: "E se cancelarem meu voo?", points: 5 },
+        { id: 'b', text: "Vou tirar muitas fotos", points: 0 },
+        { id: 'c', text: "Como vou levar meus euros?", points: 0 },
+        { id: 'd', text: "A senha do cartão está certa?", points: 0 },
+        { id: 'e', text: "E se a cama for horrível?", points: 10 }
       ]
     },
     {
-      id: 23,
-      section: "Fase 4: Pontos de Contato",
-      context: "Onde ela está fazendo essa análise de hotéis?",
+      id: 23, section: "Fase 4: Pontos de Contato", context: "Onde ela está fazendo essa análise de hotéis?",
       correctAnswer: { description: "Apps de Hospedagem", emojiTag: "📲" },
       options: [
-        { id: 'a', text: "Redes Sociais Visuais", correct: false, feedback: "Isso é inspiração (Fase 1)." },
-        { id: 'b', text: "Site da Companhia Aérea", correct: false, feedback: "Isso foi na compra da passagem." },
-        { id: 'c', text: "Apps de Hospedagem", correct: true, feedback: "Os aplicativos de estadia são os canais de interação." },
-        { id: 'd', text: "Totem do Aeroporto", correct: false, feedback: "Isso seria na Fase 5." },
-        { id: 'e', text: "Planilha Financeira", correct: false, feedback: "Fase 2." }
+        { id: 'a', text: "Redes Sociais Visuais", points: 5 },
+        { id: 'b', text: "Site da Companhia Aérea", points: 0 },
+        { id: 'c', text: "Apps de Hospedagem", points: 10 },
+        { id: 'd', text: "Totem do Aeroporto", points: 0 },
+        { id: 'e', text: "Planilha Financeira", points: 0 }
       ]
     },
 
-    // --- FASE 5: DIA DO EMBARQUE ---
+    // FASE 5
     {
-      id: 25,
-      section: "Fase 5: Fases da Jornada",
-      context: "O dia chegou. Mariana está no aeroporto para viajar. Como chamamos essa etapa de consumo do serviço?",
+      id: 25, section: "Fase 5: Fases da Jornada", context: "O dia chegou. Mariana está no aeroporto para viajar. Como chamamos essa etapa?",
       correctAnswer: { description: "Uso / Início da Experiência", emojiTag: "🛫" },
       options: [
-        { id: 'a', text: "Pesquisa Pós-Venda", correct: false, feedback: "Isso acontece depois que ela voltar da viagem." },
-        { id: 'b', text: "Cancelamento de Reserva", correct: false, feedback: "Tudo deu certo, não há cancelamento." },
-        { id: 'c', text: "Avaliação de Custos", correct: false, feedback: "Fase 2." },
-        { id: 'd', text: "Uso / Início da Experiência", correct: true, feedback: "Correto! O serviço que ela comprou meses atrás começou a ser entregue." },
-        { id: 'e', text: "Retenção de Marca", correct: false, feedback: "Isso é objetivo da empresa a longo prazo." }
+        { id: 'a', text: "Pesquisa Pós-Venda", points: 5 },
+        { id: 'b', text: "Cancelamento de Reserva", points: 0 },
+        { id: 'c', text: "Avaliação de Custos", points: 0 },
+        { id: 'd', text: "Uso / Início da Experiência", points: 10 },
+        { id: 'e', text: "Retenção de Marca", points: 0 }
       ]
     },
     {
-      id: 26,
-      section: "Fase 5: Ações do Usuário",
-      context: "Quais ações físicas Mariana realiza no aeroporto?",
+      id: 26, section: "Fase 5: Ações do Usuário", context: "Quais ações físicas Mariana realiza no aeroporto?",
       correctAnswer: { description: "Despacha mala e vai ao portão", emojiTag: "🚶‍♀️" },
       options: [
-        { id: 'a', text: "Despacha mala e vai ao portão", correct: true, feedback: "As ações de navegação física no aeroporto." },
-        { id: 'b', text: "Compra lembrancinhas", correct: false, feedback: "Talvez no destino, não agora." },
-        { id: 'c', text: "Lê as avaliações do hotel", correct: false, feedback: "Isso foi resolvido na Fase 4." },
-        { id: 'd', text: "Digita senha do cartão", correct: false, feedback: "Fase 3." },
-        { id: 'e', text: "Salva fotos de referência em pastas", correct: false, feedback: "Isso foi o estopim na Fase 1." }
+        { id: 'a', text: "Despacha mala e vai ao portão", points: 10 },
+        { id: 'b', text: "Compra lembrancinhas", points: 5 },
+        { id: 'c', text: "Lê as avaliações do hotel", points: 0 },
+        { id: 'd', text: "Digita senha do cartão", points: 0 },
+        { id: 'e', text: "Salva fotos de referência", points: 0 }
       ]
     },
     {
-      id: 27,
-      section: "Fase 5: Emoções",
-      context: "Sentada em frente ao portão de embarque, pronta para ir, como ela está?",
-      isEmojiSelection: true,
-      correctAnswer: { description: "Feliz e Aliviada", emojiTag: "🥰", lineY: 35 }, 
+      id: 27, section: "Fase 5: Emoções", context: "Sentada em frente ao portão de embarque pronta para ir, como ela está?",
+      isEmojiSelection: true, correctAnswer: { description: "Feliz e Aliviada", emojiTag: "🥰", lineY: 35 }, 
       options: [
-        { id: 'a', text: "😡", correct: false, feedback: "A viagem está indo bem!" },
-        { id: 'b', text: "😰", correct: false, feedback: "O estresse do cartão de crédito passou na Fase 3." },
-        { id: 'c', text: "🥰", correct: true, feedback: "Ponto Altíssimo! A ansiedade virou alegria e alívio.", emojiTag: "🥰", lineY: 35 },
-        { id: 'd', text: "🧐", correct: false, feedback: "A fase de análise financeira (Fase 2) já acabou." },
-        { id: 'e', text: "😵‍💫", correct: false, feedback: "A confusão mental dos hotéis (Fase 4) já passou." }
+        { id: 'a', text: "😡", points: 0 },
+        { id: 'b', text: "😰", points: 5 },
+        { id: 'c', text: "🥰", points: 10 },
+        { id: 'd', text: "🧐", points: 0 },
+        { id: 'e', text: "😵‍💫", points: 0 }
       ]
     },
     {
-      id: 28,
-      section: "Fase 5: Pensamentos",
-      context: "Relaxada, olhando os aviões pela janela, o que ela pensa?",
+      id: 28, section: "Fase 5: Pensamentos", context: "Relaxada, olhando os aviões pela janela, o que ela pensa?",
       correctAnswer: { description: "Tudo deu certo, finalmente férias!", emojiTag: "✨" },
       options: [
-        { id: 'a', text: "Como usar essa planilha?", correct: false, feedback: "Fase 2." },
-        { id: 'b', text: "Aonde será que eu vou?", correct: false, feedback: "Fase 1." },
-        { id: 'c', text: "Esse review parece falso", correct: false, feedback: "Fase 4." },
-        { id: 'd', text: "Tudo deu certo, finalmente férias!", correct: true, feedback: "O pensamento final de recompensa pela longa jornada." },
-        { id: 'e', text: "Espero que o cartão tenha limite", correct: false, feedback: "Fase 3." }
+        { id: 'a', text: "Como usar essa planilha?", points: 0 },
+        { id: 'b', text: "Aonde será que eu vou?", points: 0 },
+        { id: 'c', text: "Esse review parece falso", points: 5 },
+        { id: 'd', text: "Tudo deu certo, finalmente férias!", points: 10 },
+        { id: 'e', text: "Espero que o cartão tenha limite", points: 0 }
       ]
     },
     {
-      id: 29,
-      section: "Fase 5: Pontos de Contato",
-      context: "Neste último momento, ela interage no mundo físico. Qual é o ponto de contato?",
+      id: 29, section: "Fase 5: Pontos de Contato", context: "Neste último momento, ela interage no mundo físico. Qual é o ponto de contato?",
       correctAnswer: { description: "Balcão e Raio-X (Aeroporto)", emojiTag: "🏢" },
       options: [
-        { id: 'a', text: "Balcão e Raio-X (Aeroporto)", correct: true, feedback: "Os canais físicos de interação com o serviço de aviação." },
-        { id: 'b', text: "Buscador de Hotéis", correct: false, feedback: "Fase 4." },
-        { id: 'c', text: "Planilha Financeira", correct: false, feedback: "Fase 2." },
-        { id: 'd', text: "Checkout Online", correct: false, feedback: "Fase 3." },
-        { id: 'e', text: "Redes Sociais", correct: false, feedback: "Isso foi na fase de inspiração (Fase 1)." }
+        { id: 'a', text: "Balcão e Raio-X (Aeroporto)", points: 10 },
+        { id: 'b', text: "Buscador de Hotéis", points: 0 },
+        { id: 'c', text: "Planilha Financeira", points: 0 },
+        { id: 'd', text: "Checkout Online", points: 0 },
+        { id: 'e', text: "Redes Sociais", points: 5 }
       ]
     }
   ]
