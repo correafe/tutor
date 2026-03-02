@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react';
+// 1. Adicione o useContext na importação do React
+import React, { useState, useEffect, useContext } from 'react'; 
+// 2. Importe o ScoreContext
+import { ScoreContext } from '../contexts/ScoreContext'; 
 import { LogOut, GraduationCap, HelpCircle } from 'lucide-react'; 
 import axios from 'axios';
 import './Navbar.css';
@@ -17,6 +20,9 @@ const Navbar = ({
   onStartTour 
 }) => {   
   const [scenarioName, setScenarioName] = useState("Nome do Cenário");
+
+  // 3. Puxe a pontuação do contexto
+  const { score } = useContext(ScoreContext); 
 
   const usuario = JSON.parse(localStorage.getItem('user'));
 
@@ -62,8 +68,24 @@ const Navbar = ({
         </span>
       )}
 
-      {/* Direita: Botões */}
+      {/* Direita: Botões e Pontuação */}
       <div className="botoes">
+        
+        {/* 4. NOVA DIV DA PONTUAÇÃO (Fica antes do botão Salvar) */}
+        <div 
+          className="score-display" 
+          style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            marginRight: '15px', 
+            fontWeight: 'bold', 
+            color: '#FFD700', 
+            fontSize: '18px' 
+          }}
+        >
+          🏆 {score} pts
+        </div>
+
         <button className="button save" id="saveButton" onClick={onSaveClick}>
           Salvar
         </button>

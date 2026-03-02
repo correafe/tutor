@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react'; // Adicionado useContext
+import { ScoreContext } from '../contexts/ScoreContext';
 import Joyride, { STATUS } from 'react-joyride';
 
 const DASHBOARD_STEPS = [
@@ -94,94 +95,118 @@ const TOOL_STEPS = [
 ];
 
 
-export const DashboardTour = ({ run, onTourEnd }) => (
-  <Joyride
-    steps={DASHBOARD_STEPS}
-    run={run}
-    continuous
-    //showProgress
-    showSkipButton
-    hideCloseButton={true}
-    disableOverlayClose={true}
-    locale={{
-      last: 'Fim',
-      next: 'Próximo',
-      skip: 'Pular',
-      back: 'Voltar',
-    }}
-    callback={(data) => {
-      if ([STATUS.FINISHED, STATUS.SKIPPED].includes(data.status)) {
-        onTourEnd(); // Chama a função para parar o tour
-      }
-    }}
-    styles={{
-      options: {
-        primaryColor: '#06bd2d', 
-        zIndex: 10000,
-      },
-      tooltipContent: {
-        fontSize: '20px', 
-        textAlign: 'left' 
-      },
-      tooltipTitle: {
-        fontSize: '24px', 
-        fontWeight: 'bold'
-      },
-      buttonNext: {
-        fontSize: '18px' 
-      },
-      buttonBack: {
-        fontSize: '18px'
-      },
-      buttonSkip: {
-        fontSize: '18px'
-      }
-    }}
-  />
-);
+export const DashboardTour = ({ run, onTourEnd }) => {
+  // 1. Puxa a função de pontuação do contexto
+  const { addPoints } = useContext(ScoreContext);
+
+  return (
+    <Joyride
+      steps={DASHBOARD_STEPS}
+      run={run}
+      continuous
+      //showProgress
+      showSkipButton
+      hideCloseButton={true}
+      disableOverlayClose={true}
+      locale={{
+        last: 'Fim',
+        next: 'Próximo',
+        skip: 'Pular',
+        back: 'Voltar',
+      }}
+      callback={(data) => {
+        if ([STATUS.FINISHED, STATUS.SKIPPED].includes(data.status)) {
+          // 2. Lógica de pontuação para o Dashboard Tour
+          const hasCompletedDashboardTour = localStorage.getItem('hasCompletedDashboardTour');
+          if (!hasCompletedDashboardTour) {
+            addPoints(50, 'Completou o Tour do Dashboard');
+            localStorage.setItem('hasCompletedDashboardTour', 'true');
+          }
+          
+          onTourEnd(); // Chama a função para parar o tour
+        }
+      }}
+      styles={{
+        options: {
+          primaryColor: '#06bd2d', 
+          zIndex: 10000,
+        },
+        tooltipContent: {
+          fontSize: '20px', 
+          textAlign: 'left' 
+        },
+        tooltipTitle: {
+          fontSize: '24px', 
+          fontWeight: 'bold'
+        },
+        buttonNext: {
+          fontSize: '18px' 
+        },
+        buttonBack: {
+          fontSize: '18px'
+        },
+        buttonSkip: {
+          fontSize: '18px'
+        }
+      }}
+    />
+  );
+};
 
 // Componente do Tour para a Ferramenta Principal
-export const ToolTour = ({ run, onTourEnd }) => (
-  <Joyride
-    steps={TOOL_STEPS}
-    run={run}
-    continuous
-    //showProgress
-    showSkipButton
-    disableOverlayClose={true}
-    locale={{
-      last: 'Fim',
-      next: 'Próximo',
-      skip: 'Pular',
-      back: 'Voltar',
-    }}
-    callback={(data) => {
-      if ([STATUS.FINISHED, STATUS.SKIPPED].includes(data.status)) {
-        onTourEnd(); // Chama a função para parar o tour
-      }
-    }}
-    styles={{
-      options: {
-        primaryColor: '#4caf50', // Botão Salvar
-        zIndex: 10000,
-      },
-      tooltipContent: {
-        fontSize: '20px', 
-        textAlign: 'left'
-      },
-      tooltipTitle: {
-        fontSize: '24px', 
-        fontWeight: 'bold'
-      },
-       buttonNext: {
-        fontSize: '18px'
-      },
-      buttonBack: {
-        fontSize: '18px'
-      },
-      buttonSkip: {
-        fontSize: '18px'
-      }
-    }}
-  />
-);
+export const ToolTour = ({ run, onTourEnd }) => {
+  // 1. Puxa a função de pontuação do contexto
+  const { addPoints } = useContext(ScoreContext);
+
+  return (
+    <Joyride
+      steps={TOOL_STEPS}
+      run={run}
+      continuous
+      //showProgress
+      showSkipButton
+      disableOverlayClose={true}
+      locale={{
+        last: 'Fim',
+        next: 'Próximo',
+        skip: 'Pular',
+        back: 'Voltar',
+      }}
+      callback={(data) => {
+        if ([STATUS.FINISHED, STATUS.SKIPPED].includes(data.status)) {
+          // 2. Lógica de pontuação para o Tool Tour
+          const hasCompletedToolTour = localStorage.getItem('hasCompletedToolTour');
+          if (!hasCompletedToolTour) {
+            addPoints(50, 'Completou o Tour da Ferramenta');
+            localStorage.setItem('hasCompletedToolTour', 'true');
+          }
+
+          onTourEnd(); // Chama a função para parar o tour
+        }
+      }}
+      styles={{
+        options: {
+          primaryColor: '#4caf50', // Botão Salvar
+          zIndex: 10000,
+        },
+        tooltipContent: {
+          fontSize: '20px', 
+          textAlign: 'left'
+        },
+        tooltipTitle: {
+          fontSize: '24px', 
+          fontWeight: 'bold'
+        },
+        buttonNext: {
+          fontSize: '18px'
+        },
+        buttonBack: {
+          fontSize: '18px'
+        },
+        buttonSkip: {
+          fontSize: '18px'
+        }
+      }}
+    />
+  );
+};

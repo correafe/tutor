@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { PIZZA_SCENARIO, STREAMING_SCENARIO, ADVANCED_SCENARIO } from './tutorialData';
 import './TutorialWizard.css';
+import { ScoreContext } from '../contexts/ScoreContext';
 
 const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial, scenarioType }) => {
+  const { addPoints } = useContext(ScoreContext);
   const [viewState, setViewState] = useState('prompt');
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [feedback, setFeedback] = useState(null);
@@ -82,6 +84,7 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
 
   const handleOptionClick = (option) => {
     if (option.correct) {
+      addPoints(10, 'Resposta correta no tutorial');
       setFeedback('success');
       setFeedbackMessage(option.feedback);
       if (onCorrectAnswer) {

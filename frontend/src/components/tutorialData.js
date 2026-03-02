@@ -17,7 +17,7 @@ export const PIZZA_SCENARIO = {
     3. FASE DA ENTREGA (19:50): A campainha toca. João recebe a pizza, o cheiro é ótimo. Ele come e se sente feliz e satisfeito.
     
     ---
-    SUA TAREFA: Você vai mapear cada uma dessas 3 fases, preenchendo todas as linhas (Fases, Ações, Emoções, Pensamentos, Pontos de Contato e Oportunidades).
+    SUA TAREFA: Você vai mapear cada uma dessas 3 fases, preenchendo todas as linhas (Fases, Ações, Emoções, Pensamentos e Pontos de Contato).
   `,
   steps: [
     // --- FASE 1: A FOME ---
@@ -77,21 +77,10 @@ export const PIZZA_SCENARIO = {
         { id: 'c', text: "Geladeira de Casa", correct: true, feedback: "Correto. O objeto físico." }
       ]
     },
-    {
-      id: 6,
-      section: "Fase 1: Oportunidades",
-      context: "Pensando na frustração de João, o que um aplicativo de delivery poderia fazer para atraí-lo nesse horário (19:00)?",
-      correctAnswer: { description: "Notificação de Promoção", emojiTag: "🔔" },
-      options: [
-        { id: 'a', text: "Ocultar o cardápio de pizzarias", correct: false, feedback: "Isso afastaria o usuário." },
-        { id: 'b', text: "Enviar notificação de promoção", correct: true, feedback: "Excelente! Antecipar a necessidade do usuário no horário de pico da fome." },
-        { id: 'c', text: "Cobrar taxa extra de acesso", correct: false, feedback: "Isso geraria ainda mais frustração." }
-      ]
-    },
 
     // --- FASE 2: O PEDIDO ---
     {
-      id: 7,
+      id: 6,
       section: "Fase 2: Fases da Jornada",
       context: "Agora às 19:10. Ele decide pedir. Qual é a fase?",
       correctAnswer: { description: "Escolha no App", emojiTag: "📱" },
@@ -102,7 +91,7 @@ export const PIZZA_SCENARIO = {
       ]
     },
     {
-      id: 8,
+      id: 7,
       section: "Fase 2: Ações do Usuário",
       context: "O que ele faz no sofá?",
       correctAnswer: { description: "Navega no cardápio", emojiTag: "👆" },
@@ -113,7 +102,7 @@ export const PIZZA_SCENARIO = {
       ]
     },
     {
-      id: 9,
+      id: 8,
       section: "Fase 2: Emoções",
       context: "Ele não sabe qual sabor escolher. Como se sente?",
       isEmojiSelection: true,
@@ -125,7 +114,7 @@ export const PIZZA_SCENARIO = {
       ]
     },
     {
-      id: 10,
+      id: 9,
       section: "Fase 2: Pensamentos",
       context: "Qual a dúvida dele?",
       correctAnswer: { description: "Calabresa ou Queijo?", emojiTag: "🍕" },
@@ -136,7 +125,7 @@ export const PIZZA_SCENARIO = {
       ]
     },
     {
-      id: 11,
+      id: 10,
       section: "Fase 2: Pontos de Contato",
       context: "Onde ele escolhe a pizza?",
       correctAnswer: { description: "App", emojiTag: "🛒" },
@@ -146,21 +135,10 @@ export const PIZZA_SCENARIO = {
         { id: 'c', text: "Panfleto de Papel", correct: false, feedback: "É um app." }
       ]
     },
-    {
-      id: 12,
-      section: "Fase 2: Oportunidades",
-      context: "João está indeciso entre os sabores. Qual funcionalidade do app poderia ajudá-lo a decidir mais rápido?",
-      correctAnswer: { description: "Sugestão de Meio a Meio", emojiTag: "💡" },
-      options: [
-        { id: 'a', text: "Reiniciar o aplicativo", correct: false, feedback: "Isso interromperia o fluxo de compra." },
-        { id: 'b', text: "Sugerir 'Meio a Meio' ou 'Mais Pedidos'", correct: true, feedback: "Perfeito! Facilita a escolha e reduz a fricção da dúvida." },
-        { id: 'c', text: "Bloquear a tela por 1 minuto", correct: false, feedback: "Péssima ideia para a conversão de vendas." }
-      ]
-    },
 
     // --- FASE 3: ENTREGA ---
     {
-      id: 13,
+      id: 11,
       section: "Fase 3: Fases da Jornada",
       context: "19:50. A campainha toca. Qual é a fase final?",
       correctAnswer: { description: "Recebimento e Consumo", emojiTag: "😋" },
@@ -171,7 +149,7 @@ export const PIZZA_SCENARIO = {
       ]
     },
     {
-      id: 14,
+      id: 12,
       section: "Fase 3: Ações do Usuário",
       context: "O que ele faz quando a pizza chega?",
       correctAnswer: { description: "Pega a caixa e come", emojiTag: "🍴" },
@@ -182,7 +160,7 @@ export const PIZZA_SCENARIO = {
       ]
     },
     {
-      id: 15,
+      id: 13,
       section: "Fase 3: Emoções",
       context: "Comendo uma pizza quente. Como ele está?",
       isEmojiSelection: true,
@@ -194,7 +172,7 @@ export const PIZZA_SCENARIO = {
       ]
     },
     {
-      id: 16,
+      id: 14,
       section: "Fase 3: Pensamentos",
       context: "O veredito final:",
       correctAnswer: { description: "Estava ótima!", emojiTag: "❤️" },
@@ -205,7 +183,7 @@ export const PIZZA_SCENARIO = {
       ]
     },
     {
-      id: 17,
+      id: 15,
       section: "Fase 3: Pontos de Contato",
       context: "O que ele tem em mãos?",
       correctAnswer: { description: "Caixa de Pizza", emojiTag: "📦" },
@@ -214,20 +192,10 @@ export const PIZZA_SCENARIO = {
         { id: 'b', text: "Caixa de Pizza", correct: true, feedback: "O produto final." },
         { id: 'c', text: "A TV", correct: false, feedback: "Não é o foco." }
       ]
-    },
-    {
-      id: 18,
-      section: "Fase 3: Oportunidades",
-      context: "João comeu e está super satisfeito. Como a empresa pode aproveitar esse pico emocional positivo?",
-      correctAnswer: { description: "Pedir avaliação e dar cupom", emojiTag: "⭐" },
-      options: [
-        { id: 'a', text: "Ligar para a casa dele para perguntar", correct: false, feedback: "Isso seria invasivo e inconveniente." },
-        { id: 'b', text: "Pedir avaliação e oferecer cupom de retorno", correct: true, feedback: "Exato! É o melhor momento para fidelizar e garantir a próxima compra." },
-        { id: 'c', text: "Excluir o histórico de compras", correct: false, feedback: "O histórico é útil para compras futuras." }
-      ]
     }
   ]
 };
+
 
 export const STREAMING_SCENARIO = {
   title: "Nível Intermediário: A Assinatura de Streaming 📺",
@@ -309,22 +277,10 @@ export const STREAMING_SCENARIO = {
         { id: 'd', text: "Suporte via Chat", correct: false, feedback: "Ela ainda não falou com a empresa." }
       ]
     },
-    {
-      id: 6,
-      section: "Fase 1: Oportunidades",
-      context: "Mariana está buscando informações em fontes externas. Como o serviço de streaming poderia atraí-la já nessa etapa?",
-      correctAnswer: { description: "SEO e Anúncios", emojiTag: "📈" },
-      options: [
-        { id: 'a', text: "Oferecer desconto na renovação anual", correct: false, feedback: "Ela ainda nem é cliente para renovar." },
-        { id: 'b', text: "Ocultar os preços no site", correct: false, feedback: "Isso geraria mais atrito e desconfiança." },
-        { id: 'c', text: "Ignorar blogs e focar na TV", correct: false, feedback: "Ela usa os blogs para decidir." },
-        { id: 'd', text: "Investir em SEO e artigos comparativos", correct: true, feedback: "Exato! Garantir que a marca apareça positivamente quando ela pesquisar." }
-      ]
-    },
 
     // --- FASE 2: ESCOLHA ---
     {
-      id: 7,
+      id: 6,
       section: "Fase 2: Fases da Jornada",
       context: "Mariana agora está focada apenas no site do serviço. Que etapa é esta?",
       correctAnswer: { description: "Consideração da Solução", emojiTag: "⚖️" },
@@ -336,7 +292,7 @@ export const STREAMING_SCENARIO = {
       ]
     },
     {
-      id: 8,
+      id: 7,
       section: "Fase 2: Ações do Usuário",
       context: "O que Mariana faz dentro do site?",
       correctAnswer: { description: "Análise de planos e recursos", emojiTag: "📊" },
@@ -348,7 +304,7 @@ export const STREAMING_SCENARIO = {
       ]
     },
     {
-      id: 9,
+      id: 8,
       section: "Fase 2: Emoções",
       context: "Ela decide pelo Premium, mas o preço a incomoda um pouco. Como ela se sente?",
       isEmojiSelection: true,
@@ -361,7 +317,7 @@ export const STREAMING_SCENARIO = {
       ]
     },
     {
-      id: 10,
+      id: 9,
       section: "Fase 2: Pensamentos",
       context: "O que Mariana pensa ao escolher o plano mais caro?",
       correctAnswer: { description: "Preciso de 4K na TV", emojiTag: "📺" },
@@ -373,7 +329,7 @@ export const STREAMING_SCENARIO = {
       ]
     },
     {
-      id: 11,
+      id: 10,
       section: "Fase 2: Pontos de Contato",
       context: "Onde essa análise de planos está ocorrendo?",
       correctAnswer: { description: "Site Oficial (Preços)", emojiTag: "💻" },
@@ -384,22 +340,10 @@ export const STREAMING_SCENARIO = {
         { id: 'd', text: "Redes Sociais", correct: false, feedback: "Ela está no domínio da empresa agora." }
       ]
     },
-    {
-      id: 12,
-      section: "Fase 2: Oportunidades",
-      context: "Mariana hesita um pouco devido ao valor do plano Premium. O que ajudaria a fechar a venda com mais segurança?",
-      correctAnswer: { description: "Tabela de Custo-Benefício", emojiTag: "💡" },
-      options: [
-        { id: 'a', text: "Esconder a opção Básica", correct: false, feedback: "Isso forçaria a escolha e geraria desconfiança." },
-        { id: 'b', text: "Exibir uma tabela clara de custo-benefício", correct: true, feedback: "Isso tangibiliza o valor do plano Premium e justifica o preço." },
-        { id: 'c', text: "Aumentar o preço de repente", correct: false, feedback: "Péssima prática." },
-        { id: 'd', text: "Pedir os dados do cartão logo de cara", correct: false, feedback: "Isso afasta usuários que ainda estão avaliando planos." }
-      ]
-    },
 
     // --- FASE 3: CADASTRO ---
     {
-      id: 13,
+      id: 11,
       section: "Fase 3: Fases da Jornada",
       context: "Mariana preenche os dados e paga. Como chamamos este momento?",
       correctAnswer: { description: "Conversão / Compra", emojiTag: "💳" },
@@ -411,7 +355,7 @@ export const STREAMING_SCENARIO = {
       ]
     },
     {
-      id: 14,
+      id: 12,
       section: "Fase 3: Ações do Usuário",
       context: "O que ela faz enquanto o site demora a carregar?",
       correctAnswer: { description: "Preenche dados e aguarda", emojiTag: "⌨️" },
@@ -423,7 +367,7 @@ export const STREAMING_SCENARIO = {
       ]
     },
     {
-      id: 15,
+      id: 13,
       section: "Fase 3: Emoções",
       context: "O site demora muito. Qual o sentimento de Mariana?",
       isEmojiSelection: true,
@@ -436,7 +380,7 @@ export const STREAMING_SCENARIO = {
       ]
     },
     {
-      id: 16,
+      id: 14,
       section: "Fase 3: Pensamentos",
       context: "O que ela pensa enquanto a barra de carregamento trava?",
       correctAnswer: { description: "Que site horrível!", emojiTag: "💢" },
@@ -448,7 +392,7 @@ export const STREAMING_SCENARIO = {
       ]
     },
     {
-      id: 17,
+      id: 15,
       section: "Fase 3: Pontos de Contato",
       context: "Com qual parte do sistema ela interage agora?",
       correctAnswer: { description: "Gateway de Pagamento", emojiTag: "🔒" },
@@ -459,22 +403,10 @@ export const STREAMING_SCENARIO = {
         { id: 'd', text: "Aplicativo da Smart TV", correct: false, feedback: "Ela ainda está no site para pagar." }
       ]
     },
-    {
-      id: 18,
-      section: "Fase 3: Oportunidades",
-      context: "O ponto mais baixo da experiência de Mariana foi a lentidão no pagamento. Como resolver isso?",
-      correctAnswer: { description: "Otimizar infraestrutura", emojiTag: "⚙️" },
-      options: [
-        { id: 'a', text: "Oferecer reembolso", correct: false, feedback: "O ideal é evitar o problema antes que a compra termine." },
-        { id: 'b', text: "Otimizar a infraestrutura do checkout", correct: true, feedback: "Exato! O foco deve ser melhorar a performance técnica." },
-        { id: 'c', text: "Remover a etapa de pagamento", correct: false, feedback: "Impossível, o serviço é pago." },
-        { id: 'd', text: "Enviar um e-mail de desculpas", correct: false, feedback: "Não resolve o problema estrutural do site." }
-      ]
-    },
 
     // --- FASE 4: USO ---
     {
-      id: 19,
+      id: 16,
       section: "Fase 4: Fases da Jornada",
       context: "Mariana finalmente utiliza o serviço na TV. Que etapa é esta?",
       correctAnswer: { description: "Experiência de Uso", emojiTag: "🎬" },
@@ -486,7 +418,7 @@ export const STREAMING_SCENARIO = {
       ]
     },
     {
-      id: 20,
+      id: 17,
       section: "Fase 4: Ações do Usuário",
       context: "O que Mariana faz ao abrir o app na TV?",
       correctAnswer: { description: "Encontra o filme e assiste", emojiTag: "🍿" },
@@ -498,7 +430,7 @@ export const STREAMING_SCENARIO = {
       ]
     },
     {
-      id: 21,
+      id: 18,
       section: "Fase 4: Emoções",
       context: "Mariana está relaxada e o filme é ótimo. Como ela se sente?",
       isEmojiSelection: true,
@@ -511,7 +443,7 @@ export const STREAMING_SCENARIO = {
       ]
     },
     {
-      id: 22,
+      id: 19,
       section: "Fase 4: Pensamentos",
       context: "Qual a conclusão de Mariana no final da noite?",
       correctAnswer: { description: "Valeu o investimento!", emojiTag: "💎" },
@@ -523,7 +455,7 @@ export const STREAMING_SCENARIO = {
       ]
     },
     {
-      id: 23,
+      id: 20,
       section: "Fase 4: Pontos de Contato",
       context: "Qual o canal final de interação?",
       correctAnswer: { description: "App na Smart TV", emojiTag: "📺" },
@@ -532,18 +464,6 @@ export const STREAMING_SCENARIO = {
         { id: 'b', text: "Controle Remoto", correct: false, feedback: "O controle é um acessório, o canal é o App." },
         { id: 'c', text: "Notificação Push", correct: false, feedback: "Ela que abriu o app, não foi chamada por notificação." },
         { id: 'd', text: "App na Smart TV", correct: true, feedback: "Correto! É onde a experiência final acontece." }
-      ]
-    },
-    {
-      id: 24,
-      section: "Fase 4: Oportunidades",
-      context: "Após assistir e amar o primeiro conteúdo, como o aplicativo pode começar a jornada de fidelização?",
-      correctAnswer: { description: "Recomendações Personalizadas", emojiTag: "🎯" },
-      options: [
-        { id: 'a', text: "Bloquear a tela para cobrar mais", correct: false, feedback: "Isso destruiria a experiência." },
-        { id: 'b', text: "Sugerir novos filmes baseados no que ela viu", correct: true, feedback: "Perfeito! O algoritmo entra em ação para reter o usuário no app." },
-        { id: 'c', text: "Pedir para ela avaliar o filme no buscador", correct: false, feedback: "A retenção deve ocorrer dentro do próprio ecossistema." },
-        { id: 'd', text: "Fazer o logoff automático", correct: false, feedback: "Gera fricção desnecessária." }
       ]
     }
   ]

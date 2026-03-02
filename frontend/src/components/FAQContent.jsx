@@ -1,6 +1,23 @@
-import React from 'react';
+// 1. Importe useEffect e useContext
+import React, { useEffect, useContext } from 'react';
+import { ScoreContext } from '../contexts/ScoreContext';
 
 const FAQContent = () => {
+  // 2. Puxe a função do contexto
+  const { addPoints } = useContext(ScoreContext);
+
+  // 3. Adicione o useEffect para rodar assim que o componente abrir
+  useEffect(() => {
+    // Verifica se já leu o FAQ antes
+    const hasReadFaq = localStorage.getItem('hasReadFaq');
+    
+    if (!hasReadFaq) {
+      // Dá 20 pontos e marca como lido no localStorage
+      addPoints(20, 'Leu as Perguntas Frequentes');
+      localStorage.setItem('hasReadFaq', 'true');
+    }
+  }, []); // O array vazio [] garante que rode apenas uma vez ao abrir
+
   return (
     <div style={{ textAlign: "left", padding: "10px" }}>
       <h2 style={{ fontSize: "30px", marginBottom: "20px", borderBottom: "1px solid #ddd", paddingBottom: "10px" }}>
