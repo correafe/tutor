@@ -1,10 +1,13 @@
-// 1. Adicione o useContext na importação do React
 import React, { useState, useEffect, useContext } from 'react'; 
-// 2. Importe o ScoreContext
 import { ScoreContext } from '../contexts/ScoreContext'; 
 import { LogOut, GraduationCap, HelpCircle } from 'lucide-react'; 
 import axios from 'axios';
 import './Navbar.css';
+import teste1 from '../assets/teste1.png';
+import teste2 from '../assets/teste2.png';
+import teste3 from '../assets/teste3.png';
+import teste4 from '../assets/teste4.png';
+import teste5 from '../assets/teste5.png';
 
 const Navbar = ({ 
   onSaveClick, 
@@ -20,9 +23,6 @@ const Navbar = ({
   onStartTour 
 }) => {   
   const [scenarioName, setScenarioName] = useState("Nome do Cenário");
-
-  // 3. Puxe a pontuação do contexto
-  const { score } = useContext(ScoreContext); 
 
   const usuario = JSON.parse(localStorage.getItem('user'));
 
@@ -43,6 +43,34 @@ const Navbar = ({
     };
     fetchScenarioName();
   }, [currentJourneyMap]);
+
+  const { score } = useContext(ScoreContext); 
+
+  // LOGICA DO RANKING
+  const getRankInfo = (currentScore) => {
+    if (currentScore < 100) return { 
+      title: "Aprendiz", icon: "🥉", className: "rank-bronze",
+      frameUrl: teste1
+    };
+    if (currentScore < 300) return { 
+      title: "Explorador", icon: "🥈", className: "rank-silver",
+      frameUrl: teste2
+    };
+    if (currentScore < 500) return { 
+      title: "Mapeador", icon: "🥇", className: "rank-gold",
+      frameUrl: teste3
+    };
+    if (currentScore < 700) return { 
+      title: "Especialista", icon: "🔮", className: "rank-platinum",
+      frameUrl: teste4
+    };
+    return { 
+      title: "Mestre", icon: "👑", className: "rank-diamond",
+      frameUrl: teste5
+    };
+  };
+
+  const rankInfo = getRankInfo(score);
 
   return (
     <div className="scenario">
@@ -71,21 +99,6 @@ const Navbar = ({
       {/* Direita: Botões e Pontuação */}
       <div className="botoes">
         
-        {/* 4. NOVA DIV DA PONTUAÇÃO (Fica antes do botão Salvar) */}
-        <div 
-          className="score-display" 
-          style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            marginRight: '15px', 
-            fontWeight: 'bold', 
-            color: '#FFD700', 
-            fontSize: '18px' 
-          }}
-        >
-          🏆 {score} pts
-        </div>
-
         <button className="button save" id="saveButton" onClick={onSaveClick}>
           Salvar
         </button>
@@ -142,11 +155,28 @@ const Navbar = ({
           <LogOut size={28} />
         </button>
         
-        <img 
-          src={usuario?.providerData?.[0]?.photoURL || "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png"} 
-          alt="Profile" 
-          className="profile-pic" 
-        />
+        {/* INICIO BLOCO DA MOLDURA E PONTOS */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginLeft: '10px' }}>
+          <span style={{ fontWeight: 'bold', color: '#fff', fontSize: '16px' }}>🏆 {score} pts</span>
+          <span style={{ fontSize: '11px', color: '#fff', textTransform: 'uppercase', letterSpacing: '1px', backgroundColor: 'rgba(255,255,255,0.2)', padding: '2px 6px', borderRadius: '8px' }}>
+            {rankInfo.title}
+          </span>
+        </div>
+
+        <div className="avatar-wrapper">
+          <img 
+            src={usuario?.providerData?.[0]?.photoURL || "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png"} 
+            alt="Profile" 
+            className="user-avatar-image" 
+          />
+          <img 
+            src={rankInfo.frameUrl} 
+            alt="Moldura Ranking" 
+            className="rank-frame-image" 
+          />
+        </div>
+        {/* FIM BLOCO DA MOLDURA E PONTOS */}
+
       </div>
     </div>
   );

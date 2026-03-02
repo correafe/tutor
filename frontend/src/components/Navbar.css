@@ -233,3 +233,46 @@
 .button.info.faq:hover {
   background-color: #7d3980; 
 }
+
+/* =========================================
+   MOLDURAS DE PERFIL COM IMAGEM (RANKING)
+   ========================================= */
+
+.avatar-wrapper {
+  position: relative;
+  width: 75px;  
+  height: 75px; 
+  
+  /* ADIÇÕES PARA EVITAR O EFEITO OVAL: */
+  min-width: 75px;      /* Garante a largura mínima */
+  min-height: 75px;     /* Garante a altura mínima */
+  flex-shrink: 0;       /* PROÍBE o Flexbox de espremer/achatar a div */
+  aspect-ratio: 1 / 1;  /* Força a ser sempre um quadrado perfeito */
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-avatar-image {
+  width: 65%; 
+  height: 65%;
+  border-radius: 50%;
+  object-fit: cover;
+  position: absolute;
+  z-index: 1; 
+}
+
+.rank-frame-image {
+  width: 110%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2; 
+  pointer-events: none; 
+  
+  /* ADIÇÃO PARA GARANTIR PROPORÇÃO DO PNG/SVG: */
+  object-fit: contain; 
+  transform: scale(1.39);
+}

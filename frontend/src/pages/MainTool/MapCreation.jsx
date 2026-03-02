@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, LogOut, Trash, Pencil, ChevronRight, ChevronLeft, ChevronsRight, ChevronsLeft, HelpCircle } from 'lucide-react';
 import ModalName from "../../components/ModalName";
-import { LogOut, Trash, Pencil, ChevronRight , ChevronLeft, ChevronsRight , ChevronsLeft, HelpCircle } from 'lucide-react'; // 1. Importar o HelpCircle
 import { auth } from '../../services/firebase';
 import { signOut } from 'firebase/auth';
-import { DashboardTour } from '../../components/Tour'; // 2. Importar o Tour
+import { DashboardTour } from '../../components/Tour'; 
 import IntroPopup from "./IntroPopup"; 
 import FAQContent from "../../components/FAQContent";
-
+import { ScoreContext } from '../../contexts/ScoreContext';
+import teste1 from '../../assets/teste1.png';
+import teste2 from '../../assets/teste2.png';
+import teste3 from '../../assets/teste3.png';
+import teste4 from '../../assets/teste4.png';
+import teste5 from '../../assets/teste5.png';
 
 import fundomapas from "../../assets/Fundomapas.png";
-
 import "./MapCreation.css";
 
 const MapCreation = () => {
@@ -31,18 +34,43 @@ const MapCreation = () => {
   const [mapToDelete, setMapToDelete] = useState(null);
   const [mapToUpdate, setmapToUpdate] = useState(null);
   const [filterText, setFilterText] = useState('');
-  const [showIntroPopup, setShowIntroPopup] = useState(false); // Modificado
+  const [showIntroPopup, setShowIntroPopup] = useState(false);
   
-  // 3. States para controlar o tour
   const [showTourPrompt, setShowTourPrompt] = useState(false);
   const [runDashboardTour, setRunDashboardTour] = useState(false);
   const [showMapCreationPrompt, setShowMapCreationPrompt] = useState(false);
-  // Marca se estamos no modo de criação de mapa-tutorial
   const [isTutorialMode, setIsTutorialMode] = useState(false);
-  // Evita perguntar sobre o tutorial de mapa múltiplas vezes
   const [askedForMapTutorial, setAskedForMapTutorial] = useState(false);
 
   const mapsPerPage = 5; 
+
+  const { score } = useContext(ScoreContext); 
+
+  // LOGICA DO RANKING
+  const getRankInfo = (currentScore) => {
+      if (currentScore < 100) return { 
+        title: "Aprendiz", icon: "🥉", className: "rank-bronze",
+        frameUrl: teste1
+      };
+      if (currentScore < 300) return { 
+        title: "Explorador", icon: "🥈", className: "rank-silver",
+        frameUrl: teste2
+      };
+      if (currentScore < 500) return { 
+        title: "Mapeador", icon: "🥇", className: "rank-gold",
+        frameUrl: teste3
+      };
+      if (currentScore < 700) return { 
+        title: "Especialista", icon: "🔮", className: "rank-platinum",
+        frameUrl: teste4
+      };
+      return { 
+        title: "Mestre", icon: "👑", className: "rank-diamond",
+        frameUrl: teste5
+      };
+  };
+
+  const rankInfo = getRankInfo(score);
 
   useEffect(() => {
     const fetchUserMaps = async () => {
@@ -60,20 +88,18 @@ const MapCreation = () => {
 
     fetchUserMaps();
 
-    // 4. Lógica do Tutorial movida para DENTRO do useEffect
     const hasSeenTour = localStorage.getItem('hasSeenDashboardTour');
     if (!hasSeenTour) {
-      setShowTourPrompt(true); // Mostra a PERGUNTA do tutorial
+      setShowTourPrompt(true); 
     }
 
-    // Lógica do IntroPopup (mantida)
     const hasSeenIntro = localStorage.getItem('hasSeenIntro');
     if (!hasSeenIntro) {
-      setShowIntroPopup(true); // Mostra o popup de boas-vindas
+      setShowIntroPopup(true); 
       localStorage.setItem('hasSeenIntro', 'true');
     }
 
-  }, [reloadMaps]); // 5. Esta é a única vez que o useEffect fecha.
+  }, [reloadMaps]); 
 
 
 
@@ -83,27 +109,14 @@ const MapCreation = () => {
       try {
         const response = await axios.post(`${import.meta.env.VITE_BACKEND}/journeyMap`, { uid: user.uid, name: newMapName });
         
-        // [CORREÇÃO IMPORTANTE]
-        // O seu controller retorna: { journeyMap: { ... }, message: "..." }
-        // Então precisamos entrar em .journeyMap primeiro
         const createdMap = response.data.journeyMap;
-        
-        // Agora pegamos o ID (testamos id ou _id por segurança)
         const newMapId = createdMap ? (createdMap.id || createdMap._id) : null;
-
-        console.log("Resposta do servidor:", response.data);
-        console.log("ID do mapa criado:", newMapId);
 
         setNewMapName('');
 
         if (isTutorialMode && newMapId) {
-          // 1. Definimos a flag para a próxima página saber que é um tutorial
           localStorage.setItem('startToolTutorial', 'true');
-          
           setIsTutorialMode(false); 
-          
-          // 2. Navegamos para o novo mapa. 
-          // Como a flag está no localStorage, o Tool.jsx vai iniciar o tour automaticamente.
           navigate(`/home/${newMapId}`); 
         } else {
           setReloadMaps(prevState => !prevState);
@@ -134,8 +147,6 @@ const MapCreation = () => {
     }
   };
   
-  
-
   const handlePickerClose = () => {
     setPickerVisible(false);
   };
@@ -211,7 +222,7 @@ const MapCreation = () => {
 
   const handleClearInput = () => {
     setFilterText("");
-    setCurrentPage(1); // Reset to page 1 when clearing the filter
+    setCurrentPage(1); 
   }
 
   const handleDeleteMap = async (mapId) => {
@@ -254,10 +265,9 @@ const MapCreation = () => {
   };
 
   useEffect(() => {
-    setCurrentPage(1); // Reset to page 1 when the filter text changes
+    setCurrentPage(1); 
   }, [filterText]);
 
-  // 6. Funções para controlar o tour
   const startTour = () => {
     setShowTourPrompt(false);
     setRunDashboardTour(true);
@@ -266,16 +276,14 @@ const MapCreation = () => {
 
   const stopTour = () => {
     setRunDashboardTour(false);
-    // AO FINAL DO TOUR, pergunte sobre o próximo passo
     if (!askedForMapTutorial) {
       setShowMapCreationPrompt(true);
-      setAskedForMapTutorial(true); // Marca que já perguntamos
+      setAskedForMapTutorial(true); 
     }
   };
 
   return (
     <div className="map-creation-container" style={{ backgroundImage: `url(${fundomapas})`, height: "100vh", width: "100vw" }}>
-      {/* 7. Adicionar o componente do Tour */}
       <DashboardTour run={runDashboardTour} onTourEnd={stopTour} />
 
       <div className="navbar" style={{ textAlign: "left", padding: "31px", fontSize: "30px", display: "flex", alignItems: "center" }}>
@@ -286,7 +294,6 @@ const MapCreation = () => {
         </div>
         
         <button 
-          // Usamos onMouseDown para garantir que o clique funcione mesmo com o mapa por baixo
           id="faq-dashboard-btn"
           onMouseDown={(e) => {
             e.preventDefault();
@@ -294,53 +301,51 @@ const MapCreation = () => {
             setShowFAQ(true);
           }}
           style={{ 
-            marginRight: '20px', 
-            backgroundColor: '#ff81f9', 
-            color: 'white',           
-            border: 'none',
-            borderRadius: '50%',       
-            width: '50px',              
-            height: '50px',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-            fontSize: '16px',
-            fontWeight: 'bold',
-            fontFamily: 'sans-serif' 
+            marginRight: '20px', backgroundColor: '#ff81f9', color: 'white', border: 'none',
+            borderRadius: '50%', width: '50px', height: '50px', cursor: 'pointer', display: 'flex',
+            alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+            fontSize: '16px', fontWeight: 'bold', fontFamily: 'sans-serif' 
           }}
           title="Perguntas Frequentes"
         >
           FAQ
         </button>
 
-        {/* 8. Botão para iniciar o tutorial na Navbar */}
         <button 
           id="dashboard-tour-btn"
           onClick={startTour} 
           style={{ 
-            marginRight: '20px', 
-            backgroundColor: '#6a7dfe', 
-            color: 'white',           
-            border: 'none',
-            borderRadius: '50%',       
-            width: '50px',              
-            height: '50px',
-            fontSize: '30px',          
-            fontWeight: 'bold',         
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-            fontFamily: 'sans-serif'    
+            marginRight: '20px', backgroundColor: '#6a7dfe', color: 'white', border: 'none',
+            borderRadius: '50%', width: '50px', height: '50px', fontSize: '30px', fontWeight: 'bold', 
+            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', 
+            boxShadow: '0 2px 5px rgba(0,0,0,0.2)', fontFamily: 'sans-serif'  
           }}
         >
           ?
         </button>
 
-        <img src={usuario.providerData[0].photoURL || "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png"} alt="Profile" style={{ width: "50px", height: "50px", borderRadius: "50%", objectFit: "cover", marginRight: "20px" }} />
+        {/* INICIO BLOCO DA MOLDURA E PONTOS */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginRight: '15px' }}>
+          <span style={{ fontWeight: 'bold', color: '#333', fontSize: '18px' }}>🏆 {score} pts</span>
+          <span style={{ fontSize: '12px', color: '#fff', backgroundColor: '#666', padding: '2px 8px', borderRadius: '10px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+            {rankInfo.title}
+          </span>
+        </div>
+
+        <div className="avatar-wrapper" style={{ marginRight: '20px' }}>
+          <img 
+            src={usuario?.providerData?.[0]?.photoURL || "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png"} 
+            alt="Profile" 
+            className="user-avatar-image" 
+          />
+          <img 
+            src={rankInfo.frameUrl} 
+            alt="Moldura Ranking" 
+            className="rank-frame-image" 
+          />
+        </div>
+        {/* FIM BLOCO DA MOLDURA E PONTOS */}
+
         <button className="botaologout" onClick={handleLogout}>
           <LogOut />
         </button>
@@ -378,19 +383,17 @@ const MapCreation = () => {
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <button className="botaosavename" onClick={() => {
               setShowMapCreationPrompt(false);
-              setIsTutorialMode(true); // Ativa o modo tutorial
-              setPickerVisible(true); // Abre o modal de criar mapa
+              setIsTutorialMode(true); 
+              setPickerVisible(true); 
             }}>Sim, vamos lá!</button>
             <button className="botaocancelname" onClick={() => setShowMapCreationPrompt(false)}>Agora não</button>
           </div>
         </ModalName>
       )}
 
-      {/* O resto do seu JSX de 'isPickerVisible', 'maps.length > 0', etc... */}
       {isPickerVisible && (
         <ModalName trigger={isPickerVisible} setTrigger={setPickerVisible}>
           <div style={{ textAlign: "left", display: "flex", alignItems: "center" }}>
-            {/* Texto condicional */}
             <h1 style={{ fontSize: "50px", marginTop: "50px", marginBottom: "30px" }}>
               {isTutorialMode ? "Tutorial: Crie seu Mapa" : "Criar Mapa de jornada"}
             </h1>
@@ -405,7 +408,6 @@ const MapCreation = () => {
             value={newMapName} 
             onChange={handleMapNameChange} 
             className="inputname" 
-            // Placeholder condicional
             placeholder={isTutorialMode ? "Ex: Pedir uma Pizza" : "Título do novo mapa"} 
           />
           <div className="" style={{ margin: "0", textAlign: "center" }}>
@@ -442,7 +444,6 @@ const MapCreation = () => {
               .map((map, index) => (
                 <div key={map.id}>
                   <div className="separar">
-                    {/* Adicionada classe 'bloco' para o tour */}
                     <div className="bloco" style={{ backgroundColor: getColorAtIndex(index) }} onClick={() => handleSelectMap(map.id)} > 
                       <h4 className="texto">{truncateText(map.name)}</h4>
                       <div className="divbotoes">
