@@ -243,7 +243,6 @@
   width: 75px;  
   height: 75px; 
   
-  /* ADIÇÕES PARA EVITAR O EFEITO OVAL: */
   min-width: 75px;      /* Garante a largura mínima */
   min-height: 75px;     /* Garante a altura mínima */
   flex-shrink: 0;       /* PROÍBE o Flexbox de espremer/achatar a div */
