@@ -2,23 +2,23 @@ const db = require('./db');
 
 class UserActionModel {
   getAllItemsByJourneyMapId(journeyMapId) {
-    return db.query("SELECT * FROM userAction WHERE journeyMap_id = ?", [journeyMapId])
+    return db.query("SELECT * FROM useraction WHERE journeyMap_id = ?", [journeyMapId])
       .then(([rows]) => {
         return rows;
       })
       .catch((error) => {
-        console.error("Error fetching userActions by journeyMapId:", error);
+        console.error("Error fetching useractions by journeyMapId:", error);
         throw error;
       });
   }
 
   getAllItems() {
-    return db.query("SELECT * FROM userAction")
+    return db.query("SELECT * FROM useraction")
       .then(([rows]) => {
         return rows;
       })
       .catch((error) => {
-        console.error("Error fetching userAction:", error);
+        console.error("Error fetching useraction:", error);
         throw error;
       });
   }
@@ -26,11 +26,11 @@ class UserActionModel {
   insertUserAction(data) {
     if (data.posX !== undefined) {
       const { posX, journeyMap_id, linePos, length, description, emojiTag } = data;
-      return db.execute("INSERT INTO userAction (posX, journeyMap_id, linePos, length, description, emojiTag) VALUES (?, ?, ?, ?, ?, ?)",
+      return db.execute("INSERT INTO useraction (posX, journeyMap_id, linePos, length, description, emojiTag) VALUES (?, ?, ?, ?, ?, ?)",
       [posX, journeyMap_id, linePos, length, description, emojiTag])
         .then(() => true)
         .catch((error) => {
-          console.error("Error inserting userAction:", error);
+          console.error("Error inserting useraction:", error);
           throw error;
         });
     } else {
@@ -40,21 +40,21 @@ class UserActionModel {
   
 
   updateUserAction(data) {
-    const { userAction_id, posX, description, width } = data;
+    const { useraction_id, posX, description, width } = data;
   
-    return db.execute("UPDATE userAction SET posX = ?, description = ?, length = ? WHERE userAction_id = ?", [posX, description, width, userAction_id])
+    return db.execute("UPDATE useraction SET posX = ?, description = ?, length = ? WHERE useraction_id = ?", [posX, description, width, useraction_id])
       .then(() => true)
       .catch((error) => {
-        console.error("Error updating userAction:", error);
+        console.error("Error updating useraction:", error);
         throw error;
       });
   }
   
-  deleteUserAction(userAction_id) {
-    return db.execute("DELETE FROM userAction WHERE userAction_id = ?", [userAction_id])
+  deleteUserAction(useraction_id) {
+    return db.execute("DELETE FROM useraction WHERE useraction_id = ?", [useraction_id])
       .then(() => true)
       .catch((error) => {
-        console.error("Error deleting userAction:", error);
+        console.error("Error deleting useraction:", error);
         throw error;
       });
   }
@@ -71,10 +71,10 @@ class UserActionModel {
   }
 
   deleteUserActionsByJourneyMapId(journeyMapId) {
-    return db.execute("DELETE FROM userAction WHERE journeyMap_id = ?", [journeyMapId])
+    return db.execute("DELETE FROM useraction WHERE journeyMap_id = ?", [journeyMapId])
     .then(() => true)
     .catch((error) => {
-      console.error("Error deleting userAction:", error);
+      console.error("Error deleting useraction:", error);
       throw error;
     });
   }
