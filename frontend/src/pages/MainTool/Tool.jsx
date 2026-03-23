@@ -45,6 +45,9 @@ const Tool = ({ }) => {
   const navigate = useNavigate();
   const { id_mapa } = useParams();
 
+  const [showClearConfirmModal, setShowClearConfirmModal] = useState(false);
+  const [pendingLevelToLoad, setPendingLevelToLoad] = useState(null);
+
   const [dataLoaded, setDataLoaded] = useState(false); 
   const [showExampleMapModal, setShowExampleMapModal] = useState(false);
 
@@ -1042,60 +1045,23 @@ const Tool = ({ }) => {
     setShowLevelSelector(true);
   };
 
-  const handleLevelSelect = async (level) => {
+const handleLevelSelect = async (level) => {
     // 1. Verifica se existem cards em qualquer uma das 5 linhas da matriz
     const hasCards = matrix.some(row => row.length > 0);
 
     if (hasCards) {
-      // 2. Mostra o aviso nativo para o usuário
-      const confirmClear = window.confirm(
-        "⚠️ ATENÇÃO: Para iniciar a Prática Guiada, precisamos de um mapa em branco.\n\n" +
-        "Todos os cards atuais deste mapa serão EXCLUÍDOS PERMANENTEMENTE.\n\n" +
-        "Deseja continuar e apagar tudo?"
-      );
-      
-      // 3. Se ele clicar em "Cancelar", paramos por aqui e o mapa fica intacto
-      if (!confirmClear) {
-        return; 
-      }
-      
-      setLoading(true); // Mostra a tela de carregamento (spinner)
-      
-      // 4. Se ele confirmar, apagamos todos os cards salvos no banco de dados
-      try {
-        const deletePromises = [];
-        
-        matrix.forEach((row) => {
-          row.forEach((rect) => {
-            const squareType = rect.type;
-            const squareId = rect[`${squareType}_id`];
-            
-            if (squareType && squareId) {
-              // Adiciona a requisição de delete na fila
-              deletePromises.push(
-                axios.delete(import.meta.env.VITE_BACKEND + `/${squareType}/${squareId}`)
-              );
-            }
-          });
-        });
-        
-        // Executa todas as exclusões ao mesmo tempo (mais rápido)
-        await Promise.all(deletePromises);
-        
-        // 5. Limpa a tela localmente esvaziando as 5 linhas
-        setMatrix([[], [], [], [], []]); 
-        
-      } catch (error) {
-        console.error("Erro ao limpar o mapa:", error);
-        toast.error("Ocorreu um erro ao tentar limpar o mapa.");
-        setLoading(false);
-        return; // Aborta a abertura do tutorial se a exclusão falhar
-      }
-      
-      setLoading(false); // Esconde o spinner
+      // 2. Salva o nível que o usuário tentou abrir e exibe o modal
+      setPendingLevelToLoad(level);
+      setShowClearConfirmModal(true);
+      setShowLevelSelector(false); // Fecha o seletor de nível para não ficar um em cima do outro
+      return; 
     }
 
-    // 6. Continua com a inicialização do tutorial escolhido
+    // 3. Se não tem cards, carrega o tutorial direto
+    startTutorialByLevel(level);
+  };
+
+  const startTutorialByLevel = (level) => {
     if (level === 1) {
       setTargetScenario('pizza');
     } else if (level === 2) {
@@ -1106,6 +1072,43 @@ const Tool = ({ }) => {
     
     setShowLevelSelector(false);
     setShowTutorialWizard(true);
+  };
+
+  const handleConfirmClearAndStart = async () => {
+    setShowClearConfirmModal(false);
+    setLoading(true); 
+    
+    try {
+      const deletePromises = [];
+      
+      matrix.forEach((row) => {
+        row.forEach((rect) => {
+          const squareType = rect.type;
+          const squareId = rect[`${squareType}_id`];
+          
+          if (squareType && squareId) {
+            deletePromises.push(
+              axios.delete(import.meta.env.VITE_BACKEND + `/${squareType}/${squareId}`)
+            );
+          }
+        });
+      });
+      
+      await Promise.all(deletePromises);
+      setMatrix([[], [], [], [], []]); 
+      
+      // Carrega o tutorial que estava pendente
+      if (pendingLevelToLoad) {
+        startTutorialByLevel(pendingLevelToLoad);
+      }
+      
+    } catch (error) {
+      console.error("Erro ao limpar o mapa:", error);
+      toast.error("Ocorreu um erro ao tentar limpar o mapa.");
+    } finally {
+      setLoading(false);
+      setPendingLevelToLoad(null);
+    }
   };
 
   const stopTour = () => {
@@ -1482,6 +1485,43 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
               </Stage>
             </div>
           )}
+
+      {showClearConfirmModal && (
+        <ModalName trigger={showClearConfirmModal} setTrigger={setShowClearConfirmModal}>
+          <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+            <h1 style={{ fontSize: "36px", marginTop: "30px", marginBottom: "20px", color: "#f44336" }}>
+              ⚠️ Limpar Mapa
+            </h1>
+            <p style={{ fontSize: "22px", marginBottom: "10px" }}>
+              Para iniciar a Prática Guiada, precisamos de um mapa em branco.
+            </p>
+            <p style={{ fontSize: "20px", marginBottom: "40px", color: "#666" }}>
+              Todos os cards atuais deste mapa serão <b>excluídos permanentemente</b>. Deseja continuar?
+            </p>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
+            <button 
+              className="buttonconf2" 
+              onClick={() => {
+                setShowClearConfirmModal(false);
+                setPendingLevelToLoad(null);
+                setShowLevelSelector(true); // Opcional: Reabre o seletor se ele cancelar
+              }}
+              style={{ backgroundColor: '#ccc', color: '#333', flex: 1, border: "none", borderRadius: "5px", padding: "15px", fontSize: "18px", cursor: "pointer", fontWeight: "bold" }}
+            >
+              Cancelar
+            </button>
+            <button 
+              className="buttonconf" 
+              onClick={handleConfirmClearAndStart}
+              style={{ backgroundColor: '#f44336', color: 'white', flex: 1, border: "none", borderRadius: "5px", padding: "15px", fontSize: "18px", cursor: "pointer", fontWeight: "bold" }}
+            >
+              Sim, Apagar e Iniciar
+            </button>
+          </div>
+        </ModalName>
+      )}
+
           <div className="teste-1" style={{ width: calculateTotalWidth(matrix) + 200 }}>
             <div className="fases-container" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
               <div className="barra1" />
