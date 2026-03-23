@@ -2,12 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { X, Lock, Unlock, Star } from 'lucide-react';
 import './TutorialLevelSelector.css';
 
+import { auth } from '../../services/firebase'; 
+import { onAuthStateChanged } from 'firebase/auth';
+
 const TutorialLevelSelector = ({ onClose, onSelectLevel }) => {
   const [unlockedLevel, setUnlockedLevel] = useState(1);
 
   useEffect(() => {
-    const savedLevel = parseInt(localStorage.getItem('unlockedTutorialLevel')) || 1;
-    setUnlockedLevel(savedLevel);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // Agora o navegador vai procurar 'unlockedTutorialLevel_NOME_DO_ID'
+        const savedLevel = parseInt(localStorage.getItem(`unlockedTutorialLevel_${user.uid}`)) || 1;
+        setUnlockedLevel(savedLevel);
+      } else {
+        setUnlockedLevel(1);
+      }
+    });
+
+    // Limpa o observador
+    return () => unsubscribe();
   }, []);
 
   return (

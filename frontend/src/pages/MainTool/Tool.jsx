@@ -1146,14 +1146,22 @@ const Tool = ({ }) => {
         });
       }
 
-      const currentUnlocked = parseInt(localStorage.getItem('unlockedTutorialLevel')) || 1;
+      // --- INÍCIO DA MUDANÇA ---
+      const currentUser = auth.currentUser;
+      
+      if (currentUser) {
+        // Lê o nível usando o UID da pessoa logada
+        const currentUnlocked = parseInt(localStorage.getItem(`unlockedTutorialLevel_${currentUser.uid}`)) || 1;
 
-      if (targetScenario === 'pizza' && currentUnlocked < 2) {
-        localStorage.setItem('unlockedTutorialLevel', '2');
+        // Salva o novo nível usando o UID da pessoa logada
+        if (targetScenario === 'pizza' && currentUnlocked < 2) {
+          localStorage.setItem(`unlockedTutorialLevel_${currentUser.uid}`, '2');
+        }
+        else if (targetScenario === 'streaming' && currentUnlocked < 3) {
+          localStorage.setItem(`unlockedTutorialLevel_${currentUser.uid}`, '3');
+        }
       }
-      else if (targetScenario === 'streaming' && currentUnlocked < 3) {
-        localStorage.setItem('unlockedTutorialLevel', '3');
-      }
+      // --- FIM DA MUDANÇA ---
 
       toast.success('Tutorial concluído! Mapa e Cenário salvos.');
       window.location.reload();

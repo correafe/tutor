@@ -162,7 +162,6 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
         setViewState('results'); 
       }
     } else {
-      // MODO BÁSICO (Pizza): Dá feedback na hora
       if (option.correct) {
         addPoints(10, 'Resposta correta no tutorial básico');
         setFeedback('success');
@@ -217,7 +216,6 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
         <p className="wizard-context">{currentStep.context}</p>
 
         {!feedback ? (
-          /* KEY ADICIONADA NA DIV E NOS BOTÕES PARA MATAR A TRANSIÇÃO DE FORMA NATIVA */
           <div key={`container-${currentStepIndex}`} className="wizard-options-container" style={optionsStyle}>
             {currentStep.options.map(opt => (
               <button 
