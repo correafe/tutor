@@ -407,11 +407,11 @@ body {
   height: 100%;
   position: absolute;
   top: 0;
-  left: 0;
+
   z-index: 2; 
   pointer-events: none; 
-  
+  left: -5px;
   /* ADIÇÃO PARA GARANTIR PROPORÇÃO DO PNG/SVG: */
   object-fit: contain; 
-  transform: scale(1.39);
+  transform: scale(1.25);
 }

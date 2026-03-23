@@ -267,11 +267,11 @@
   height: 100%;
   position: absolute;
   top: 0;
-  left: 0;
+  left: -5px;
   z-index: 2; 
   pointer-events: none; 
   
   /* ADIÇÃO PARA GARANTIR PROPORÇÃO DO PNG/SVG: */
   object-fit: contain; 
-  transform: scale(1.39);
+  transform: scale(1.25);
 }
