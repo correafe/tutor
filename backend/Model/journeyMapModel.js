@@ -51,38 +51,33 @@ class JourneyMapModel {
   }
 
     async deleteMap(journeymapId) {
-      // Obtemos uma conexão específica para garantir que tudo ocorra numa transação
       const connection = await db.getConnection(); 
       try {
-        // Inicia a transação (tudo ou nada)
         await connection.beginTransaction();
 
-        // 1. Apaga os cartões/elementos vinculados ao mapa
+        // 1. Apaga os cartões/elementos vinculados ao mapa (nomes de tabelas e colunas corrigidos para o padrão Linux)
         await connection.execute("DELETE FROM contactpoint WHERE journeyMap_id = ?", [journeymapId]);
         await connection.execute("DELETE FROM emotion WHERE journeyMap_id = ?", [journeymapId]);
         await connection.execute("DELETE FROM thought WHERE journeyMap_id = ?", [journeymapId]);
         await connection.execute("DELETE FROM useraction WHERE journeyMap_id = ?", [journeymapId]);
         
         // 2. Apaga o Cenário vinculado a este mapa
-        await connection.execute("DELETE FROM scenario WHERE journeymap_id = ?", [journeymapId]);
+        await connection.execute("DELETE FROM scenario WHERE journeyMap_id = ?", [journeymapId]);
 
-        // 3. Apaga as Fases vinculadas a este mapa
-        await connection.execute("DELETE FROM journeyPhase WHERE journeymap_id = ?", [journeymapId]);
+        // 3. Apaga as Fases vinculadas a este mapa (journeyphase tudo minúsculo)
+        await connection.execute("DELETE FROM journeyphase WHERE journeyMap_id = ?", [journeymapId]);
 
         // 4. Finalmente, apaga o Mapa
-        const [result] = await connection.execute("DELETE FROM journeymap WHERE journeymap_id = ?", [journeymapId]);
+        const [result] = await connection.execute("DELETE FROM journeymap WHERE journeyMap_id = ?", [journeymapId]);
 
-        // Confirma as alterações
         await connection.commit();
         
         return result.affectedRows > 0;
       } catch (error) {
-        // Se der erro, desfaz tudo o que tentou apagar
         await connection.rollback();
         console.error("Error deleting user maps:", error);
         throw error;
       } finally {
-        // Libera a conexão de volta para o pool
         connection.release();
       }
     }
