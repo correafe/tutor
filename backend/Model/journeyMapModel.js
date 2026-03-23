@@ -50,22 +50,26 @@ class JourneyMapModel {
     }
   }
 
-  async deleteMap(journeymapId) {
+    async deleteMap(journeymapId) {
       // Obtemos uma conexão específica para garantir que tudo ocorra numa transação
       const connection = await db.getConnection(); 
       try {
         // Inicia a transação (tudo ou nada)
         await connection.beginTransaction();
 
-        // 1. Primeiro apaga o Cenário vinculado a este mapa
+        // 1. Apaga os cartões/elementos vinculados ao mapa
+        await connection.execute("DELETE FROM contactpoint WHERE journeyMap_id = ?", [journeymapId]);
+        await connection.execute("DELETE FROM emotion WHERE journeyMap_id = ?", [journeymapId]);
+        await connection.execute("DELETE FROM thought WHERE journeyMap_id = ?", [journeymapId]);
+        await connection.execute("DELETE FROM useraction WHERE journeyMap_id = ?", [journeymapId]);
+        
+        // 2. Apaga o Cenário vinculado a este mapa
         await connection.execute("DELETE FROM scenario WHERE journeymap_id = ?", [journeymapId]);
 
-        // 2. Apaga as Fases vinculadas a este mapa
-        // Nota: Se as fases tiverem filhos (pensamentos, ações) sem delete cascade no banco, 
-        // pode ser necessário apagar eles antes das fases também.
+        // 3. Apaga as Fases vinculadas a este mapa
         await connection.execute("DELETE FROM journeyPhase WHERE journeymap_id = ?", [journeymapId]);
 
-        // 3. Finalmente, apaga o Mapa
+        // 4. Finalmente, apaga o Mapa
         const [result] = await connection.execute("DELETE FROM journeymap WHERE journeymap_id = ?", [journeymapId]);
 
         // Confirma as alterações
