@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { X, Lock, Unlock, Star } from 'lucide-react';
 import './TutorialLevelSelector.css';
 
-import { auth } from '../../services/firebase'; 
+import { auth } from '../services/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
 const TutorialLevelSelector = ({ onClose, onSelectLevel }) => {
