@@ -413,7 +413,7 @@ body {
   left: -4px;
   /* ADIÇÃO PARA GARANTIR PROPORÇÃO DO PNG/SVG: */
   object-fit: contain; 
-  transform: scale(1.25);
+  transform: scale(1);
 }
 
 /* CONTAINER GERAL DO AVATAR E TOOLTIP */
