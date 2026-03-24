@@ -29,7 +29,7 @@ const RankingModal = ({ onClose }) => {
       try {
         // Substitua a URL base pela da sua API na Vercel, se necessário
         // ex: const apiUrl = import.meta.env.VITE_API_URL + '/ranking';
-        const response = await fetch('http://104.248.60.22:3000/ranking');
+        const response = await fetch('https://tutor-api-jem.duckdns.org/ranking');
         const data = await response.json();
         
         // Formata os dados vindos do banco para o padrão do componente

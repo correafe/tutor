@@ -13,7 +13,7 @@ export const ScoreProvider = ({ children }) => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && score > 0) {
-      fetch('http://localhost:3000/ranking', {
+      fetch('https://tutor-api-jem.duckdns.org/score', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
