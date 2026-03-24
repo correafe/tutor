@@ -410,7 +410,7 @@ body {
 
   z-index: 2; 
   pointer-events: none; 
-  left: -3px;
+  left: -3.5px;
   /* ADIÇÃO PARA GARANTIR PROPORÇÃO DO PNG/SVG: */
   object-fit: contain; 
   transform: scale(0.8);
