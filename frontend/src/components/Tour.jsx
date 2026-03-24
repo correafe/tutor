@@ -143,6 +143,7 @@ export const ToolTour = ({ run, onTourEnd }) => {
       run={run}
       continuous
       showSkipButton
+      hideCloseButton={true}
       disableOverlayClose={true}
       locale={{ last: 'Fim', next: 'Próximo', skip: 'Pular', back: 'Voltar' }}
       callback={(data) => {
