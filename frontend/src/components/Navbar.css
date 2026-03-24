@@ -273,7 +273,7 @@
   
   /* ADIÇÃO PARA GARANTIR PROPORÇÃO DO PNG/SVG: */
   object-fit: contain; 
-  transform: scale(1);
+  transform: scale(0.9);
 }
 
 /* CONTAINER GERAL DO AVATAR E TOOLTIP */
