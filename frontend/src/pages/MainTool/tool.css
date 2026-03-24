@@ -4,9 +4,8 @@ body {
   display: flex;
   flex-direction: column;
   background-color: #E6E6E6;
-  
-  /* Substituímos o max-height e overflow oculto por ROLAGEM AUTOMÁTICA */
-  overflow: auto; 
+  min-height: 100vh; /* Mude de max-height para min-height */
+  overflow: auto; /* Isso devolve a barra de rolagem para o navegador! */
 }
   
 .content {

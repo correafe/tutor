@@ -1241,7 +1241,7 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
 };
 
   return (
-    <div className="scrollable-container" style={{ zoom: zoomLevel }}>
+    <div className="scrollable-container">
       <ToolTour run={runToolTour} onTourEnd={stopTour} />
 
       {showLevelSelector && (
@@ -1488,7 +1488,7 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
           )}
           {dataLoaded && (
             <div className="stage-container">
-              <Stage width={calculateTotalWidth(matrix) + 1260} height={window.innerHeight} ref={stageRef}>
+              <Stage width={calculateTotalWidth(matrix) + 1260} height={Math.max(window.innerHeight, 1050)} ref={stageRef}>
                 <Layer listening={!showTutorialWizard}>
                   <Matrix
                     key={forceUpdate}
