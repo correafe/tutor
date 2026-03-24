@@ -76,7 +76,10 @@ app.get('/scenario/:journeyMapId', scenarioController.getScenarios);
 app.post('/scenario', scenarioController.createScenario);
 app.put('/scenario', scenarioController.updateScenario);
 
+const rankingController = require('../Controllers/rankingController');
 
+app.get('/ranking', rankingController.getGlobalRanking);
+app.post('/ranking', rankingController.updateUserScore);
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`---------------------------------------------`);

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { X, Trophy, Medal } from 'lucide-react';
 import { ScoreContext } from '../contexts/ScoreContext';
 import './RankingModal.css';
@@ -12,6 +12,8 @@ import teste5 from '../assets/teste5.png';
 const RankingModal = ({ onClose }) => {
   const { score } = useContext(ScoreContext);
   const usuario = JSON.parse(localStorage.getItem('user'));
+  const [rankingList, setRankingList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // Função para pegar os dados do rank
   const getRankInfo = (currentScore) => {
@@ -22,22 +24,45 @@ const RankingModal = ({ onClose }) => {
     return { title: "Mestre", icon: "👑", frameUrl: teste5 };
   };
 
-  // Usuários falsos para demonstração + Usuário atual real
-  const mockUsers = [
-    { name: "Maria Silva", score: 850, photo: "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png" },
-    { name: "João Pedro", score: 420, photo: "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png" },
-    { name: "Ana Souza", score: 210, photo: "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png" },
-    { name: "Carlos Edu", score: 50, photo: "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png" },
-    { 
-      name: usuario?.displayName || "Você", 
-      score: score, 
-      photo: usuario?.providerData?.[0]?.photoURL || "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png", 
-      isCurrentUser: true 
-    },
-  ];
+  useEffect(() => {
+    const fetchRanking = async () => {
+      try {
+        // Substitua a URL base pela da sua API na Vercel, se necessário
+        // ex: const apiUrl = import.meta.env.VITE_API_URL + '/ranking';
+        const response = await fetch('http://localhost:3000/ranking');
+        const data = await response.json();
+        
+        // Formata os dados vindos do banco para o padrão do componente
+        const formattedRanking = data.map(user => ({
+          name: user.display_name,
+          score: user.score,
+          photo: user.photo_url,
+          isCurrentUser: usuario?.uid === user.firebase_uid // Verifica se é o usuário logado
+        }));
 
-  // Ordena do maior pro menor
-  const sortedUsers = mockUsers.sort((a, b) => b.score - a.score);
+        // Adiciona o usuário logado caso ele ainda não esteja no ranking (com pontuação 0)
+        const userInRanking = formattedRanking.find(u => u.isCurrentUser);
+        if (!userInRanking && usuario) {
+            formattedRanking.push({
+                name: usuario?.displayName || "Você",
+                score: score, // Pontuação local atual
+                photo: usuario?.providerData?.[0]?.photoURL || "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png",
+                isCurrentUser: true
+            });
+        }
+
+        // Garante que a lista fique ordenada do maior para o menor
+        const sortedUsers = formattedRanking.sort((a, b) => b.score - a.score);
+        setRankingList(sortedUsers);
+      } catch (error) {
+        console.error("Erro ao carregar o ranking:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRanking();
+  }, [score, usuario]);
 
   return (
     <div className="ranking-overlay">
@@ -54,35 +79,39 @@ const RankingModal = ({ onClose }) => {
 
         <p className="ranking-subtitle">Veja quem são os melhores mapeadores do JEM!</p>
 
-        <div className="ranking-list">
-          {sortedUsers.map((user, index) => {
-            const userRank = getRankInfo(user.score);
-            return (
-              <div key={index} className={`ranking-item ${user.isCurrentUser ? 'current-user-highlight' : ''}`}>
-                <div className="ranking-position">
-                  {index === 0 ? <Medal size={28} color="#FFD700" /> : 
-                   index === 1 ? <Medal size={28} color="#C0C0C0" /> : 
-                   index === 2 ? <Medal size={28} color="#CD7F32" /> : 
-                   `#${index + 1}`}
-                </div>
-                
-                <div className="ranking-avatar-wrapper">
-                  <img src={user.photo} alt="Avatar" className="ranking-avatar" />
-                  <img src={userRank.frameUrl} alt="Moldura" className="ranking-frame" />
-                </div>
+        {loading ? (
+          <p style={{textAlign: 'center', padding: '20px'}}>Carregando ranking...</p>
+        ) : (
+          <div className="ranking-list">
+            {rankingList.map((user, index) => {
+              const userRank = getRankInfo(user.score);
+              return (
+                <div key={index} className={`ranking-item ${user.isCurrentUser ? 'current-user-highlight' : ''}`}>
+                  <div className="ranking-position">
+                    {index === 0 ? <Medal size={28} color="#FFD700" /> : 
+                     index === 1 ? <Medal size={28} color="#C0C0C0" /> : 
+                     index === 2 ? <Medal size={28} color="#CD7F32" /> : 
+                     `#${index + 1}`}
+                  </div>
+                  
+                  <div className="ranking-avatar-wrapper">
+                    <img src={user.photo} alt="Avatar" className="ranking-avatar" />
+                    <img src={userRank.frameUrl} alt="Moldura" className="ranking-frame" />
+                  </div>
 
-                <div className="ranking-info">
-                  <h3 className="ranking-name">{user.name} {user.isCurrentUser && "(Você)"}</h3>
-                  <span className="ranking-badge">{userRank.icon} {userRank.title}</span>
-                </div>
+                  <div className="ranking-info">
+                    <h3 className="ranking-name">{user.name} {user.isCurrentUser && "(Você)"}</h3>
+                    <span className="ranking-badge">{userRank.icon} {userRank.title}</span>
+                  </div>
 
-                <div className="ranking-score">
-                  <span>{user.score}</span> pts
+                  <div className="ranking-score">
+                    <span>{user.score}</span> pts
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -9,23 +9,22 @@ export const ScoreProvider = ({ children }) => {
   const [userUid, setUserUid] = useState(null);
 
   // Monitora qual usuário está logado atualmente
+// Exemplo de como salvar no banco ao atualizar a pontuação
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserUid(user.uid);
-        // Busca a pontuação específica deste usuário
-        const savedScore = localStorage.getItem(`userScore_${user.uid}`);
-        setScore(savedScore ? parseInt(savedScore, 10) : 0);
-      } else {
-        // Se ninguém estiver logado ou se o usuário deslogar, a pontuação na tela zera
-        setUserUid(null);
-        setScore(0);
-      }
-    });
-    
-    // Limpa o observador quando o componente for desmontado
-    return () => unsubscribe();
-  }, []);
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user && score > 0) {
+      fetch('http://localhost:3000/ranking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firebase_uid: user.uid,
+          display_name: user.displayName || 'Mapeador',
+          photo_url: user.providerData?.[0]?.photoURL || '',
+          score: score
+        })
+      }).catch(err => console.error("Erro ao salvar pontuação", err));
+    }
+  }, [score]);
 
   // Função para adicionar pontos
   const addPoints = (points, actionName) => {
