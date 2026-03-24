@@ -323,21 +323,6 @@ const MapCreation = () => {
         >
           ?
         </button>
-
-{/* INICIO BLOCO DA MOLDURA E PONTOS (COM TOOLTIP) */}
-        <div className="avatar-tooltip-container" style={{ marginRight: '20px' }}>
-          <div className="avatar-wrapper">
-            <img 
-              src={usuario?.providerData?.[0]?.photoURL || "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png"} 
-              alt="Profile" 
-              className="user-avatar-image" 
-            />
-            <img 
-              src={rankInfo.frameUrl} 
-              alt="Moldura Ranking" 
-              className="rank-frame-image" 
-            />
-          </div>
           
           {/* O balão (tooltip) escondido que aparece no hover */}
           <div className="avatar-tooltip">
