@@ -96,7 +96,6 @@ const TOOL_STEPS = [
 
 
 export const DashboardTour = ({ run, onTourEnd }) => {
-  // 1. Puxa a função de pontuação do contexto
   const { addPoints } = useContext(ScoreContext);
 
   return (
@@ -104,58 +103,38 @@ export const DashboardTour = ({ run, onTourEnd }) => {
       steps={DASHBOARD_STEPS}
       run={run}
       continuous
-      //showProgress
       showSkipButton
       hideCloseButton={true}
       disableOverlayClose={true}
-      locale={{
-        last: 'Fim',
-        next: 'Próximo',
-        skip: 'Pular',
-        back: 'Voltar',
-      }}
+      locale={{ last: 'Fim', next: 'Próximo', skip: 'Pular', back: 'Voltar' }}
       callback={(data) => {
         if ([STATUS.FINISHED, STATUS.SKIPPED].includes(data.status)) {
-          // 2. Lógica de pontuação para o Dashboard Tour
-          const hasCompletedDashboardTour = localStorage.getItem('hasCompletedDashboardTour');
-          if (!hasCompletedDashboardTour) {
+          // Grudando o UID na chave de verificação
+          const user = JSON.parse(localStorage.getItem('user'));
+          const tourKey = `hasCompletedDashboardTour_${user?.uid}`;
+          const hasCompletedDashboardTour = localStorage.getItem(tourKey);
+          
+          if (!hasCompletedDashboardTour && user) {
             addPoints(50, 'Completou o Tour do Dashboard');
-            localStorage.setItem('hasCompletedDashboardTour', 'true');
+            localStorage.setItem(tourKey, 'true');
           }
           
-          onTourEnd(); // Chama a função para parar o tour
+          onTourEnd(); 
         }
       }}
       styles={{
-        options: {
-          primaryColor: '#06bd2d', 
-          zIndex: 10000,
-        },
-        tooltipContent: {
-          fontSize: '20px', 
-          textAlign: 'left' 
-        },
-        tooltipTitle: {
-          fontSize: '24px', 
-          fontWeight: 'bold'
-        },
-        buttonNext: {
-          fontSize: '18px' 
-        },
-        buttonBack: {
-          fontSize: '18px'
-        },
-        buttonSkip: {
-          fontSize: '18px'
-        }
+        options: { primaryColor: '#06bd2d', zIndex: 10000 },
+        tooltipContent: { fontSize: '20px', textAlign: 'left' },
+        tooltipTitle: { fontSize: '24px', fontWeight: 'bold' },
+        buttonNext: { fontSize: '18px' },
+        buttonBack: { fontSize: '18px' },
+        buttonSkip: { fontSize: '18px' }
       }}
     />
   );
 };
 
-// Componente do Tour para a Ferramenta Principal
 export const ToolTour = ({ run, onTourEnd }) => {
-  // 1. Puxa a função de pontuação do contexto
   const { addPoints } = useContext(ScoreContext);
 
   return (
@@ -163,49 +142,31 @@ export const ToolTour = ({ run, onTourEnd }) => {
       steps={TOOL_STEPS}
       run={run}
       continuous
-      //showProgress
       showSkipButton
       disableOverlayClose={true}
-      locale={{
-        last: 'Fim',
-        next: 'Próximo',
-        skip: 'Pular',
-        back: 'Voltar',
-      }}
+      locale={{ last: 'Fim', next: 'Próximo', skip: 'Pular', back: 'Voltar' }}
       callback={(data) => {
         if ([STATUS.FINISHED, STATUS.SKIPPED].includes(data.status)) {
-          // 2. Lógica de pontuação para o Tool Tour
-          const hasCompletedToolTour = localStorage.getItem('hasCompletedToolTour');
-          if (!hasCompletedToolTour) {
+          // Grudando o UID na chave de verificação
+          const user = JSON.parse(localStorage.getItem('user'));
+          const tourKey = `hasCompletedToolTour_${user?.uid}`;
+          const hasCompletedToolTour = localStorage.getItem(tourKey);
+          
+          if (!hasCompletedToolTour && user) {
             addPoints(50, 'Completou o Tour da Ferramenta');
-            localStorage.setItem('hasCompletedToolTour', 'true');
+            localStorage.setItem(tourKey, 'true');
           }
 
-          onTourEnd(); // Chama a função para parar o tour
+          onTourEnd(); 
         }
       }}
       styles={{
-        options: {
-          primaryColor: '#4caf50', // Botão Salvar
-          zIndex: 10000,
-        },
-        tooltipContent: {
-          fontSize: '20px', 
-          textAlign: 'left'
-        },
-        tooltipTitle: {
-          fontSize: '24px', 
-          fontWeight: 'bold'
-        },
-        buttonNext: {
-          fontSize: '18px'
-        },
-        buttonBack: {
-          fontSize: '18px'
-        },
-        buttonSkip: {
-          fontSize: '18px'
-        }
+        options: { primaryColor: '#4caf50', zIndex: 10000 },
+        tooltipContent: { fontSize: '20px', textAlign: 'left' },
+        tooltipTitle: { fontSize: '24px', fontWeight: 'bold' },
+        buttonNext: { fontSize: '18px' },
+        buttonBack: { fontSize: '18px' },
+        buttonSkip: { fontSize: '18px' }
       }}
     />
   );
