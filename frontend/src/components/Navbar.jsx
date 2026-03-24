@@ -151,9 +151,20 @@ const Navbar = ({
           i
         </button>
 
-        <button className="button logout" onClick={onLogoutClick}>
-          <LogOut size={28} />
-        </button>
+        {/* INICIO BLOCO DA MOLDURA E PONTOS (COM TOOLTIP) */}
+        <div className="avatar-tooltip-container" style={{ marginRight: '20px', marginLeft: '2vh' }}>
+          <div className="avatar-wrapper">
+            <img 
+              src={usuario?.providerData?.[0]?.photoURL || "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png"} 
+              alt="Profile" 
+              className="user-avatar-image" 
+            />
+            <img 
+              src={rankInfo.frameUrl} 
+              alt="Moldura Ranking" 
+              className="rank-frame-image" 
+            />
+          </div>
           
           {/* O balão (tooltip) escondido que aparece no hover */}
           <div className="avatar-tooltip">
@@ -163,22 +174,12 @@ const Navbar = ({
             </span>
           </div>
         </div>
-
-
-        <div className="avatar-wrapper">
-          <img 
-            src={usuario?.providerData?.[0]?.photoURL || "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png"} 
-            alt="Profile" 
-            className="user-avatar-image" 
-          />
-          <img 
-            src={rankInfo.frameUrl} 
-            alt="Moldura Ranking" 
-            className="rank-frame-image" 
-          />
-        </div>
         {/* FIM BLOCO DA MOLDURA E PONTOS */}
 
+        <button className="button logout" onClick={onLogoutClick}>
+          <LogOut size={28} />
+        </button>
+        
       </div>
     </div>
   );
