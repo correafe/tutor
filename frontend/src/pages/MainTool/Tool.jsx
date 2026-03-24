@@ -1528,43 +1528,47 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
         </ModalName>
       )}
 
-          <div className="teste-1" style={{ width: calculateTotalWidth(matrix) + 200 }}>
-            <div className="fases-container" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
-              <div className="barra1" />
-              <div className="fases-content" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
-                <div className="fases-text">Fases da Jornada</div>
-              </div>
+          <div className="teste-1" style={{ width: Math.max(window.innerWidth, calculateTotalWidth(matrix) + 300) }}>
+          <div className="fases-container" style={{ width: '100%' }}>
+            <div className="barra1" />
+            <div className="fases-content">
+              <div className="fases-text">Fases da Jornada</div>
             </div>
-            <div className="separator1" style={{ width: calculateTotalWidth(matrix) + 2400 }}></div>
-            <div className="fases-container" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
-              <div className="barra2" />
-              <div className="fases-content" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
-                <div className="fases-text">Ações do Usuário</div>
-              </div>
-            </div>
-            <div className="separator1" style={{ width: calculateTotalWidth(matrix) + 2400 }}></div>
-            <div className="fases-container" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
-              <div className="barra3" />
-              <div className="fases-content" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
-                <div className="fases-text">Emoções</div>
-              </div>
-            </div>
-            <div className="separator1" style={{ width: calculateTotalWidth(matrix) + 2400 }}></div>
-            <div className="fases-container" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
-              <div className="barra4" />
-              <div className="fases-content" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
-                <div className="fases-text">Pensamentos</div>
-              </div>
-            </div>
-            <div className="separator1" style={{ width: calculateTotalWidth(matrix) + 2400 }}></div>
-            <div className="fases-container" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
-              <div className="barra5" />
-              <div className="fases-content" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
-                <div className="fases-text">Pontos de Contato</div>
-              </div>
-            </div>
-            <div className="separator1" style={{ width: calculateTotalWidth(matrix) + 2400 }}></div>
           </div>
+          <div className="separator1" style={{ width: '100%' }}></div>
+          
+          <div className="fases-container" style={{ width: '100%' }}>
+            <div className="barra2" />
+            <div className="fases-content">
+              <div className="fases-text">Ações do Usuário</div>
+            </div>
+          </div>
+          <div className="separator1" style={{ width: '100%' }}></div>
+          
+          <div className="fases-container" style={{ width: '100%' }}>
+            <div className="barra3" />
+            <div className="fases-content">
+              <div className="fases-text">Emoções</div>
+            </div>
+          </div>
+          <div className="separator1" style={{ width: '100%' }}></div>
+          
+          <div className="fases-container" style={{ width: '100%' }}>
+            <div className="barra4" />
+            <div className="fases-content">
+              <div className="fases-text">Pensamentos</div>
+            </div>
+          </div>
+          <div className="separator1" style={{ width: '100%' }}></div>
+          
+          <div className="fases-container" style={{ width: '100%' }}>
+            <div className="barra5" />
+            <div className="fases-content">
+              <div className="fases-text">Pontos de Contato</div>
+            </div>
+          </div>
+          <div className="separator1" style={{ width: '100%' }}></div>
+        </div>
         </>
       </div>
     </div>
