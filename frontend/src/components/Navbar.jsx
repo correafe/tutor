@@ -8,9 +8,11 @@ import teste2 from '../assets/teste2.png';
 import teste3 from '../assets/teste3.png';
 import teste4 from '../assets/teste4.png';
 import teste5 from '../assets/teste5.png';
+import { LogOut, GraduationCap, HelpCircle, Trophy } from 'lucide-react';
 
 const Navbar = ({ 
   onSaveClick, 
+  onRankingClick,
   onTutorialClick, 
   onMap, 
   onInfoClick, 
@@ -137,6 +139,15 @@ const Navbar = ({
             ?
           </button>
         )}
+
+        <button 
+          className="button info" 
+          onClick={onRankingClick} 
+          title="Ranking Global"
+          style={{ marginLeft: '2vh', backgroundColor: '#FFD700', color: '#333' }}
+        >
+           <Trophy size={24} />
+        </button>
 
         <button 
           className="button info learn" 

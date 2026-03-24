@@ -1,0 +1,64 @@
+.ranking-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex; justify-content: center; alignItems: center;
+  z-index: 9999;
+}
+
+.ranking-box {
+  background-color: #fff;
+  width: 90%; max-width: 600px;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0px 10px 30px rgba(0,0,0,0.3);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.ranking-header {
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 15px;
+}
+
+.ranking-header h2 { margin: 0; color: #333; font-size: 28px; }
+
+.ranking-subtitle { color: #666; font-size: 16px; margin-bottom: 20px; text-align: center; }
+
+.ranking-list { display: flex; flex-direction: column; gap: 10px; max-height: 50vh; overflow-y: auto; padding-right: 10px; }
+
+.ranking-item {
+  display: flex; align-items: center; background-color: #f9f9f9;
+  padding: 15px; border-radius: 15px; transition: transform 0.2s;
+}
+
+.ranking-item:hover { transform: scale(1.02); }
+
+.current-user-highlight {
+  background-color: #fffbe6;
+  border: 2px solid #ffd700;
+  box-shadow: 0px 0px 15px rgba(255, 215, 0, 0.3);
+}
+
+.ranking-position {
+  width: 40px; font-size: 22px; font-weight: bold; color: #555; text-align: center; margin-right: 10px;
+}
+
+.ranking-avatar-wrapper {
+  position: relative; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; margin-right: 15px;
+}
+
+.ranking-avatar { width: 65%; height: 65%; border-radius: 50%; object-fit: cover; position: absolute; z-index: 1; }
+
+.ranking-frame { width: 110%; height: 100%; position: absolute; top: 0; left: -3px; z-index: 2; pointer-events: none; object-fit: contain; transform: scale(1.25); }
+
+.ranking-info { flex: 1; display: flex; flex-direction: column; text-align: left;}
+.ranking-name { margin: 0; font-size: 18px; color: #333; }
+.ranking-badge { font-size: 13px; color: #777; background-color: #e0e0e0; padding: 3px 8px; border-radius: 10px; width: fit-content; margin-top: 5px; }
+
+.ranking-score { font-size: 16px; color: #666; }
+.ranking-score span { font-size: 26px; font-weight: bold; color: #4caf50; }

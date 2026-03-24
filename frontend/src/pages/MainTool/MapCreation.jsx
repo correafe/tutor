@@ -14,6 +14,8 @@ import teste2 from '../../assets/teste2.png';
 import teste3 from '../../assets/teste3.png';
 import teste4 from '../../assets/teste4.png';
 import teste5 from '../../assets/teste5.png';
+import { Plus, X, LogOut, Trash, Pencil, ChevronRight, ChevronLeft, ChevronsRight, ChevronsLeft, HelpCircle, Trophy } from 'lucide-react';
+import RankingModal from '../../components/RankingModal';
 
 import fundomapas from "../../assets/Fundomapas.png";
 import "./MapCreation.css";
@@ -41,6 +43,8 @@ const MapCreation = () => {
   const [showMapCreationPrompt, setShowMapCreationPrompt] = useState(false);
   const [isTutorialMode, setIsTutorialMode] = useState(false);
   const [askedForMapTutorial, setAskedForMapTutorial] = useState(false);
+
+  const [showRankingModal, setShowRankingModal] = useState(false);
 
   const mapsPerPage = 5; 
 
@@ -324,6 +328,19 @@ const MapCreation = () => {
           ?
         </button>
           
+        <button 
+          onClick={() => setShowRankingModal(true)} 
+          style={{ 
+            marginRight: '20px', backgroundColor: '#FFD700', color: '#333', border: 'none',
+            borderRadius: '50%', width: '50px', height: '50px', fontSize: '24px', fontWeight: 'bold', 
+            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', 
+            boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
+          }}
+          title="Ranking Global"
+        >
+          <Trophy size={26} />
+        </button>
+
         {/* INICIO BLOCO DA MOLDURA E PONTOS (COM TOOLTIP) */}
         <div className="avatar-tooltip-container" style={{ marginRight: '20px' }}>
           <div className="avatar-wrapper">
@@ -392,6 +409,10 @@ const MapCreation = () => {
             <button className="botaocancelname" onClick={() => setShowMapCreationPrompt(false)}>Agora não</button>
           </div>
         </ModalName>
+      )}
+
+      {showRankingModal && (
+        <RankingModal onClose={() => setShowRankingModal(false)} />
       )}
 
       {isPickerVisible && (

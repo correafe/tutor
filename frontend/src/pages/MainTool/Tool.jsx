@@ -22,6 +22,7 @@ import TutorialWizard from "../../components/TutorialWizard";
 import { PIZZA_SCENARIO, STREAMING_SCENARIO, ADVANCED_SCENARIO } from "../../components/tutorialData";
 import TutorialLevelSelector from "../../components/TutorialLevelSelector";
 import FAQContent from "../../components/FAQContent";
+import RankingModal from "../../components/RankingModal";
 
 import './tool.css';
 
@@ -50,6 +51,8 @@ const Tool = ({ }) => {
 
   const [dataLoaded, setDataLoaded] = useState(false); 
   const [showExampleMapModal, setShowExampleMapModal] = useState(false);
+
+  const [showRankingModal, setShowRankingModal] = useState(false);
 
   const location = useLocation();
   const isTutorialMode = location.state?.startTour;
@@ -1288,6 +1291,7 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
             onInfoClick={() => setButtonPopup(true)}
             onFAQClick={() => setShowFAQ(true)}
             onScenarioClick={() => { setButtonPopup(true); setScenario(true) }}
+            onRankingClick={() => setShowRankingModal(true)}
             onLogoutClick={handleLogout}
             onMap={onMap}
             onDownload={handleExport}
@@ -1485,6 +1489,8 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
               </Stage>
             </div>
           )}
+
+      {showRankingModal && <RankingModal onClose={() => setShowRankingModal(false)} />}
 
       {showClearConfirmModal && (
         <ModalName trigger={showClearConfirmModal} setTrigger={setShowClearConfirmModal}>
