@@ -155,13 +155,30 @@ const Navbar = ({
           <LogOut size={28} />
         </button>
         
-        {/* INICIO BLOCO DA MOLDURA E PONTOS */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', marginLeft: '10px' }}>
-          <span style={{ fontWeight: 'bold', color: '#fff', fontSize: '16px' }}>🏆 {score} pts</span>
-          <span style={{ fontSize: '11px', color: '#fff', textTransform: 'uppercase', letterSpacing: '1px', backgroundColor: 'rgba(255,255,255,0.2)', padding: '2px 6px', borderRadius: '8px' }}>
-            {rankInfo.title}
-          </span>
+{/* INICIO BLOCO DA MOLDURA E PONTOS (COM TOOLTIP) */}
+        <div className="avatar-tooltip-container" style={{ marginRight: '20px' }}>
+          <div className="avatar-wrapper">
+            <img 
+              src={usuario?.providerData?.[0]?.photoURL || "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png"} 
+              alt="Profile" 
+              className="user-avatar-image" 
+            />
+            <img 
+              src={rankInfo.frameUrl} 
+              alt="Moldura Ranking" 
+              className="rank-frame-image" 
+            />
+          </div>
+          
+          {/* O balão (tooltip) escondido que aparece no hover */}
+          <div className="avatar-tooltip">
+            <span style={{ fontWeight: 'bold', color: '#ffd700', fontSize: '18px' }}>🏆 {score} pts</span>
+            <span style={{ fontSize: '12px', color: '#fff', backgroundColor: '#666', padding: '2px 8px', borderRadius: '10px', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '5px' }}>
+              {rankInfo.title}
+            </span>
+          </div>
         </div>
+
 
         <div className="avatar-wrapper">
           <img 
