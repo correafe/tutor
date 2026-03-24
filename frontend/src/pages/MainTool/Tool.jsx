@@ -38,6 +38,24 @@ const sizeUpdated = () => {
 
 
 const Tool = ({ }) => {
+  
+  const [zoomLevel, setZoomLevel] = useState(1);
+
+  useEffect(() => {
+    const handleResize = () => {
+      // 960px é a altura aproximada que a ferramenta precisa para mostrar tudo
+      const minHeight = 960; 
+      if (window.innerHeight < minHeight) {
+         setZoomLevel(window.innerHeight / minHeight); // Aplica o zoom proporcional
+      } else {
+         setZoomLevel(1); // Tela grande = 100% de zoom
+      }
+    };
+    handleResize(); // Aplica o zoom ao abrir a página
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const [showFAQ, setShowFAQ] = useState(false);
   const [showTutorialWizard, setShowTutorialWizard] = useState(false);
   const [showLevelSelector, setShowLevelSelector] = useState(false);
@@ -1223,7 +1241,7 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
 };
 
   return (
-    <div className="scrollable-container">
+    <div className="scrollable-container" style={{ zoom: zoomLevel }}>
       <ToolTour run={runToolTour} onTourEnd={stopTour} />
 
       {showLevelSelector && (
@@ -1528,47 +1546,43 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
         </ModalName>
       )}
 
-          <div className="teste-1" style={{ width: Math.max(window.innerWidth, calculateTotalWidth(matrix) + 300) }}>
-          <div className="fases-container" style={{ width: '100%' }}>
-            <div className="barra1" />
-            <div className="fases-content">
-              <div className="fases-text">Fases da Jornada</div>
+          <div className="teste-1" style={{ width: calculateTotalWidth(matrix) + 200 }}>
+            <div className="fases-container" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
+              <div className="barra1" />
+              <div className="fases-content" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
+                <div className="fases-text">Fases da Jornada</div>
+              </div>
             </div>
-          </div>
-          <div className="separator1" style={{ width: '100%' }}></div>
-          
-          <div className="fases-container" style={{ width: '100%' }}>
-            <div className="barra2" />
-            <div className="fases-content">
-              <div className="fases-text">Ações do Usuário</div>
+            <div className="separator1" style={{ width: calculateTotalWidth(matrix) + 2400 }}></div>
+            <div className="fases-container" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
+              <div className="barra2" />
+              <div className="fases-content" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
+                <div className="fases-text">Ações do Usuário</div>
+              </div>
             </div>
-          </div>
-          <div className="separator1" style={{ width: '100%' }}></div>
-          
-          <div className="fases-container" style={{ width: '100%' }}>
-            <div className="barra3" />
-            <div className="fases-content">
-              <div className="fases-text">Emoções</div>
+            <div className="separator1" style={{ width: calculateTotalWidth(matrix) + 2400 }}></div>
+            <div className="fases-container" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
+              <div className="barra3" />
+              <div className="fases-content" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
+                <div className="fases-text">Emoções</div>
+              </div>
             </div>
-          </div>
-          <div className="separator1" style={{ width: '100%' }}></div>
-          
-          <div className="fases-container" style={{ width: '100%' }}>
-            <div className="barra4" />
-            <div className="fases-content">
-              <div className="fases-text">Pensamentos</div>
+            <div className="separator1" style={{ width: calculateTotalWidth(matrix) + 2400 }}></div>
+            <div className="fases-container" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
+              <div className="barra4" />
+              <div className="fases-content" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
+                <div className="fases-text">Pensamentos</div>
+              </div>
             </div>
-          </div>
-          <div className="separator1" style={{ width: '100%' }}></div>
-          
-          <div className="fases-container" style={{ width: '100%' }}>
-            <div className="barra5" />
-            <div className="fases-content">
-              <div className="fases-text">Pontos de Contato</div>
+            <div className="separator1" style={{ width: calculateTotalWidth(matrix) + 2400 }}></div>
+            <div className="fases-container" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
+              <div className="barra5" />
+              <div className="fases-content" style={{ width: calculateTotalWidth(matrix) + 2400 }}>
+                <div className="fases-text">Pontos de Contato</div>
+              </div>
             </div>
+            <div className="separator1" style={{ width: calculateTotalWidth(matrix) + 2400 }}></div>
           </div>
-          <div className="separator1" style={{ width: '100%' }}></div>
-        </div>
         </>
       </div>
     </div>
