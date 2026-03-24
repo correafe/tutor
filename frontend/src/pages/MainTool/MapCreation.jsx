@@ -14,7 +14,7 @@ import teste2 from '../../assets/teste2.png';
 import teste3 from '../../assets/teste3.png';
 import teste4 from '../../assets/teste4.png';
 import teste5 from '../../assets/teste5.png';
-import { Plus, X, LogOut, Trash, Pencil, ChevronRight, ChevronLeft, ChevronsRight, ChevronsLeft, HelpCircle, Trophy } from 'lucide-react';
+import { Trophy } from 'lucide-react';
 import RankingModal from '../../components/RankingModal';
 
 import fundomapas from "../../assets/Fundomapas.png";
