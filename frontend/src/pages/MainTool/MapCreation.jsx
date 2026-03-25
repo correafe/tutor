@@ -312,7 +312,7 @@ const MapCreation = () => {
       backgroundColor: "#E6E6E6",
       overflow: "hidden"
     }}>
-    <div className="map-creation-container" style={{ backgroundImage: `url(${fundomapas})`, height: "100vh", width: "100vw" }}>
+    <div className="map-creation-container" style={{ backgroundImage: `url(${fundomapas})`, backgroundSize: "cover", backgroundPosition: "center", height: "100%", width: "100%" }}>
       <DashboardTour run={runDashboardTour} onTourEnd={stopTour} />
 
       <div className="navbar" style={{ textAlign: "left", padding: "31px", fontSize: "30px", display: "flex", alignItems: "center" }}>

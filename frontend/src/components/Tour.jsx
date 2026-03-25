@@ -122,7 +122,7 @@ export const DashboardTour = ({ run, onTourEnd }) => {
         }
       }}
       styles={{
-        options: { primaryColor: '#06bd2d', zIndex: 1000 },
+        options: { primaryColor: '#06bd2d', zIndex: 10000 },
         tooltipContent: { fontSize: '15px', textAlign: 'left' }, // Antes era 20px
         tooltipTitle: { fontSize: '18px', fontWeight: 'bold' },    // Antes era 24px
         buttonNext: { fontSize: '14px' }, // Antes era 18px
@@ -161,7 +161,7 @@ export const ToolTour = ({ run, onTourEnd }) => {
         }
       }}
       styles={{
-        options: { primaryColor: '#4caf50', zIndex: 1000 },
+        options: { primaryColor: '#4caf50', zIndex: 10000 },
         tooltipContent: { fontSize: '15px', textAlign: 'left' }, // Antes era 20px
         tooltipTitle: { fontSize: '18px', fontWeight: 'bold' },    // Antes era 24px
         buttonNext: { fontSize: '14px' }, // Antes era 18px
