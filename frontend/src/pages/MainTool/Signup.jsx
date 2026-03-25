@@ -120,9 +120,9 @@ function Signup() {
           <form className="login-form">
             <span className={`login-form-title ${theme}`}> Cadastrar-se </span>
 
-           <div className={`logo-container ${theme}`}>
+            <span className={`login-form-title ${theme}`}>
               <img className="mascote" src={img} alt="Mascote" />
-            </div>
+            </span>
 
             <div className={`wrap-input ${theme}`}>
               <input
