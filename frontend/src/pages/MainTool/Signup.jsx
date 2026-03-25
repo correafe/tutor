@@ -161,7 +161,7 @@ function Signup() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <span className={`focus-input ${theme}`} data-placeholder="Password"></span>
+              <span className={`focus-input ${theme}`} data-placeholder="Senha"></span>
               <button
                 type="button"
                 className={`show-password-button ${theme}`}
