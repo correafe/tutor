@@ -110,7 +110,6 @@ function Signup() {
   return (
     <div className={`container ${theme}`}>
       <div className={`container-login ${theme}`}>
-        
         <div 
           className={`wrap-login ${theme}`}
           style={{ transform: `scale(${scaleRatio})` }}
