@@ -320,16 +320,7 @@ const Tool = ({ }) => {
       const newMatrix = [journeyMatrix, userActionMatrix, emotionMatrix, thoughtMatrix, contactPointMatrix];
       setMatrix(newMatrix);
       
-      // Checa se o usuário está fazendo o tutorial
-      const isTutorial = localStorage.getItem('startToolTutorial') === 'true';
-      const isWizardOpen = document.querySelector('.wizard-overlay') !== null;
-
-      // Se tiver cards OU se estiver no tutorial, a Navbar NUNCA deve sumir!
-      if (newMatrix.some(matrix => matrix.length > 0) || isTutorial || isWizardOpen) {
-        setDataLoaded(true);
-      } else {
-        setDataLoaded(false); 
-      }
+      setDataLoaded(true); 
 
       const convertedEmojis = {};
       for (const item of emotionMatrix) {
@@ -342,13 +333,10 @@ const Tool = ({ }) => {
 
     } catch (error) {
       console.error("Erro ao buscar os dados:", error);
-      // Se der erro, não esconde a Navbar se estiver no tutorial
-      const isWizardOpen = document.querySelector('.wizard-overlay') !== null;
-      if (!isWizardOpen) setDataLoaded(false);
+      setDataLoaded(false);
     }
   };
 
-  
 
   useEffect(() => {
       // Lê a flag que acabamos de salvar no MapCreation
