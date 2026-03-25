@@ -1215,6 +1215,55 @@ const handleLevelSelect = async (level) => {
     }
   };
 
+  const handleStartTutorial = async () => {
+    let currentScenarioData;
+    if (targetScenario === 'streaming') currentScenarioData = STREAMING_SCENARIO;
+    else if (targetScenario === 'viagem') currentScenarioData = ADVANCED_SCENARIO;
+    else currentScenarioData = PIZZA_SCENARIO;
+
+    const meta = currentScenarioData.scenarioMeta; 
+
+    // 1. Muda o nome na tela IMEDIATAMENTE (sem precisar de F5)
+    const scenarioElement = document.querySelector('.scenario');
+    if (scenarioElement) {
+      scenarioElement.innerText = meta.name;
+    }
+    
+    // Atualiza as variáveis do seu modal de edição
+    setSceneName(meta.name);
+    setSceneDesc(meta.description);
+    setScenarioExists(true);
+
+    // 2. Salva o nome correto no banco de dados antes da prática começar
+    try {
+      let cenarioJaExiste = false;
+      try {
+        const checkRes = await axios.get(import.meta.env.VITE_BACKEND + `/scenario/${id_mapa}`);
+        if (checkRes.data && (checkRes.data.name || checkRes.data.description)) {
+          cenarioJaExiste = true;
+        }
+      } catch (err) {
+        cenarioJaExiste = false;
+      }
+
+      if (cenarioJaExiste) {
+        await axios.put(import.meta.env.VITE_BACKEND + '/scenario', {
+          journeyMapId: id_mapa,
+          newName: meta.name,
+          newDescription: meta.description
+        });
+      } else {
+        await axios.post(import.meta.env.VITE_BACKEND + '/scenario', {
+          journeyMapId: id_mapa,
+          name: meta.name,
+          description: meta.description
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao salvar cenário inicial:", error);
+    }
+  };
+
 // 1. Crie esta função auxiliar para adicionar um card individual
 const addTutorialCardToMap = async (step, currentStepIndex) => {
   const positions = [20, 290, 560, 830, 1100];
@@ -1273,6 +1322,7 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
           onClose={() => setShowTutorialWizard(false)} 
           onComplete={handleTutorialComplete} 
           onCorrectAnswer={addTutorialCardToMap}
+          onStartTutorial={handleStartTutorial}
           scenarioType={targetScenario}
         />
       )}
