@@ -105,10 +105,11 @@ export const DashboardTour = ({ run, onTourEnd }) => {
       showSkipButton
       hideCloseButton={true}
       disableOverlayClose={true}
+      disableScrollParentFix={true} // <-- NOVO: Impede conflitos de scroll
+      disableScrolling={true}       // <-- NOVO: Impede o balão de pular a tela para baixo!
       locale={{ last: 'Fim', next: 'Próximo', skip: 'Pular', back: 'Voltar' }}
       callback={(data) => {
         if ([STATUS.FINISHED, STATUS.SKIPPED].includes(data.status)) {
-          // Grudando o UID na chave de verificação
           const user = JSON.parse(localStorage.getItem('user'));
           const tourKey = `hasCompletedDashboardTour_${user?.uid}`;
           const hasCompletedDashboardTour = localStorage.getItem(tourKey);
@@ -122,12 +123,19 @@ export const DashboardTour = ({ run, onTourEnd }) => {
         }
       }}
       styles={{
-        options: { primaryColor: '#06bd2d', zIndex: 10000 },
-        tooltipContent: { fontSize: '15px', textAlign: 'left' }, // Antes era 20px
-        tooltipTitle: { fontSize: '18px', fontWeight: 'bold' },    // Antes era 24px
-        buttonNext: { fontSize: '14px' }, // Antes era 18px
-        buttonBack: { fontSize: '14px' }, // Antes era 18px
-        buttonSkip: { fontSize: '14px' }  // Antes era 18px
+        options: { 
+          primaryColor: '#06bd2d', 
+          zIndex: 10000,
+          width: 300 // <-- NOVO: Força o balão a ser mais estreito
+        },
+        tooltip: {
+          padding: '15px' // <-- NOVO: Diminui a "gordura" ao redor do texto
+        },
+        tooltipContent: { fontSize: '15px', textAlign: 'left', padding: '10px 0' }, 
+        tooltipTitle: { fontSize: '18px', fontWeight: 'bold' },    
+        buttonNext: { fontSize: '14px', padding: '8px 12px' }, // <-- NOVO: Botões menores
+        buttonBack: { fontSize: '14px' }, 
+        buttonSkip: { fontSize: '14px' }  
       }}
     />
   );
@@ -144,10 +152,11 @@ export const ToolTour = ({ run, onTourEnd }) => {
       showSkipButton
       hideCloseButton={true}
       disableOverlayClose={true}
+      disableScrollParentFix={true} // <-- NOVO
+      disableScrolling={true}       // <-- NOVO: Não rola a tela na Ferramenta
       locale={{ last: 'Fim', next: 'Próximo', skip: 'Pular', back: 'Voltar' }}
       callback={(data) => {
         if ([STATUS.FINISHED, STATUS.SKIPPED].includes(data.status)) {
-          // Grudando o UID na chave de verificação
           const user = JSON.parse(localStorage.getItem('user'));
           const tourKey = `hasCompletedToolTour_${user?.uid}`;
           const hasCompletedToolTour = localStorage.getItem(tourKey);
@@ -161,12 +170,19 @@ export const ToolTour = ({ run, onTourEnd }) => {
         }
       }}
       styles={{
-        options: { primaryColor: '#4caf50', zIndex: 10000 },
-        tooltipContent: { fontSize: '15px', textAlign: 'left' }, // Antes era 20px
-        tooltipTitle: { fontSize: '18px', fontWeight: 'bold' },    // Antes era 24px
-        buttonNext: { fontSize: '14px' }, // Antes era 18px
-        buttonBack: { fontSize: '14px' }, // Antes era 18px
-        buttonSkip: { fontSize: '14px' }  // Antes era 18px
+        options: { 
+          primaryColor: '#4caf50', 
+          zIndex: 10000,
+          width: 300 // <-- NOVO: Balão mais fininho
+        },
+        tooltip: {
+          padding: '15px' // <-- NOVO: Menos borda sobrando
+        },
+        tooltipContent: { fontSize: '15px', textAlign: 'left', padding: '10px 0' }, 
+        tooltipTitle: { fontSize: '18px', fontWeight: 'bold' },    
+        buttonNext: { fontSize: '14px', padding: '8px 12px' }, // <-- NOVO: Botões ajustados
+        buttonBack: { fontSize: '14px' }, 
+        buttonSkip: { fontSize: '14px' }  
       }}
     />
   );
