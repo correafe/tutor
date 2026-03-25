@@ -94,7 +94,6 @@ const TOOL_STEPS = [
   },
 ];
 
-
 export const DashboardTour = ({ run, onTourEnd }) => {
   const { addPoints } = useContext(ScoreContext);
 
@@ -124,11 +123,11 @@ export const DashboardTour = ({ run, onTourEnd }) => {
       }}
       styles={{
         options: { primaryColor: '#06bd2d', zIndex: 10000 },
-        tooltipContent: { fontSize: '20px', textAlign: 'left' },
-        tooltipTitle: { fontSize: '24px', fontWeight: 'bold' },
-        buttonNext: { fontSize: '18px' },
-        buttonBack: { fontSize: '18px' },
-        buttonSkip: { fontSize: '18px' }
+        tooltipContent: { fontSize: '15px', textAlign: 'left' }, // Antes era 20px
+        tooltipTitle: { fontSize: '18px', fontWeight: 'bold' },    // Antes era 24px
+        buttonNext: { fontSize: '14px' }, // Antes era 18px
+        buttonBack: { fontSize: '14px' }, // Antes era 18px
+        buttonSkip: { fontSize: '14px' }  // Antes era 18px
       }}
     />
   );
@@ -143,7 +142,6 @@ export const ToolTour = ({ run, onTourEnd }) => {
       run={run}
       continuous
       showSkipButton
-      hideCloseButton={true}
       disableOverlayClose={true}
       locale={{ last: 'Fim', next: 'Próximo', skip: 'Pular', back: 'Voltar' }}
       callback={(data) => {
@@ -163,11 +161,11 @@ export const ToolTour = ({ run, onTourEnd }) => {
       }}
       styles={{
         options: { primaryColor: '#4caf50', zIndex: 10000 },
-        tooltipContent: { fontSize: '20px', textAlign: 'left' },
-        tooltipTitle: { fontSize: '24px', fontWeight: 'bold' },
-        buttonNext: { fontSize: '18px' },
-        buttonBack: { fontSize: '18px' },
-        buttonSkip: { fontSize: '18px' }
+        tooltipContent: { fontSize: '15px', textAlign: 'left' }, // Antes era 20px
+        tooltipTitle: { fontSize: '18px', fontWeight: 'bold' },    // Antes era 24px
+        buttonNext: { fontSize: '14px' }, // Antes era 18px
+        buttonBack: { fontSize: '14px' }, // Antes era 18px
+        buttonSkip: { fontSize: '14px' }  // Antes era 18px
       }}
     />
   );

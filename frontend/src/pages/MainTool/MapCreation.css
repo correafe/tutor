@@ -9,8 +9,8 @@ body {
   font-family: Nunito, sans-serif;
   margin: 0;
   padding: 0;
-  height: 100vh;
-   /*overflow: hidden; Isto proíbe a barra de rolagem de existir! */
+  min-height: 100vh;
+  overflow: hidden; /* Continua sem scroll, como você pediu! */
 }
 
 .nenhum {

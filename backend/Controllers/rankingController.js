@@ -6,7 +6,7 @@ const getGlobalRanking = async (req, res) => {
     res.status(200).json(ranking);
   } catch (error) {
     console.error("Erro ao buscar ranking:", error);
-    res.status(500).json({ error: 'Erro ao buscar ranking global' });
+    res.status(500).json({ error: 'Erro ao buscar ranking' });
   }
 };
 

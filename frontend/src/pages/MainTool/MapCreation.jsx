@@ -26,13 +26,21 @@ const MapCreation = () => {
 
   useEffect(() => {
     const ajustarZoom = () => {
-      // 950px ou 1000px é a altura ideal para encaixar tudo
+      // 950px é a altura base que escolhemos
       const proporcao = window.innerHeight / 950;
-      setZoomRatio(proporcao);
+      
+      // Aplica o zoom no corpo inteiro do site!
+      document.body.style.zoom = proporcao;
     };
+    
     ajustarZoom();
     window.addEventListener('resize', ajustarZoom);
-    return () => window.removeEventListener('resize', ajustarZoom);
+    
+    // Reseta o zoom para 100% se o usuário sair desta página
+    return () => {
+      window.removeEventListener('resize', ajustarZoom);
+      document.body.style.zoom = 1;
+    };
   }, []);
 
   const [showFAQ, setShowFAQ] = useState(false);
@@ -300,7 +308,7 @@ const MapCreation = () => {
   };
 
   return (
-    <div style={{ zoom: zoomRatio, width: "100vw", height: "950px" }}>
+    <div style={{ width: "100%", minHeight: "100vh" }}>
     <div className="map-creation-container" style={{ backgroundImage: `url(${fundomapas})`, height: "100vh", width: "100vw" }}>
       <DashboardTour run={runDashboardTour} onTourEnd={stopTour} />
 
@@ -350,7 +358,7 @@ const MapCreation = () => {
             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', 
             boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
           }}
-          title="Ranking Global"
+          title="Ranking"
         >
           <Trophy size={26} />
         </button>

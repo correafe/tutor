@@ -70,7 +70,7 @@ const RankingModal = ({ onClose }) => {
         <div className="ranking-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <Trophy size={32} color="#FFD700" />
-            <h2>Ranking Global</h2>
+            <h2>Ranking</h2>
           </div>
           <button className="close-btn-icon" onClick={onClose}>
             <X size={28} />
