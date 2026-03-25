@@ -22,24 +22,20 @@ import "./MapCreation.css";
 
 const MapCreation = () => {
 
-  const [zoomRatio, setZoomRatio] = useState(1);
+  const [scaleRatio, setScaleRatio] = useState(1);
 
   useEffect(() => {
-    const ajustarZoom = () => {
-      // 950px é a altura base que escolhemos
+    const ajustarEscala = () => {
+      // 950px é a altura perfeita para as linhas não cortarem
       const proporcao = window.innerHeight / 950;
-      
-      // Aplica o zoom no corpo inteiro do site!
-      document.body.style.zoom = proporcao;
+      setScaleRatio(proporcao);
     };
     
-    ajustarZoom();
-    window.addEventListener('resize', ajustarZoom);
+    ajustarEscala();
+    window.addEventListener('resize', ajustarEscala);
     
-    // Reseta o zoom para 100% se o usuário sair desta página
     return () => {
-      window.removeEventListener('resize', ajustarZoom);
-      document.body.style.zoom = 1;
+      window.removeEventListener('resize', ajustarEscala);
     };
   }, []);
 
@@ -308,7 +304,14 @@ const MapCreation = () => {
   };
 
   return (
-    <div style={{ width: "100%", minHeight: "100vh" }}>
+    <div style={{
+      width: `${100 / scaleRatio}vw`,
+      height: `${100 / scaleRatio}vh`,
+      transform: `scale(${scaleRatio})`,
+      transformOrigin: "top left",
+      backgroundColor: "#E6E6E6",
+      overflow: "hidden"
+    }}>
     <div className="map-creation-container" style={{ backgroundImage: `url(${fundomapas})`, height: "100vh", width: "100vw" }}>
       <DashboardTour run={runDashboardTour} onTourEnd={stopTour} />
 
