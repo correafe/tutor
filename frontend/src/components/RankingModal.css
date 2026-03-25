@@ -1,8 +1,15 @@
 .ranking-overlay {
   position: fixed;
-  top: 0; left: 0; width: 100vw; height: 100vh;
+  top: 0; 
+  left: 0; 
+  right: 0;  /* NOVO: Gruda na direita do ecrã */
+  bottom: 0; /* NOVO: Gruda em baixo no ecrã */
+  /* Removemos o width: 100vw; e height: 100vh; */
+  
   background-color: rgba(0, 0, 0, 0.6);
-  display: flex; justify-content: center; align-items: center;
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
   z-index: 9999;
 }
 
