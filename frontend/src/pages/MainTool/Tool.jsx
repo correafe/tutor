@@ -39,6 +39,19 @@ const sizeUpdated = () => {
 
 const Tool = ({ }) => {
   
+  const [zoomRatio, setZoomRatio] = useState(1);
+
+  useEffect(() => {
+    const ajustarZoom = () => {
+      // 950px é a altura necessária para as 5 linhas do mapa caberem perfeitamente
+      const proporcao = window.innerHeight / 950;
+      setZoomRatio(proporcao);
+    };
+    ajustarZoom();
+    window.addEventListener('resize', ajustarZoom);
+    return () => window.removeEventListener('resize', ajustarZoom);
+  }, []);
+
   const [zoomLevel, setZoomLevel] = useState(1);
 
   useEffect(() => {
@@ -1241,7 +1254,7 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
 };
 
   return (
-    <div className="scrollable-container">
+    <div className="scrollable-container"  style={{ zoom: zoomRatio }}>
       <ToolTour run={runToolTour} onTourEnd={stopTour} />
 
       {showLevelSelector && (
@@ -1297,7 +1310,7 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
         </ModalName>
       )}
 
-      <div style={{ width: "100vw", height: "100vh" }}>
+      <div style={{ width: "100vw", height: "1000px" }}>
         <>
           {loading && (
             <div className="loading-overlay">
@@ -1488,7 +1501,7 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
           )}
           {dataLoaded && (
             <div className="stage-container">
-              <Stage width={calculateTotalWidth(matrix) + 1260} height={Math.max(window.innerHeight, 1050)} ref={stageRef}>
+              <Stage width={calculateTotalWidth(matrix) + 1260} height={1000} ref={stageRef}>
                 <Layer listening={!showTutorialWizard}>
                   <Matrix
                     key={forceUpdate}
