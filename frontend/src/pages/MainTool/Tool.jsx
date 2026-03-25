@@ -934,27 +934,18 @@ const Tool = ({ }) => {
       const squareType = square.type;
       const squareId = square[`${squareType}_id`];
 
-      // console.log(`Iniciando exclusão do quadrado: ${squareId}`);
-      // console.log(`Iniciando exclusão do quadrado: ${squareType}`);
+      setMatrix(prevMatrix => {
+        const novaMatriz = [...prevMatrix];
+        novaMatriz[rowIndex] = novaMatriz[rowIndex].filter((_, index) => index !== colIndex);
+        return novaMatriz;
+      });
 
       await axios.delete(import.meta.env.VITE_BACKEND + `/${squareType}/${squareId}`);
 
-      // console.log(`Quadrado ${squareId} excluído com sucesso!`);
-
-      // Atualizar a matriz com os novos dados após a exclusão
-      const newData = await fetchData();
-      if (newData) {
-        setMatrix(newData);
-      } else {
-        console.error("Erro ao obter os dados atualizados após a exclusão do quadrado.");
-      }
     } catch (error) {
       console.error("Erro ao excluir quadrado:", error);
     }
   };
-
-
-
 
   const [currentCellId, setCurrentCellId] = useState("");
   const [isPickerVisible, setPickerVisible] = useState(false);
