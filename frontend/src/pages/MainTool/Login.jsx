@@ -19,6 +19,28 @@ function Login() {
   const [googleUser, setGoogleUser] = useState(null);
   const [theme, setTheme] = useState("light");
 
+  const [scaleRatio, setScaleRatio] = useState(1);
+
+  useEffect(() => {
+    const ajustarEscala = () => {
+      // 800px é a altura perfeita para o formulário de login respirar bem
+      let proporcao = window.innerHeight / 800;
+      
+      // Diferente do mapa, no login se a tela for gigante, travamos o zoom em 100% 
+      // para a caixinha não ficar do tamanho do seu rosto
+      if (proporcao > 1) proporcao = 1;
+      
+      setScaleRatio(proporcao);
+    };
+    
+    ajustarEscala();
+    window.addEventListener('resize', ajustarEscala);
+    
+    return () => {
+      window.removeEventListener('resize', ajustarEscala);
+    };
+  }, []);
+
   // useEffect(() => {
   //   // console.log("Current theme:", theme);
   // }, [theme]);
@@ -86,8 +108,16 @@ function Login() {
   };
 
   return (
-    <div className={`container ${theme}`}>
-      <div className={`container-login ${theme}`}>
+    <div style={{
+      width: `${100 / scaleRatio}vw`,
+      height: `${100 / scaleRatio}vh`,
+      transform: `scale(${scaleRatio})`,
+      transformOrigin: "top left",
+      overflow: "hidden",
+      backgroundColor: theme === "dark" ? "#111" : "#f0f0f0"
+    }}>
+      <div className={`container ${theme}`} style={{ width: "100%", height: "100%" }}>
+        <div className={`container-login ${theme}`}>
         <div className={`wrap-login ${theme}`}>
           <button onClick={toggleTheme} className="toggle-theme-btn">
             {theme === "dark" ? <Moon /> : <Sun />}
@@ -162,6 +192,7 @@ function Login() {
           </form>
         </div>
       </div>
+    </div>
     </div>
   );
 }
