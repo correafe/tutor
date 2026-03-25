@@ -176,7 +176,7 @@ export const ToolTour = ({ run, onTourEnd }) => {
           width: 300 // <-- NOVO: Balão mais fininho
         },
         tooltip: {
-          padding: '15px' // <-- NOVO: Menos borda sobrando
+          padding: '15px' 
         },
         tooltipContent: { fontSize: '15px', textAlign: 'left', padding: '10px 0' }, 
         tooltipTitle: { fontSize: '18px', fontWeight: 'bold' },    
