@@ -1205,10 +1205,9 @@ const handleLevelSelect = async (level) => {
 
     const meta = currentScenarioData.scenarioMeta; 
 
-    // 1. Muda o nome na tela IMEDIATAMENTE (sem precisar de F5)
-    const scenarioElement = document.querySelector('.scenario');
+    const scenarioElement = document.querySelector('.scenario-name');
     if (scenarioElement) {
-      scenarioElement.innerText = meta.name;
+      scenarioElement.innerText = `Cenário - ${meta.name}`;
     }
     
     // Atualiza as variáveis do seu modal de edição
