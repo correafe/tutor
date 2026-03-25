@@ -2,8 +2,10 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  right: 0;  /* NOVO: Gruda na direita da tela */
+  bottom: 0; /* NOVO: Gruda na parte debaixo da tela */
+  /* As linhas width: 100vw e height: 100vh foram removidas! */
+  
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
