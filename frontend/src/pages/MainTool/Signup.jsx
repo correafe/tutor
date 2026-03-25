@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Navigate, Link } from "react-router-dom";
-import { auth } from '../../services/firebase'
-import { createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from 'firebase/auth'
+import { auth } from '../../services/firebase';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'; // Importações corrigidas
 import { toast } from 'sonner';
 import { Eye, EyeOff, Sun, Moon } from 'lucide-react';
 
 import img from "../../assets/mascote.png";
-
 import "./Signup.css";
 
 function Signup() {
@@ -17,27 +16,25 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [theme, setTheme] = useState("light");
-
-
-  // useEffect(() => {
-  //   // console.log("Current theme:", theme);
-  // }, [theme]);
+  
+  // Estados de Nome e Sobrenome
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
 
   const toggleTheme = () => {
     setTheme((prevTheme) => {
       const newTheme = prevTheme === "dark" ? "light" : "dark";
-      // // console.log("Theme changed to:", newTheme);  // Log the new theme
       return newTheme;
     });
   };
 
   const showSucess = () => {
-    toast.success('Cadastro realizado com sucesso!')
+    toast.success('Cadastro realizado com sucesso!');
   };
 
   const showError2 = () => {
-    toast.error('Senhas não são iguais!')
-  }
+    toast.error('Senhas não são iguais!');
+  };
 
   const showError = (error) => {
     if (error.code === "auth/email-already-in-use") {
@@ -55,9 +52,14 @@ function Signup() {
     return <Navigate to="/" />;
   }
 
-  const handleLogin = async (e) => {
-    
+  const handleSignup = async (e) => {
     e.preventDefault();
+
+    // Validação extra para garantir que preencheram o nome
+    if (!firstName || !lastName) {
+      toast.error("Preencha seu Nome e Sobrenome!");
+      return;
+    }
 
     if (password !== confirmPassword) {
       showError2();
@@ -65,11 +67,21 @@ function Signup() {
     }
 
     try { 
+        // 1. Cria a conta do usuário
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        //// console.log(userCredential);
         const user = userCredential.user;
+
+        // 2. Atualiza o perfil do Firebase com Nome + Sobrenome
+        await updateProfile(user, {
+            displayName: `${firstName} ${lastName}`
+        });
+
+        // 3. Salva os dados de acesso
         localStorage.setItem("token", user.accessToken);
-        localStorage.setItem("user", JSON.stringify(user));
+        
+        // Salvamos o currentUser atualizado (com o displayName preenchido) no localStorage
+        localStorage.setItem("user", JSON.stringify(auth.currentUser)); 
+        
         setLoggedIn(true);
         showSucess();
         
@@ -77,9 +89,7 @@ function Signup() {
         console.error(error);
         showError(error);
     }
-
   };
-
 
   return (
     <div className={`container ${theme}`}>
@@ -94,6 +104,28 @@ function Signup() {
             <span className={`login-form-title ${theme}`}>
               <img className="mascote" src={img} alt="Mascote" />
             </span>
+
+            {/* --- NOVO CAMPO: NOME --- */}
+            <div className={`wrap-input ${theme}`}>
+              <input
+                className={firstName !== "" ? `has-val input ${theme}` : `input ${theme}`}
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <span className={`focus-input ${theme}`} data-placeholder="Nome"></span>
+            </div>
+
+            {/* --- NOVO CAMPO: SOBRENOME --- */}
+            <div className={`wrap-input ${theme}`}>
+              <input
+                className={lastName !== "" ? `has-val input ${theme}` : `input ${theme}`}
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+              <span className={`focus-input ${theme}`} data-placeholder="Sobrenome"></span>
+            </div>
 
             <div className={`wrap-input ${theme}`}>
               <input
@@ -121,6 +153,7 @@ function Signup() {
                 {showPassword ? <Eye/> : <EyeOff/>}
               </button>
             </div>
+            
             <div className={`wrap-input ${theme}`}>
               <input
                 className={confirmPassword !== "" ? `has-val input ${theme}` : `input ${theme}`}
@@ -142,7 +175,7 @@ function Signup() {
               <button
                 className="login-form-btn"
                 type="button"
-                onClick={handleLogin}
+                onClick={handleSignup}
               >
                 Criar
               </button>
