@@ -22,6 +22,19 @@ import "./MapCreation.css";
 
 const MapCreation = () => {
 
+  const [zoomRatio, setZoomRatio] = useState(1);
+
+  useEffect(() => {
+    const ajustarZoom = () => {
+      // 950px ou 1000px é a altura ideal para encaixar tudo
+      const proporcao = window.innerHeight / 950;
+      setZoomRatio(proporcao);
+    };
+    ajustarZoom();
+    window.addEventListener('resize', ajustarZoom);
+    return () => window.removeEventListener('resize', ajustarZoom);
+  }, []);
+
   const [showFAQ, setShowFAQ] = useState(false);
   const [maps, setMaps] = useState([]);
   const [reloadMaps, setReloadMaps] = useState(false);
@@ -287,6 +300,7 @@ const MapCreation = () => {
   };
 
   return (
+    <div style={{ zoom: zoomRatio, width: "100vw", height: "950px" }}>
     <div className="map-creation-container" style={{ backgroundImage: `url(${fundomapas})`, height: "100vh", width: "100vw" }}>
       <DashboardTour run={runDashboardTour} onTourEnd={stopTour} />
 
@@ -532,6 +546,7 @@ const MapCreation = () => {
           </div>
         </ModalName>
       )}
+    </div>
     </div>
   );
 };
