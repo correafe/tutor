@@ -17,9 +17,8 @@ body {
 }
 
 .container {
-  width: 100%;   /* Antes era 100vw */
-  height: 100%;  /* Antes era 100vh */
-  margin: 0 auto;
+  width: 100vw;  /* Antes estava width: 100%; e margin: 0 auto; */
+  height: 100vh; /* Antes estava height: 100%; */
 }
 
 .container.dark {
@@ -32,7 +31,7 @@ body {
 
 .container-login {
   width: 100%;
-  min-height: 100%; /* Antes era 100vh */
+  min-height: 100vh; /* Antes estava min-height: 100%; */
   display: flex;
   flex-wrap: wrap;
   align-items: center;
