@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigate, Link } from "react-router-dom";
 import { auth } from '../../services/firebase';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'; // Importações corrigidas
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'; 
 import { toast } from 'sonner';
 import { Eye, EyeOff, Sun, Moon } from 'lucide-react';
 
@@ -20,6 +20,28 @@ function Signup() {
   // Estados de Nome e Sobrenome
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+
+  // --- NOVO: Estado e Efeito para calcular o Zoom (Scale) ---
+  const [scaleRatio, setScaleRatio] = useState(1);
+
+  useEffect(() => {
+    const ajustarEscala = () => {
+      // Usando 900 de base pois o formulário de cadastro é mais alto que o de login.
+      // Se achar que ficou muito pequeno, mude de 900 de volta para 800.
+      let proporcao = window.innerHeight / 900;
+      
+      // Trava a proporção em no máximo 1 (100%) para não ficar gigante no monitor
+      if (proporcao > 1) proporcao = 1;
+      
+      setScaleRatio(proporcao);
+    };
+
+    ajustarEscala();
+    window.addEventListener('resize', ajustarEscala);
+
+    return () => window.removeEventListener('resize', ajustarEscala);
+  }, []);
+  // -----------------------------------------------------------
 
   const toggleTheme = () => {
     setTheme((prevTheme) => {
@@ -55,7 +77,6 @@ function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    // Validação extra para garantir que preencheram o nome
     if (!firstName || !lastName) {
       toast.error("Preencha seu Nome e Sobrenome!");
       return;
@@ -67,19 +88,14 @@ function Signup() {
     }
 
     try { 
-        // 1. Cria a conta do usuário
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
-        // 2. Atualiza o perfil do Firebase com Nome + Sobrenome
         await updateProfile(user, {
             displayName: `${firstName} ${lastName}`
         });
 
-        // 3. Salva os dados de acesso
         localStorage.setItem("token", user.accessToken);
-        
-        // Salvamos o currentUser atualizado (com o displayName preenchido) no localStorage
         localStorage.setItem("user", JSON.stringify(auth.currentUser)); 
         
         setLoggedIn(true);
@@ -94,7 +110,11 @@ function Signup() {
   return (
     <div className={`container ${theme}`}>
       <div className={`container-login ${theme}`}>
-        <div className={`wrap-login ${theme}`}>
+        {/* --- NOVO: Estilo dinâmico com scaleRatio --- */}
+        <div 
+          className={`wrap-login ${theme}`}
+          style={{ transform: `scale(${scaleRatio})` }}
+        >
           <button onClick={toggleTheme} className="toggle-theme-btn">
             {theme === "dark" ? <Moon /> : <Sun />}
           </button>
@@ -105,7 +125,6 @@ function Signup() {
               <img className="mascote" src={img} alt="Mascote" />
             </span>
 
-            {/* --- NOVO CAMPO: NOME --- */}
             <div className={`wrap-input ${theme}`}>
               <input
                 className={firstName !== "" ? `has-val input ${theme}` : `input ${theme}`}
@@ -116,7 +135,6 @@ function Signup() {
               <span className={`focus-input ${theme}`} data-placeholder="Nome"></span>
             </div>
 
-            {/* --- NOVO CAMPO: SOBRENOME --- */}
             <div className={`wrap-input ${theme}`}>
               <input
                 className={lastName !== "" ? `has-val input ${theme}` : `input ${theme}`}
@@ -144,7 +162,7 @@ function Signup() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <span className={`focus-input ${theme}`} data-placeholder="Senha"></span>
+              <span className={`focus-input ${theme}`} data-placeholder="Password"></span>
               <button
                 type="button"
                 className={`show-password-button ${theme}`}
