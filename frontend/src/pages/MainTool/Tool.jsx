@@ -940,7 +940,7 @@ const Tool = ({ }) => {
         return novaMatriz;
       });
 
-      
+
       await axios.delete(import.meta.env.VITE_BACKEND + `/${squareType}/${squareId}`);
 
     } catch (error) {
@@ -1161,13 +1161,29 @@ const handleLevelSelect = async (level) => {
     try {
       const meta = currentScenarioData.scenarioMeta; 
 
-      if (scenarioExists) {
+      // 🔍 CORREÇÃO: Checar direto no banco se o cenário já existe, 
+      // ignorando a variável de estado que pode estar desatualizada
+      let cenarioJaExiste = false;
+      try {
+        const checkRes = await axios.get(import.meta.env.VITE_BACKEND + `/scenario/${id_mapa}`);
+        // Se a API retornou dados válidos, o cenário já existe!
+        if (checkRes.data && (checkRes.data.name || checkRes.data.description)) {
+          cenarioJaExiste = true;
+        }
+      } catch (err) {
+        // Se der erro (ex: 404 Not Found), assumimos que não existe
+        cenarioJaExiste = false;
+      }
+
+      if (cenarioJaExiste) {
+        // Já tem cenário preso nesse mapa! Fazemos a atualização (PUT)
         await axios.put(import.meta.env.VITE_BACKEND + '/scenario', {
           journeyMapId: id_mapa,
           newName: meta.name,
           newDescription: meta.description
         });
       } else {
+        // Mapa novinho em folha! Criamos o cenário (POST)
         await axios.post(import.meta.env.VITE_BACKEND + '/scenario', {
           journeyMapId: id_mapa,
           name: meta.name,
@@ -1175,14 +1191,11 @@ const handleLevelSelect = async (level) => {
         });
       }
 
-      // --- INÍCIO DA MUDANÇA ---
+      // --- Lógica de Desbloqueio de Níveis ---
       const currentUser = auth.currentUser;
-      
       if (currentUser) {
-        // Lê o nível usando o UID da pessoa logada
         const currentUnlocked = parseInt(localStorage.getItem(`unlockedTutorialLevel_${currentUser.uid}`)) || 1;
 
-        // Salva o novo nível usando o UID da pessoa logada
         if (targetScenario === 'pizza' && currentUnlocked < 2) {
           localStorage.setItem(`unlockedTutorialLevel_${currentUser.uid}`, '2');
         }
@@ -1190,7 +1203,6 @@ const handleLevelSelect = async (level) => {
           localStorage.setItem(`unlockedTutorialLevel_${currentUser.uid}`, '3');
         }
       }
-      // --- FIM DA MUDANÇA ---
 
       toast.success('Tutorial concluído! Mapa e Cenário salvos.');
       window.location.reload();
