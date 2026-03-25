@@ -5,7 +5,7 @@ body {
   flex-direction: column;
   background-color: #E6E6E6;
   height: 100vh;
-  /* overflow: hidden; Isso proíbe a barra de rolagem de existir */
+  overflow: hidden; 
 }
 
 .content {
