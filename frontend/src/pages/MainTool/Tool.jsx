@@ -318,39 +318,33 @@ const Tool = ({ }) => {
       }));
 
       const newMatrix = [journeyMatrix, userActionMatrix, emotionMatrix, thoughtMatrix, contactPointMatrix];
-      // console.log(newMatrix);
       setMatrix(newMatrix);
-      // Verifique se pelo menos uma matriz tem dados
-      if (newMatrix.some(matrix => matrix.length > 0)) {
+      
+      // Checa se o usuário está fazendo o tutorial
+      const isTutorial = localStorage.getItem('startToolTutorial') === 'true';
+      const isWizardOpen = document.querySelector('.wizard-overlay') !== null;
+
+      // Se tiver cards OU se estiver no tutorial, a Navbar NUNCA deve sumir!
+      if (newMatrix.some(matrix => matrix.length > 0) || isTutorial || isWizardOpen) {
         setDataLoaded(true);
       } else {
-        // Se for tutorial, forçamos true para mostrar as linhas vazias para o tour
-        const isTutorial = localStorage.getItem('startToolTutorial') === 'true';
-        setDataLoaded(isTutorial); 
+        setDataLoaded(false); 
       }
 
       const convertedEmojis = {};
-
       for (const item of emotionMatrix) {
-        //// console.log("emojiTag antes da pesquisa: " + item.emojiTag);
-        const emojis = item.emojiTag;
-        //// console.log("Emojis após a pesquisa: " + emojis);
-
-        if (emojis.length > 0) {
-          // Pegar o primeiro native do array de skins
-          const native = emojis;
-          //// console.log("NATIVE A SER INSERIDO: " + native);
-          convertedEmojis[item.emotion_id] = native;
+        if (item.emojiTag.length > 0) {
+          convertedEmojis[item.emotion_id] = item.emojiTag;
         }
       }
-
       setEmojis(convertedEmojis);
-      //// console.log("Emojis após converter emojiTag to Native: " + JSON.stringify(convertedEmojis));
       return (newMatrix);
 
     } catch (error) {
       console.error("Erro ao buscar os dados:", error);
-      setDataLoaded(false);
+      // Se der erro, não esconde a Navbar se estiver no tutorial
+      const isWizardOpen = document.querySelector('.wizard-overlay') !== null;
+      if (!isWizardOpen) setDataLoaded(false);
     }
   };
 
@@ -1264,29 +1258,25 @@ const handleLevelSelect = async (level) => {
     }
   };
 
-// 1. Crie esta função auxiliar para adicionar um card individual
 const addTutorialCardToMap = async (step, currentStepIndex) => {
   const positions = [20, 290, 560, 830, 1100];
   const phaseIndex = Math.floor(currentStepIndex / 5);
   const currentX = positions[phaseIndex];
   const answer = step.correctAnswer;
 
-  // Mapeamento de seções para endpoints
-  const sectionToEndpoint = {
-    "Fases da Jornada": 'journeyPhase',
-    "Ações do Usuário": 'userAction',
-    "Emoções": 'emotion',
-    "Pensamentos": 'thought',
-    "Pontos de Contato": 'contactPoint'
-  };
-
-  const endpoint = sectionToEndpoint[step.section.split(': ')[1]];
+  // Leitura inteligente da linha (não depende mais de formatação exata)
+  const sectionStr = step.section.toLowerCase();
+  let endpoint = 'journeyPhase'; // Padrão
+  if (sectionStr.includes('ação') || sectionStr.includes('acoes') || sectionStr.includes('ações')) endpoint = 'userAction';
+  else if (sectionStr.includes('emoç') || sectionStr.includes('emoc')) endpoint = 'emotion';
+  else if (sectionStr.includes('pensamento')) endpoint = 'thought';
+  else if (sectionStr.includes('contato')) endpoint = 'contactPoint';
 
   try {
     const payload = {
       journeyMap_id: id_mapa,
       posX: currentX,
-      emojiTag: answer.emojiTag,
+      emojiTag: answer.emojiTag || "😀",
     };
 
     if (endpoint === 'emotion') {
@@ -1294,12 +1284,12 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
     } else {
       payload.linePos = 285;
       payload.length = 230;
-      payload.description = answer.description;
+      payload.description = answer.description || option.text;
     }
 
     await axios.post(`${import.meta.env.VITE_BACKEND}/${endpoint}`, payload);
     
-    // Atualiza o mapa visualmente sem recarregar a página inteira se possível
+    // Atualiza o mapa visualmente
     fetchData(); 
   } catch (error) {
     console.error("Erro ao adicionar card em tempo real:", error);
