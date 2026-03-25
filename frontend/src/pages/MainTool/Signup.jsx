@@ -24,10 +24,11 @@ function Signup() {
 
   useEffect(() => {
     const ajustarEscala = () => {
-      // Agora está dividindo por 800, exatamente igual ao seu Login.jsx!
-      let proporcao = window.innerHeight / 800;
+      // Como o formulário de cadastro é alto, aumentamos esse número base
+      // para forçar a tela a dar um "zoom out" maior, deixando ele menorzinho.
+      let proporcao = window.innerHeight / 950; 
       
-      if (proporcao > 1) proporcao = 1;
+      if (proporcao > 1) proporcao = 1; // Trava para não ficar gigante
       
       setScaleRatio(proporcao);
     };
@@ -103,111 +104,107 @@ function Signup() {
   };
 
   return (
-    <div style={{
-      width: "100vw",
-      height: `${100 / scaleRatio}vh`,
-      transform: `scale(${scaleRatio})`,
-      transformOrigin: "top left",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: theme === "dark" ? "#111" : "#f0f0f0",
-    }}>
-      <div className={`container ${theme}`}>
-        <div className={`container-login ${theme}`}>
-          <div className={`wrap-login ${theme}`}>
-            <button onClick={toggleTheme} className="toggle-theme-btn">
-              {theme === "dark" ? <Moon /> : <Sun />}
-            </button>
-            <form className="login-form">
-              <span className={`login-form-title ${theme}`}> Cadastrar-se </span>
+    <div className={`container ${theme}`}>
+      {/* O container interno também ajuda a alinhar ao centro */}
+      <div 
+        className={`container-login ${theme}`} 
+        style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}
+      >
+        <div 
+          className={`wrap-login ${theme}`} 
+          style={{ transform: `scale(${scaleRatio})`, transformOrigin: "center center" }}
+        >
+          <button onClick={toggleTheme} className="toggle-theme-btn">
+            {theme === "dark" ? <Moon /> : <Sun />}
+          </button>
+          <form className="login-form">
+            <span className={`login-form-title ${theme}`}> Cadastrar-se </span>
 
-              <span className={`login-form-title ${theme}`}>
-                <img className="mascote" src={img} alt="Mascote" />
-              </span>
+            <span className={`login-form-title ${theme}`}>
+              <img className="mascote" src={img} alt="Mascote" />
+            </span>
 
-              <div className={`wrap-input ${theme}`}>
-                <input
-                  className={firstName !== "" ? `has-val input ${theme}` : `input ${theme}`}
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-                <span className={`focus-input ${theme}`} data-placeholder="Nome"></span>
-              </div>
+            <div className={`wrap-input ${theme}`}>
+              <input
+                className={firstName !== "" ? `has-val input ${theme}` : `input ${theme}`}
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <span className={`focus-input ${theme}`} data-placeholder="Nome"></span>
+            </div>
 
-              <div className={`wrap-input ${theme}`}>
-                <input
-                  className={lastName !== "" ? `has-val input ${theme}` : `input ${theme}`}
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-                <span className={`focus-input ${theme}`} data-placeholder="Sobrenome"></span>
-              </div>
+            <div className={`wrap-input ${theme}`}>
+              <input
+                className={lastName !== "" ? `has-val input ${theme}` : `input ${theme}`}
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+              <span className={`focus-input ${theme}`} data-placeholder="Sobrenome"></span>
+            </div>
 
-              <div className={`wrap-input ${theme}`}>
-                <input
-                  className={email !== "" ? `has-val input ${theme}` : `input ${theme}`}
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                <span className={`focus-input ${theme}`} data-placeholder="Email"></span>
-              </div>
+            <div className={`wrap-input ${theme}`}>
+              <input
+                className={email !== "" ? `has-val input ${theme}` : `input ${theme}`}
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <span className={`focus-input ${theme}`} data-placeholder="Email"></span>
+            </div>
 
-              <div className={`wrap-input ${theme}`}>
-                <input
-                  className={password !== "" ? `has-val input ${theme}` : `input ${theme}`}
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <span className={`focus-input ${theme}`} data-placeholder="Password"></span>
-                <button
-                  type="button"
-                  className={`show-password-button ${theme}`}
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <Eye/> : <EyeOff/>}
-                </button>
-              </div>
-              
-              <div className={`wrap-input ${theme}`}>
-                <input
-                  className={confirmPassword !== "" ? `has-val input ${theme}` : `input ${theme}`}
-                  type={showConfirmPassword ? "text" : "password"}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-                <span className={`focus-input ${theme}`} data-placeholder="Confirme sua senha"></span>
-                <button
-                  type="button"
-                  className={`show-password-button ${theme}`}
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? <Eye/> : <EyeOff/>}
-                </button>
-              </div>
+            <div className={`wrap-input ${theme}`}>
+              <input
+                className={password !== "" ? `has-val input ${theme}` : `input ${theme}`}
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <span className={`focus-input ${theme}`} data-placeholder="Password"></span>
+              <button
+                type="button"
+                className={`show-password-button ${theme}`}
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <Eye/> : <EyeOff/>}
+              </button>
+            </div>
+            
+            <div className={`wrap-input ${theme}`}>
+              <input
+                className={confirmPassword !== "" ? `has-val input ${theme}` : `input ${theme}`}
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              <span className={`focus-input ${theme}`} data-placeholder="Confirme sua senha"></span>
+              <button
+                type="button"
+                className={`show-password-button ${theme}`}
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              >
+                {showConfirmPassword ? <Eye/> : <EyeOff/>}
+              </button>
+            </div>
 
-              <div className="container-login-form-btn">
-                <button
-                  className="login-form-btn"
-                  type="button"
-                  onClick={handleSignup}
-                >
-                  Criar
-                </button>
-              </div>
+            <div className="container-login-form-btn">
+              <button
+                className="login-form-btn"
+                type="button"
+                onClick={handleSignup}
+              >
+                Criar
+              </button>
+            </div>
 
-              <div className="text-center">
-                <span className={`txt1 ${theme}`}>Já possui uma conta? </span>
-                <Link className={`txt2 ${theme}`} to="/login"> 
-                  Logar
-                </Link>
-              </div>
-            </form>
-          </div>
+            <div className="text-center">
+              <span className={`txt1 ${theme}`}>Já possui uma conta? </span>
+              <Link className={`txt2 ${theme}`} to="/login"> 
+                Logar
+              </Link>
+            </div>
+          </form>
         </div>
       </div>
     </div>
