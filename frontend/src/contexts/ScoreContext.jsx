@@ -51,7 +51,10 @@ export const ScoreProvider = ({ children }) => {
 
   // Toda vez que a pontuação mudar, avisa o backend na nuvem
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    // Busca o utilizador sempre da fonte oficial do Firebase
+    const user = auth.currentUser; 
+    
+    // Só envia se o utilizador estiver logado e a pontuação for maior que 0
     if (user && score > 0) {
       fetch('https://tutor-api-jem.duckdns.org/ranking', {
         method: 'POST',
@@ -59,7 +62,7 @@ export const ScoreProvider = ({ children }) => {
         body: JSON.stringify({
           firebase_uid: user.uid,
           display_name: user.displayName || 'Mapeador',
-          photo_url: user.providerData?.[0]?.photoURL || '',
+          photo_url: user.photoURL || '', // photoURL é a propriedade nativa do Firebase
           score: score
         })
       }).catch(err => console.error("Erro ao salvar pontuação", err));
