@@ -10,19 +10,42 @@ export const ScoreProvider = ({ children }) => {
 
   // Monitora qual usuário está logado e puxa a pontuação inicial
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         setUserUid(user.uid);
-        // Busca se o usuário já tem pontuação salva no navegador
-        const savedScore = localStorage.getItem(`userScore_${user.uid}`);
-        if (savedScore) {
-          setScore(Number(savedScore));
+        
+        try {
+          // 1. Busca a pontuação OFICIAL do backend na nuvem
+          const response = await fetch('https://tutor-api-jem.duckdns.org/ranking');
+          const rankingData = await response.json();
+          
+          // 2. Procura o usuário logado na lista do ranking
+          const userInDb = rankingData.find(r => r.firebase_uid === user.uid);
+          
+          if (userInDb) {
+            // Se achou no banco, essa é a pontuação verdadeira (Sincroniza entre PCs)
+            setScore(Number(userInDb.score));
+            localStorage.setItem(`userScore_${user.uid}`, userInDb.score);
+          } else {
+            // Se não achou no banco (conta novinha), tenta ver se tem algo salvo localmente
+            const savedScore = localStorage.getItem(`userScore_${user.uid}`);
+            if (savedScore) {
+              setScore(Number(savedScore));
+            }
+          }
+        } catch (error) {
+          console.error("Erro ao buscar pontuação da nuvem:", error);
+          // Fallback de segurança: se a API estiver fora do ar, tenta usar o local
+          const savedScore = localStorage.getItem(`userScore_${user.uid}`);
+          if (savedScore) setScore(Number(savedScore));
         }
+
       } else {
         setUserUid(null);
         setScore(0);
       }
     });
+    
     return () => unsubscribe();
   }, []);
 
@@ -30,7 +53,6 @@ export const ScoreProvider = ({ children }) => {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
     if (user && score > 0) {
-      // URL ATUALIZADA PARA O SEU DOMÍNIO SEGURO
       fetch('https://tutor-api-jem.duckdns.org/ranking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -48,7 +70,7 @@ export const ScoreProvider = ({ children }) => {
   const addPoints = (points, actionName) => {
     setScore((prevScore) => {
       const newScore = prevScore + points;
-      // Salva no localStorage atrelado ao UID do usuário
+      // Salva no localStorage atrelado ao UID do usuário para cache rápido
       if (userUid) {
         localStorage.setItem(`userScore_${userUid}`, newScore);
       }
