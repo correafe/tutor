@@ -110,7 +110,7 @@ function Signup() {
   return (
     <div className={`container ${theme}`}>
       <div className={`container-login ${theme}`}>
-        {/* --- NOVO: Estilo dinâmico com scaleRatio --- */}
+        
         <div 
           className={`wrap-login ${theme}`}
           style={{ transform: `scale(${scaleRatio})` }}
@@ -118,6 +118,7 @@ function Signup() {
           <button onClick={toggleTheme} className="toggle-theme-btn">
             {theme === "dark" ? <Moon /> : <Sun />}
           </button>
+          
           <form className="login-form">
             <span className={`login-form-title ${theme}`}> Cadastrar-se </span>
 

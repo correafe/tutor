@@ -108,17 +108,12 @@ function Login() {
   };
 
   return (
-    <div style={{
-      width: `${100 / scaleRatio}vw`,
-      height: `${100 / scaleRatio}vh`,
-      transform: `scale(${scaleRatio})`,
-      transformOrigin: "top left",
-      overflow: "hidden",
-      backgroundColor: theme === "dark" ? "#111" : "#f0f0f0"
-    }}>
-      <div className={`container ${theme}`} style={{ width: "100%", height: "100%" }}>
-        <div className={`container-login ${theme}`}>
-        <div className={`wrap-login ${theme}`}>
+    <div className={`container ${theme}`}>
+      <div className={`container-login ${theme}`}>
+        <div 
+          className={`wrap-login ${theme}`} 
+          style={{ transform: `scale(${scaleRatio})` }}
+        >
           <button onClick={toggleTheme} className="toggle-theme-btn">
             {theme === "dark" ? <Moon /> : <Sun />}
           </button>
@@ -192,7 +187,6 @@ function Login() {
           </form>
         </div>
       </div>
-    </div>
     </div>
   );
 }
