@@ -940,6 +940,7 @@ const Tool = ({ }) => {
         return novaMatriz;
       });
 
+      
       await axios.delete(import.meta.env.VITE_BACKEND + `/${squareType}/${squareId}`);
 
     } catch (error) {
