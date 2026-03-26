@@ -5,6 +5,8 @@ body {
   flex-direction: column;
   background-color: #E6E6E6;
   height: 100vh;
+  overflow-x: auto; 
+  overflow-y: hidden;
 }
 
 .content {
@@ -467,8 +469,10 @@ body {
   }
 
   .scrollable-container {
-    width: 100%; /* Ocupa todo o espaço disponível na largura */
-    
+    width: 100vw;            
+    height: 100vh;         
+    overflow-x: auto;        
+    overflow-y: hidden;    
   }
   
   .stage-container {
