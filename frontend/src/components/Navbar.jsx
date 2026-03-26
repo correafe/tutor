@@ -143,7 +143,7 @@ const Navbar = ({
           className="button info" 
           onClick={onRankingClick} 
           title="Ranking"
-          style={{ marginLeft: '2vh', backgroundColor: '#fff', color: '#333' }}
+          style={{ marginLeft: '2vh', backgroundColor: '#FFD700', color: '#fff' }}
         >
            <Trophy size={24} />
         </button>

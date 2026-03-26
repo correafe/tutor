@@ -356,7 +356,7 @@ const MapCreation = () => {
         <button 
           onClick={() => setShowRankingModal(true)} 
           style={{ 
-            marginRight: '20px', backgroundColor: '#fff', color: '#333', border: 'none',
+            marginRight: '20px', backgroundColor: '#FFD700', color: '#fff', border: 'none',
             borderRadius: '50%', width: '50px', height: '50px', fontSize: '24px', fontWeight: 'bold', 
             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', 
             boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
