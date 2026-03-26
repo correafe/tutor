@@ -410,7 +410,7 @@ const MapCreation = () => {
           </div>
           
           <div className="avatar-tooltip">
-            <span style={{ fontWeight: 'bold', color: '#ffd700', fontSize: '18px' }}>🏆 {score} pts</span>
+            <span style={{ fontWeight: 'bold', color: '#E8B63E', fontSize: '18px' }}>🏆 {score} pts</span>
             <span style={{ fontSize: '12px', color: '#fff', backgroundColor: '#666', padding: '2px 8px', borderRadius: '10px', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '5px' }}>
               {rankInfo.title}
             </span>
