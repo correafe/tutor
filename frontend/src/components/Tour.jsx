@@ -27,11 +27,6 @@ const DASHBOARD_STEPS = [
     content: 'Tem alguma dúvida? Clique aqui para acessar as Perguntas Frequentes (FAQ) a qualquer momento.',
   },
   {
-    target: '#dashboard-tour-btn',
-    content: 'Se tiver dúvidas ou quiser rever este tutorial, basta clicar neste botão.',
-    placement: 'bottom',
-  },
-  {
     target: '#dashboard-ranking-btn',
     content: 'Confira sua posição no Ranking e veja quem são os melhores criadores de mapas!',
     placement: 'bottom',
@@ -43,9 +38,14 @@ const DASHBOARD_STEPS = [
   },
   {
     target: '.botaologout',
-    content: 'E aqui você pode sair da sua conta.',
+    content: 'Aqui você pode sair da sua conta ou fazer Login em outra.',
     placement: 'bottom',
-  }
+  },
+  {
+    target: '#dashboard-tour-btn',
+    content: 'Se tiver dúvidas ou quiser rever este tutorial, basta clicar neste botão.',
+    placement: 'bottom',
+  },
 ];
 
 const TOOL_STEPS = [
