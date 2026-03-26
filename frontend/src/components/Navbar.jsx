@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'; 
 import { ScoreContext } from '../contexts/ScoreContext'; 
-import { LogOut, GraduationCap, HelpCircle } from 'lucide-react'; 
+import { LogOut, GraduationCap, HelpCircle, Trophy, Map, Download } from 'lucide-react';
 import axios from 'axios';
 import './Navbar.css';
 import teste1 from '../assets/teste1.png';
@@ -132,12 +132,12 @@ const Navbar = ({
 
         {onStartTour && (
           <button 
-            className="button info tour" 
-            id="tourButton" 
-            onClick={onStartTour}
+          className="button info tour" 
+          id="tourButton" 
+          onClick={onStartTour}
           >
-            ?
-          </button>
+          <Map size={24} style={{ marginRight: '8px' }} />
+        </button>
         )}
 
         <button 
@@ -158,8 +158,13 @@ const Navbar = ({
            <GraduationCap size={24} />
         </button>
 
-        <button className="button info about" id="aboutButton" onClick={onInfoClick}>
-          i
+        <button 
+          className="button info about" 
+          id="aboutButton" 
+          onClick={onInfoClick}
+          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <Download size={24} />
         </button>
 
         {/* INICIO BLOCO DA MOLDURA E PONTOS (COM TOOLTIP) */}
