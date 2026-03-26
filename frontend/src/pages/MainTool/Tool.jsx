@@ -1412,22 +1412,7 @@ const handleLevelSelect = async (level) => {
                     style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
                   />
                   <div className="separarbotoes" style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex' }}>
-                      <button
-                        className="buttonconf"
-                        onClick={() => { handleTextSubmit(); setButtonPopup(false); setTextEdit(false) }}
-                        style={{ backgroundColor: '#4caf50', color: 'white', padding: '10px 40px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '22px', marginRight: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                      >
-                        Salvar texto
-                      </button>
-                      <button
-                        className="buttonconf2"
-                        onClick={() => setEditedText('')}
-                        style={{ backgroundColor: '#f44336', color: 'white', padding: '10px 40px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '22px', marginLeft: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-                      >
-                        Limpar texto
-                      </button>
-                    </div>
+                    
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                       <input
                         type="number"
@@ -1458,6 +1443,24 @@ const handleLevelSelect = async (level) => {
                         Salvar
                       </button>
                     </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <button
+                        className="buttonconf2"
+                        onClick={() => setEditedText('')}
+                        style={{ backgroundColor: '#f44336', color: 'white', padding: '10px 40px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '22px', marginRight: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                      >
+                        Limpar texto
+                      </button>
+                      <button
+                        className="buttonconf"
+                        onClick={() => { handleTextSubmit(); setButtonPopup(false); setTextEdit(false) }}
+                        style={{ backgroundColor: '#4caf50', color: 'white', padding: '10px 40px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '22px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                      >
+                        Salvar texto
+                      </button>
+                    </div>
+
                   </div>
                 </div>
               </>
