@@ -170,3 +170,28 @@
   border-color: #6a7dfe;
 }
 
+/* Botão X Padrão para todos os Modais */
+.padrao-close-btn {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    border: none;       
+    border-radius: 50%;
+    background-color: #353535;
+    color: white;         
+    padding: 8px 15px; /* Ajustei levemente para ficar um círculo perfeito no HTML normal */
+    cursor: pointer;
+    font-size: 24px; /* Troquei 4vb por 24px para não bugar no mobile */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    transition: all 0.2s ease;
+}
+
+.padrao-close-btn:hover {
+    background-color: #FF4F4F;
+    transform: scale(1.1);
+}
+

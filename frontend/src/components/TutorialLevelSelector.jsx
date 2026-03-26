@@ -25,7 +25,11 @@ const TutorialLevelSelector = ({ onClose, onSelectLevel }) => {
 
   return (
     <div className="level-selector-overlay">
-      <div className="level-selector-box">
+      <div className="level-selector-box" style={{ position: 'relative' }}>
+
+        <button className="padrao-close-btn" onClick={onClose}>
+          &#10006;
+        </button>
         <div className="level-header">
           <h2>Prática de Criação de Mapa</h2>
           <button className="close-btn-icon" onClick={onClose}><X size={24} /></button>
