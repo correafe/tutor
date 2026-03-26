@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { PIZZA_SCENARIO, STREAMING_SCENARIO, ADVANCED_SCENARIO } from './tutorialData';
 import './TutorialWizard.css';
 import { ScoreContext } from '../contexts/ScoreContext';
-import Popup from '../Popup/Popup';
 
 const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial, scenarioType }) => {
   const { addPoints } = useContext(ScoreContext);
@@ -229,7 +228,7 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
         <button className="padrao-close-btn" onClick={onClose}>
           &#10006;
         </button>
-        
+
         <div className="wizard-header" style={{ marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
           <span style={{ backgroundColor: '#e3f2fd', color: '#1565c0', padding: '5px 10px', borderRadius: '15px', fontSize: '12px', fontWeight: 'bold' }}>
             FASE {currentPhaseNumber} DE {totalPhases} DO MAPA

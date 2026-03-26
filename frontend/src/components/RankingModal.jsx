@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { X, Trophy, Medal } from 'lucide-react';
 import { ScoreContext } from '../contexts/ScoreContext';
 import './RankingModal.css';
-import Popup from '../Popup/Popup';
 
 import teste1 from '../assets/teste1.png';
 import teste2 from '../assets/teste2.png';
