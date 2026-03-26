@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'; // Adicionado useContext
+import React, { useContext } from 'react'; 
 import { ScoreContext } from '../contexts/ScoreContext';
 import Joyride, { STATUS } from 'react-joyride';
 
@@ -33,7 +33,7 @@ const DASHBOARD_STEPS = [
   },
   {
     target: '.avatar-tooltip-container',
-    content: 'Aqui você acompanha sua pontuação total de experiência e seu título atual.',
+    content: 'Aqui você acompanha sua pontuação total de experiência e seu título atual. Confira o FAQ para descobrir todas as formas de ganhar pontos!',
     placement: 'bottom',
   },
   {
@@ -90,7 +90,7 @@ const TOOL_STEPS = [
 
   {
     target: '.avatar-tooltip-container',
-    content: 'Veja seus pontos e o seu nível subindo em tempo real enquanto você completa tarefas.',
+    content: 'Veja seus pontos e o seu nível subindo em tempo real enquanto você completa tarefas. Confira o FAQ para descobrir todas as formas de ganhar pontos!',
     placement: 'bottom',
   },
 
@@ -132,8 +132,8 @@ export const DashboardTour = ({ run, onTourEnd }) => {
       showSkipButton
       hideCloseButton={true}
       disableOverlayClose={true}
-      disableScrollParentFix={true} // <-- NOVO: Impede conflitos de scroll
-      disableScrolling={true}       // <-- NOVO: Impede o balão de pular a tela para baixo!
+      disableScrollParentFix={true} 
+      disableScrolling={true}    
       locale={{ last: 'Fim', next: 'Próximo', skip: 'Pular', back: 'Voltar' }}
       callback={(data) => {
         if ([STATUS.FINISHED, STATUS.SKIPPED].includes(data.status)) {
@@ -153,14 +153,14 @@ export const DashboardTour = ({ run, onTourEnd }) => {
         options: { 
           primaryColor: '#06bd2d', 
           zIndex: 10000,
-          width: 300 // <-- NOVO: Força o balão a ser mais estreito
+          width: 300
         },
         tooltip: {
-          padding: '15px' // <-- NOVO: Diminui a "gordura" ao redor do texto
+          padding: '15px'
         },
         tooltipContent: { fontSize: '15px', textAlign: 'left', padding: '10px 0' }, 
         tooltipTitle: { fontSize: '18px', fontWeight: 'bold' },    
-        buttonNext: { fontSize: '14px', padding: '8px 12px' }, // <-- NOVO: Botões menores
+        buttonNext: { fontSize: '14px', padding: '8px 12px' }, 
         buttonBack: { fontSize: '14px' }, 
         buttonSkip: { fontSize: '14px' }  
       }}
@@ -179,8 +179,8 @@ export const ToolTour = ({ run, onTourEnd }) => {
       showSkipButton
       hideCloseButton={true}
       disableOverlayClose={true}
-      disableScrollParentFix={true} // <-- NOVO
-      disableScrolling={true}       // <-- NOVO: Não rola a tela na Ferramenta
+      disableScrollParentFix={true} 
+      disableScrolling={true}       
       locale={{ last: 'Fim', next: 'Próximo', skip: 'Pular', back: 'Voltar' }}
       callback={(data) => {
         if ([STATUS.FINISHED, STATUS.SKIPPED].includes(data.status)) {
@@ -200,14 +200,14 @@ export const ToolTour = ({ run, onTourEnd }) => {
         options: { 
           primaryColor: '#4caf50', 
           zIndex: 10000,
-          width: 300 // <-- NOVO: Balão mais fininho
+          width: 300 
         },
         tooltip: {
           padding: '15px' 
         },
         tooltipContent: { fontSize: '15px', textAlign: 'left', padding: '10px 0' }, 
         tooltipTitle: { fontSize: '18px', fontWeight: 'bold' },    
-        buttonNext: { fontSize: '14px', padding: '8px 12px' }, // <-- NOVO: Botões ajustados
+        buttonNext: { fontSize: '14px', padding: '8px 12px' }, 
         buttonBack: { fontSize: '14px' }, 
         buttonSkip: { fontSize: '14px' }  
       }}
