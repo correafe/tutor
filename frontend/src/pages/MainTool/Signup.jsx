@@ -89,7 +89,7 @@ function Signup() {
 
         await updateProfile(user, {
             displayName: `${firstName} ${lastName}`,
-            photoURL: "https://github.com/luca-ferro/imagestest/blob/main/mascote.png?raw=true" 
+            photoURL: "https://github.com/correafe/tutor/blob/4d3159306365ba34f998ef2d57d41185275ae64e/frontend/src/assets/foto.png?raw=true" 
         });
 
         localStorage.setItem("token", user.accessToken);
