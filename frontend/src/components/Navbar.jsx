@@ -134,6 +134,7 @@ const Navbar = ({
           className="button info tour" 
           id="tourButton" 
           onClick={onStartTour}
+          title='Tour'
           >
           <Compass size={24}/>
         </button>
@@ -160,13 +161,13 @@ const Navbar = ({
         <button 
           className="button info about" 
           id="aboutButton" 
+          title='Download'
           onClick={onInfoClick}
           style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
           <Download size={24} />
         </button>
 
-        {/* INICIO BLOCO DA MOLDURA E PONTOS (COM TOOLTIP) */}
         <div className="avatar-tooltip-container" style={{ marginRight: '20px', marginLeft: '2vh' }}>
           <div className="avatar-wrapper">
             <img 
@@ -181,7 +182,6 @@ const Navbar = ({
             />
           </div>
           
-          {/* O balão (tooltip) escondido que aparece no hover */}
           <div className="avatar-tooltip">
             <span style={{ fontWeight: 'bold', color: '#ffd700', fontSize: '18px' }}>🏆 {score} pts</span>
             <span style={{ fontSize: '12px', color: '#fff', backgroundColor: '#666', padding: '2px 8px', borderRadius: '10px', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '5px' }}>
@@ -189,9 +189,8 @@ const Navbar = ({
             </span>
           </div>
         </div>
-        {/* FIM BLOCO DA MOLDURA E PONTOS */}
 
-        <button className="button logout" onClick={onLogoutClick}>
+        <button className="button logout" onClick={onLogoutClick} title='LogOut'>
           <LogOut size={28} />
         </button>
         

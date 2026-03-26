@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Plus, X, LogOut, Trash, Pencil, ChevronRight, ChevronLeft, ChevronsRight, ChevronsLeft, HelpCircle } from 'lucide-react';
+import { Plus, X, LogOut, Trash, Pencil, ChevronRight, ChevronLeft, ChevronsRight, ChevronsLeft, HelpCircle, Compass } from 'lucide-react';
 import ModalName from "../../components/ModalName";
 import { auth } from '../../services/firebase';
 import { signOut } from 'firebase/auth';
@@ -343,14 +343,23 @@ const MapCreation = () => {
         <button 
           id="dashboard-tour-btn"
           onClick={startTour} 
+          title="Tour"
           style={{ 
-            marginRight: '20px', backgroundColor: '#6a7dfe', color: 'white', border: 'none',
-            borderRadius: '50%', width: '50px', height: '50px', fontSize: '30px', fontWeight: 'bold', 
-            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', 
-            boxShadow: '0 2px 5px rgba(0,0,0,0.2)', fontFamily: 'sans-serif'  
+            marginRight: '20px', 
+            backgroundColor: '#6a7dfe', 
+            color: 'white', 
+            border: 'none',
+            borderRadius: '50%', 
+            width: '50px', 
+            height: '50px', 
+            cursor: 'pointer', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
           }}
         >
-          ?
+          <Compass size={28} />
         </button>
           
         <button 
@@ -388,7 +397,7 @@ const MapCreation = () => {
           </div>
         </div>
 
-        <button className="botaologout" onClick={handleLogout}>
+        <button className="botaologout" onClick={handleLogout} title='LogOut'>
           <LogOut />
         </button>
       </div>
