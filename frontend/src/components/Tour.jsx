@@ -27,19 +27,29 @@ const DASHBOARD_STEPS = [
     content: 'Tem alguma dúvida? Clique aqui para acessar as Perguntas Frequentes (FAQ) a qualquer momento.',
   },
   {
-    target: '.botaologout',
-    content: 'E aqui você pode sair da sua conta.',
+    target: '#dashboard-tour-btn',
+    content: 'Se tiver dúvidas ou quiser rever este tutorial, basta clicar neste botão.',
     placement: 'bottom',
   },
   {
-    target: '#dashboard-tour-btn',
-    content: 'Se tiver dúvidas ou quiser rever este tutorial, basta clicar neste botão.',
+    target: '#dashboard-ranking-btn',
+    content: 'Confira sua posição no Ranking e veja quem são os melhores criadores de mapas!',
+    placement: 'bottom',
+  },
+  {
+    target: '.avatar-tooltip-container',
+    content: 'Aqui você acompanha sua pontuação total de experiência e seu título atual.',
+    placement: 'bottom',
+  },
+  {
+    target: '.botaologout',
+    content: 'E aqui você pode sair da sua conta.',
     placement: 'bottom',
   }
 ];
 
 const TOOL_STEPS = [
-{
+  {
     target: 'body',
     content: 'Esta é a sua ferramenta de criação de mapas! Vamos ver como usá-la.',
     placement: 'center',
@@ -64,12 +74,29 @@ const TOOL_STEPS = [
     content: 'Precisa de ajuda rápida sobre como usar a ferramenta? Consulte o FAQ aqui.',
   },
   {
+    target: '.button.info.ranking',
+    content: 'Acompanhe a tabela de classificação e veja sua posição no Ranking sem sair da ferramenta.',
+    placement: 'bottom',
+  },
+  {
     target: '#tutorialButton', 
     content: 'Clique aqui para abrir a "Prática Guiada", onde você aprende a usar a ferramenta passo a passo.',
   },
   {
     target: '#aboutButton', 
-    content: 'Aqui você encontra informações e definições sobre cada linha do mapa.',
+    content: 'Pronto para exportar? Clique aqui para fazer o Download do seu mapa de jornada.',
+    placement: 'bottom',
+  },
+
+  {
+    target: '.avatar-tooltip-container',
+    content: 'Veja seus pontos e o seu nível subindo em tempo real enquanto você completa tarefas.',
+    placement: 'bottom',
+  },
+
+  {
+    target: '.button.logout',
+    content: 'Use este botão quando desejar sair da sua conta com segurança.',
     placement: 'bottom',
   },
   {
@@ -87,7 +114,7 @@ const TOOL_STEPS = [
       }
     }
   },
-    {
+  {
     target: '#tourButton', 
     content: 'Clique neste botão sempre que quiser rever este tutorial.',
     placement: 'bottom',
