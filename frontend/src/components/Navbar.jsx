@@ -135,7 +135,7 @@ const Navbar = ({
           id="tourButton" 
           onClick={onStartTour}
           >
-          <Map size={24} style={{ marginRight: '8px' }} />
+          <Map size={24}/>
         </button>
         )}
 
@@ -143,7 +143,7 @@ const Navbar = ({
           className="button info" 
           onClick={onRankingClick} 
           title="Ranking"
-          style={{ marginLeft: '2vh', backgroundColor: '#FFD700', color: '#333' }}
+          style={{ marginLeft: '2vh', backgroundColor: '#fff', color: '#333' }}
         >
            <Trophy size={24} />
         </button>

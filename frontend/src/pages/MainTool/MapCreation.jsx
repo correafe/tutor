@@ -356,7 +356,7 @@ const MapCreation = () => {
         <button 
           onClick={() => setShowRankingModal(true)} 
           style={{ 
-            marginRight: '20px', backgroundColor: '#FFD700', color: '#333', border: 'none',
+            marginRight: '20px', backgroundColor: '#fff', color: '#333', border: 'none',
             borderRadius: '50%', width: '50px', height: '50px', fontSize: '24px', fontWeight: 'bold', 
             cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', 
             boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
@@ -366,7 +366,6 @@ const MapCreation = () => {
           <Trophy size={26} />
         </button>
 
-        {/* INICIO BLOCO DA MOLDURA E PONTOS (COM TOOLTIP) */}
         <div className="avatar-tooltip-container" style={{ marginRight: '20px' }}>
           <div className="avatar-wrapper">
             <img 
@@ -381,7 +380,6 @@ const MapCreation = () => {
             />
           </div>
           
-          {/* O balão (tooltip) escondido que aparece no hover */}
           <div className="avatar-tooltip">
             <span style={{ fontWeight: 'bold', color: '#ffd700', fontSize: '18px' }}>🏆 {score} pts</span>
             <span style={{ fontSize: '12px', color: '#fff', backgroundColor: '#666', padding: '2px 8px', borderRadius: '10px', textTransform: 'uppercase', letterSpacing: '1px', marginTop: '5px' }}>
@@ -389,7 +387,6 @@ const MapCreation = () => {
             </span>
           </div>
         </div>
-        {/* FIM BLOCO DA MOLDURA E PONTOS */}
 
         <button className="botaologout" onClick={handleLogout}>
           <LogOut />
