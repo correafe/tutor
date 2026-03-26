@@ -330,10 +330,21 @@ const MapCreation = () => {
             setShowFAQ(true);
           }}
           style={{ 
-            marginRight: '20px', backgroundColor: '#ff81f9', color: 'white', border: 'none',
-            borderRadius: '50%', width: '50px', height: '50px', cursor: 'pointer', display: 'flex',
-            alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
-            fontSize: '16px', fontWeight: 'bold', fontFamily: 'sans-serif' 
+            marginRight: '20px', 
+            backgroundColor: '#B590CA', 
+            color: 'white', 
+            border: 'none',
+            borderRadius: '50%', 
+            width: '50px', 
+            height: '50px', 
+            cursor: 'pointer', 
+            display: 'flex',
+            alignItems: 'center', 
+            justifyContent: 'center', 
+            boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+            fontSize: '16px', 
+            fontWeight: 'bold', 
+            fontFamily: 'sans-serif' 
           }}
           title="Perguntas Frequentes"
         >
@@ -346,7 +357,7 @@ const MapCreation = () => {
           title="Tour"
           style={{ 
             marginRight: '20px', 
-            backgroundColor: '#6a7dfe', 
+            backgroundColor: '#8CA8F9',
             color: 'white', 
             border: 'none',
             borderRadius: '50%', 
@@ -363,11 +374,20 @@ const MapCreation = () => {
         </button>
           
         <button 
+          id="dashboard-ranking-btn" 
           onClick={() => setShowRankingModal(true)} 
           style={{ 
-            marginRight: '20px', backgroundColor: '#FFD700', color: '#fff', border: 'none',
-            borderRadius: '50%', width: '50px', height: '50px', fontSize: '24px', fontWeight: 'bold', 
-            cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', 
+            marginRight: '20px', 
+            backgroundColor: '#F4A261', 
+            color: '#fff', 
+            border: 'none',
+            borderRadius: '50%', 
+            width: '50px', 
+            height: '50px', 
+            cursor: 'pointer', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center', 
             boxShadow: '0 2px 5px rgba(0,0,0,0.2)'
           }}
           title="Ranking"
@@ -398,7 +418,7 @@ const MapCreation = () => {
         </div>
 
         <button className="botaologout" onClick={handleLogout} title='LogOut'>
-          <LogOut />
+          <LogOut size={24}/>
         </button>
       </div>
 

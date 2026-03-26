@@ -125,16 +125,23 @@ body {
 }
 
 .botaologout {
-  width: 50px !important;
-  height: 50px !important;
-  border-radius: 50% !important;
-  display: flex !important;
-  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #FF5858;
   color: white;
-  cursor: pointer;        
-  justify-content: center;  
-  align-items: center;      
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.botaologout:hover {
+  background-color: #a80505;
+  transform: scale(1.05); 
 }
 
 .textoboas {
@@ -151,14 +158,6 @@ body {
   font-size: 300%;
   background-color: transparent;
   margin-right: 40%;
-}
-
-.botaologout:hover {
-  background-color: #a80505;
-  color: white;
-  cursor: pointer;        
-  justify-content: center;  
-  align-items: center;      
 }
 
 .blocoadd {
@@ -368,18 +367,22 @@ body {
 }
 
 #faq-dashboard-btn:hover {
-  background-color: #e065da !important;
+  background-color: #9C75B0 !important;
   transition: all 0.2s ease;
+  transform: scale(1.05); 
 }
 
 #dashboard-tour-btn:hover {
-  background-color: #4a5ed9 !important; 
+  background-color: #7293ED !important; 
   transition: all 0.2s ease;
+  transform: scale(1.05);
 }
 
-/* =========================================
-   MOLDURAS DE PERFIL COM IMAGEM (RANKING)
-   ========================================= */
+#dashboard-ranking-btn:hover {
+  background-color: #E08945 !important;
+  transition: all 0.2s ease;
+  transform: scale(1.05);
+}
 
 .avatar-wrapper {
   position: relative;

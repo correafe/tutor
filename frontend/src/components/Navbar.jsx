@@ -117,6 +117,14 @@ const Navbar = ({
               if (onFAQClick) onFAQClick(); 
           }}
           title="Perguntas Frequentes"
+          style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            fontSize: '16px', 
+            fontWeight: 'bold', 
+            color: '#ffffff' 
+          }}
         >
           FAQ
         </button>
@@ -181,7 +189,7 @@ const Navbar = ({
         </div>
 
         <button className="button logout" onClick={onLogoutClick} title='LogOut'>
-          <LogOut size={28} />
+          <LogOut size={24} />
         </button>
         
       </div>

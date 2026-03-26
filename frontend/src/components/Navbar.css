@@ -121,21 +121,23 @@
 
 /* Botão Logout */
 .button.logout {
-  background-color: #FF5858;
-  color: white;
-  cursor: pointer;        
-  justify-content: center;  
-  align-items: center;
-  border: none;
-  width: 45px;
-  height: 45px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FF5858;
+  color: white;
+  border: none;
+  cursor: pointer;
   padding: 0;
+  transition: all 0.3s ease;
 }
 
 .button.logout:hover {
   background-color: #a80505;
+  transform: scale(1.05);
 }
 
 /* Foto de Perfil */
@@ -195,9 +197,9 @@
   margin-left: 2vh;
   margin-right: -1vh;
   background-color: #B590CA;
-  font-size: 14px; 
-  font-weight: bold;
+  font-size: 30px;
 }
+
 .button.info.faq:hover {
   background-color: #9C75B0;
 }
