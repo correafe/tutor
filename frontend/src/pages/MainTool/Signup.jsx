@@ -88,7 +88,8 @@ function Signup() {
         const user = userCredential.user;
 
         await updateProfile(user, {
-            displayName: `${firstName} ${lastName}`
+            displayName: `${firstName} ${lastName}`,
+            photoURL: "https://github.com/luca-ferro/imagestest/blob/main/mascote.png?raw=true" 
         });
 
         localStorage.setItem("token", user.accessToken);
