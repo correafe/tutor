@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { PIZZA_SCENARIO, STREAMING_SCENARIO, ADVANCED_SCENARIO } from './tutorialData';
 import './TutorialWizard.css';
 import { ScoreContext } from '../contexts/ScoreContext';
-import Popup from '../Popup/Popup'; // Ou o caminho correto do seu Popup
+import Popup from './Popup';
 
 const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial, scenarioType }) => {
   const { addPoints } = useContext(ScoreContext);
