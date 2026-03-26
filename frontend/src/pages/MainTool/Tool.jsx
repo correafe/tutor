@@ -1348,7 +1348,7 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
               <div className="loading-spinner"></div>
             </div>
           )}
-<div style={{ pointerEvents: (isTourOpen || isTutorialActive) ? 'none' : 'auto' }}>
+          <div style={{ pointerEvents: (runToolTour || showTutorialWizard) ? 'none' : 'auto' }}>
             <Navbar
               onSaveClick={() => { handleSaveClick(); showAlert() }}
               onInfoClick={() => setButtonPopup(true)}
