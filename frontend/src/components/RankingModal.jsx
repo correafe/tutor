@@ -77,9 +77,6 @@ const RankingModal = ({ onClose }) => {
             <Trophy size={32} color="#FFD700" />
             <h2>Ranking</h2>
           </div>
-          <button className="close-btn-icon" onClick={onClose}>
-            <X size={28} />
-          </button>
         </div>
 
         <p className="ranking-subtitle">Veja quem são os melhores mapeadores do JEM!</p>

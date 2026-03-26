@@ -32,7 +32,6 @@ const TutorialLevelSelector = ({ onClose, onSelectLevel }) => {
         </button>
         <div className="level-header">
           <h2>Prática de Criação de Mapa</h2>
-          <button className="close-btn-icon" onClick={onClose}><X size={24} /></button>
         </div>
         <p className="level-subtitle">Escolha um nível para iniciar a simulação prática:</p>
 

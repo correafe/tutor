@@ -273,7 +273,6 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
           </div>
         )}
 
-        <button className="close-btn" onClick={onClose} style={{ marginTop: '20px' }}>Sair</button>
       </div>
     </div>
   );
