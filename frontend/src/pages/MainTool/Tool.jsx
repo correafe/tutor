@@ -26,6 +26,14 @@ import RankingModal from "../../components/RankingModal";
 
 import './tool.css';
 
+const EMOCOES_BOAS = ['😊', '😁', '😍', '🥳', '👍', '❤️', '🌟', '😄', '😋', '😎', '🎉'];
+const EMOCOES_RUINS = ['😟', '😞', '😠', '😡', '👎', '💔', '😭', '🤢', '😨', '🤔', '😢'];
+const getLineYForEmoji = (emoji) => {
+    if (EMOCOES_BOAS.includes(emoji)) return -60; // Sobe
+    if (EMOCOES_RUINS.includes(emoji)) return 35;  // Desce
+    return -15; // Fica no meio (neutro)
+};
+
 init({ data })
 
 const showAlert = () => {
@@ -867,7 +875,7 @@ const Tool = ({ }) => {
 
   const [pendingPostData, setPendingPostData] = useState(null);
 
-  const postNewCard = async ({ novoX, rowIndex, colIndex, squarewidth }, type, emojiTag = "Novo emoji") => {
+  const postNewCard = async ({ novoX, rowIndex, colIndex, squarewidth }, type, emojiTag = "😀") => {
     const postData = {
       "journeyMap_id": id_mapa,
       "linePos": 285,
@@ -880,7 +888,8 @@ const Tool = ({ }) => {
     if (type === 'emotion') {
       postData.posX = novoX;
       postData.journeyMap_id = id_mapa;
-      postData.lineY = -15;
+      // ✅ ALTERADO: Calcula a altura baseada no emoji assim que ele nasce
+      postData.lineY = getLineYForEmoji(emojiTag); 
     }
 
     // console.log(postData);
@@ -952,9 +961,13 @@ const Tool = ({ }) => {
   const handlePickerClose = (selectedEmoji) => {
     if (selectedEmoji) {
       getEmojiDataFromNative(selectedEmoji).then((emojiData) => {
+        const newEmoji = emojiData.native;
+        // ✅ ALTERADO: Pega a nova altura correta
+        const newLineY = getLineYForEmoji(newEmoji); 
+
         if (currentCellId === 'new' && pendingPostData) {
           const { novoX, rowIndex, colIndex, squarewidth } = pendingPostData;
-          postNewCard({ novoX, rowIndex, colIndex, squarewidth }, 'emotion', emojiData.native);
+          postNewCard({ novoX, rowIndex, colIndex, squarewidth }, 'emotion', newEmoji);
         } else {
           setMatrix((prevMatrix) => {
             const updatedMatrix = prevMatrix.map((row) =>
@@ -962,14 +975,15 @@ const Tool = ({ }) => {
                 if (rect.emotion_id === currentCellId) {
                   const updatedRect = {
                     ...rect,
-                    emojiTag: emojiData.native,
+                    emojiTag: newEmoji,
+                    lineY: newLineY // ✅ ALTERADO: Atualiza a altura visualmente
                   };
 
                   axios.put(`${import.meta.env.VITE_BACKEND}/emotion`, {
                     emotion_id: rect.emotion_id,
                     posX: rect.x,
-                    lineY: rect.lineY,
-                    emojiTag: emojiData.native
+                    lineY: newLineY, // ✅ ALTERADO: Salva a nova altura no banco
+                    emojiTag: newEmoji
                   }).then(() => {
                     // console.log('Emoji atualizado no backend:', updatedRect);
                   }).catch((error) => {
@@ -987,7 +1001,7 @@ const Tool = ({ }) => {
 
           setEmojis((prevEmojis) => ({
             ...prevEmojis,
-            [currentCellId]: emojiData.native,
+            [currentCellId]: newEmoji,
           }));
         }
       });
@@ -1245,43 +1259,44 @@ const handleLevelSelect = async (level) => {
     }
   };
 
-const addTutorialCardToMap = async (step, currentStepIndex) => {
-  const positions = [20, 290, 560, 830, 1100];
-  const phaseIndex = Math.floor(currentStepIndex / 5);
-  const currentX = positions[phaseIndex];
-  const answer = step.correctAnswer;
+  const addTutorialCardToMap = async (step, currentStepIndex) => {
+    const positions = [20, 290, 560, 830, 1100];
+    const phaseIndex = Math.floor(currentStepIndex / 5);
+    const currentX = positions[phaseIndex];
+    const answer = step.correctAnswer;
 
-  // Leitura inteligente da linha (não depende mais de formatação exata)
-  const sectionStr = step.section.toLowerCase();
-  let endpoint = 'journeyPhase'; // Padrão
-  if (sectionStr.includes('ação') || sectionStr.includes('acoes') || sectionStr.includes('ações')) endpoint = 'userAction';
-  else if (sectionStr.includes('emoç') || sectionStr.includes('emoc')) endpoint = 'emotion';
-  else if (sectionStr.includes('pensamento')) endpoint = 'thought';
-  else if (sectionStr.includes('contato')) endpoint = 'contactPoint';
+    // Leitura inteligente da linha (não depende mais de formatação exata)
+    const sectionStr = step.section.toLowerCase();
+    let endpoint = 'journeyPhase'; // Padrão
+    if (sectionStr.includes('ação') || sectionStr.includes('acoes') || sectionStr.includes('ações')) endpoint = 'userAction';
+    else if (sectionStr.includes('emoç') || sectionStr.includes('emoc')) endpoint = 'emotion';
+    else if (sectionStr.includes('pensamento')) endpoint = 'thought';
+    else if (sectionStr.includes('contato')) endpoint = 'contactPoint';
 
-  try {
-    const payload = {
-      journeyMap_id: id_mapa,
-      posX: currentX,
-      emojiTag: answer.emojiTag || "😀",
-    };
+    try {
+      const payload = {
+        journeyMap_id: id_mapa,
+        posX: currentX,
+        emojiTag: answer.emojiTag || "😀",
+      };
 
-    if (endpoint === 'emotion') {
-      payload.lineY = answer.lineY !== undefined ? answer.lineY : 0;
-    } else {
-      payload.linePos = 285;
-      payload.length = 230;
-      payload.description = answer.description || option.text;
+      if (endpoint === 'emotion') {
+        // ✅ ALTERADO: Define a altura baseada na emoção automaticamente pro tutorial também!
+        payload.lineY = getLineYForEmoji(payload.emojiTag);
+      } else {
+        payload.linePos = 285;
+        payload.length = 230;
+        payload.description = answer.description || step.options?.find(opt => opt.correct)?.text || "Descrição";
+      }
+
+      await axios.post(`${import.meta.env.VITE_BACKEND}/${endpoint}`, payload);
+      
+      // Atualiza o mapa visualmente
+      fetchData(); 
+    } catch (error) {
+      console.error("Erro ao adicionar card em tempo real:", error);
     }
-
-    await axios.post(`${import.meta.env.VITE_BACKEND}/${endpoint}`, payload);
-    
-    // Atualiza o mapa visualmente
-    fetchData(); 
-  } catch (error) {
-    console.error("Erro ao adicionar card em tempo real:", error);
-  }
-};
+  };
 
   return (
     <div className="scrollable-container"  style={{ zoom: zoomRatio }}>
