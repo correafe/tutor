@@ -77,38 +77,6 @@
   padding: 0; 
 }
 
-.button.info.tour {
-  margin-left: 3vh;
-  background-color: #6a7dfe;
-  font-size: 30px;
-  font-weight: bold;
-}
-
-.button.info.tour:hover {
-  background-color: #5a6ce0; 
-  font-size: 30px !important; 
-}
-
-.button.info.learn {
-  margin-left: 2vh;
-  background-color: #FF9800;
-  font-size: 30px;
-}
-
-.button.info.learn:hover {
-  background-color: #e68900;
-}
-
-.button.info.about {
-  margin-left: 2vh;
-  margin-right: 3vh;
-  background-color: #C4C4C4;
-}
-
-.button.info.about:hover {
-  background-color: #9e9999; 
-}
-
 /* Botão Salvar */
 .button.save {
   background-color: #4CAF50;
@@ -226,17 +194,46 @@
 .button.info.faq {
   margin-left: 2vh;
   margin-right: -1vh;
-  background-color: #ff81f9; 
-  font-size: 30px;
+  background-color: #B590CA;
+  font-size: 14px; 
+  font-weight: bold;
 }
-
 .button.info.faq:hover {
-  background-color: #7d3980; 
+  background-color: #9C75B0;
 }
 
-/* =========================================
-   MOLDURAS DE PERFIL COM IMAGEM (RANKING)
-   ========================================= */
+.button.info.tour {
+  margin-left: 3vh;
+  background-color: #8CA8F9;
+}
+.button.info.tour:hover {
+  background-color: #7293ED; 
+}
+
+.button.info.ranking {
+  margin-left: 2vh;
+  background-color: #F4A261;
+}
+.button.info.ranking:hover {
+  background-color: #E08945;
+}
+
+.button.info.learn {
+  margin-left: 2vh;
+  background-color: #F9C74F;
+}
+.button.info.learn:hover {
+  background-color: #E8B63E;
+}
+
+.button.info.about {
+  margin-left: 2vh;
+  margin-right: 3vh;
+  background-color: #55D6C2;
+}
+.button.info.about:hover {
+  background-color: #3DBBA6; 
+}
 
 .avatar-wrapper {
   position: relative;

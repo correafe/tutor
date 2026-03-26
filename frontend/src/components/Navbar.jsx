@@ -117,34 +117,25 @@ const Navbar = ({
               if (onFAQClick) onFAQClick(); 
           }}
           title="Perguntas Frequentes"
-          style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            fontSize: '16px', 
-            fontWeight: 'bold', 
-            color: '#ffffff' 
-          }}
         >
           FAQ
         </button>
 
         {onStartTour && (
           <button 
-          className="button info tour" 
-          id="tourButton" 
-          onClick={onStartTour}
-          title='Tour'
+            className="button info tour" 
+            id="tourButton" 
+            onClick={onStartTour}
+            title='Tour'
           >
-          <Compass size={24}/>
-        </button>
+            <Compass size={24}/>
+          </button>
         )}
 
         <button 
-          className="button info" 
+          className="button info ranking" 
           onClick={onRankingClick} 
           title="Ranking"
-          style={{ marginLeft: '2vh', backgroundColor: '#FFD700', color: '#fff' }}
         >
            <Trophy size={24} />
         </button>
@@ -163,7 +154,6 @@ const Navbar = ({
           id="aboutButton" 
           title='Download'
           onClick={onInfoClick}
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
           <Download size={24} />
         </button>
