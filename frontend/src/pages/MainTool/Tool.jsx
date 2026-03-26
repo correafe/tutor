@@ -1395,7 +1395,7 @@ const handleLevelSelect = async (level) => {
           </div>
 
           <div style={{ height: "61.9px", width: "100%" }}></div>
-<div className="separator1" style={{ width: calculateTotalWidth(matrix) + 2400 }}></div>
+          <div className="separator1" style={{ width: calculateTotalWidth(matrix) + 2400 }}></div>
           <Popup trigger={buttonPopup} setTrigger={setButtonPopup} setTextEdit={setTextEdit} setScenario={setScenario} style={{ borderRadius: "25px", padding: "20px", backgroundColor: "#f9f9f9", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
             {textEdit ? (
               <>
@@ -1411,7 +1411,7 @@ const handleLevelSelect = async (level) => {
                     onChange={(e) => setEditedText(e.target.value)}
                     style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
                   />
-                  <div className="separarbotoes" style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between' }}>
+                  <div className="separarbotoes" style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                     
                     <div style={{ display: 'flex', alignItems: 'center' }}>
                       <input
@@ -1444,7 +1444,7 @@ const handleLevelSelect = async (level) => {
                       </button>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
                       <button
                         className="buttonconf2"
                         onClick={() => setEditedText('')}
