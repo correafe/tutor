@@ -8,7 +8,6 @@ import teste2 from '../assets/teste2.png';
 import teste3 from '../assets/teste3.png';
 import teste4 from '../assets/teste4.png';
 import teste5 from '../assets/teste5.png';
-import { Trophy } from 'lucide-react';
 
 const Navbar = ({ 
   onSaveClick, 
