@@ -1369,7 +1369,7 @@ const handleLevelSelect = async (level) => {
         </ModalName>
       )}
 
-      <div style={{ width: "100vw", height: "1000px" }}>
+      <div style={{ minWidth: "100vw", width: calculateTotalWidth(matrix) + 2400, height: "1000px" }}>
         <>
           {loading && (
             <div className="loading-overlay">
