@@ -1394,7 +1394,8 @@ const handleLevelSelect = async (level) => {
             />
           </div>
 
-          <div className="separator1" style={{ marginTop: "61.9px", width: calculateTotalWidth(matrix) + 2400 }}></div>
+          <div style={{ height: "61.9px", width: "100%" }}></div>
+<div className="separator1" style={{ width: calculateTotalWidth(matrix) + 2400 }}></div>
           <Popup trigger={buttonPopup} setTrigger={setButtonPopup} setTextEdit={setTextEdit} setScenario={setScenario} style={{ borderRadius: "25px", padding: "20px", backgroundColor: "#f9f9f9", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
             {textEdit ? (
               <>
