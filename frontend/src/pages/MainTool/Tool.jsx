@@ -1348,21 +1348,23 @@ const addTutorialCardToMap = async (step, currentStepIndex) => {
               <div className="loading-spinner"></div>
             </div>
           )}
-          <Navbar
-            onSaveClick={() => { handleSaveClick(); showAlert() }}
-            onInfoClick={() => setButtonPopup(true)}
-            onFAQClick={() => setShowFAQ(true)}
-            onScenarioClick={() => { setButtonPopup(true); setScenario(true) }}
-            onRankingClick={() => setShowRankingModal(true)}
-            onLogoutClick={handleLogout}
-            onMap={onMap}
-            onDownload={handleExport}
-            onStartTour={() => setRunToolTour(true)}
-            handlePostClick={handlePostClick}
-            dataLoaded={dataLoaded}
-            currentJourneyMap={id_mapa}
-            onTutorialClick={handleOpenLevelSelector}
-          />
+<div style={{ pointerEvents: (isTourOpen || isTutorialActive) ? 'none' : 'auto' }}>
+            <Navbar
+              onSaveClick={() => { handleSaveClick(); showAlert() }}
+              onInfoClick={() => setButtonPopup(true)}
+              onFAQClick={() => setShowFAQ(true)}
+              onScenarioClick={() => { setButtonPopup(true); setScenario(true) }}
+              onRankingClick={() => setShowRankingModal(true)}
+              onLogoutClick={handleLogout}
+              onMap={onMap}
+              onDownload={handleExport}
+              onStartTour={() => setRunToolTour(true)}
+              handlePostClick={handlePostClick}
+              dataLoaded={dataLoaded}
+              currentJourneyMap={id_mapa}
+              onTutorialClick={handleOpenLevelSelector}
+            />
+          </div>
 
           <div className="separator1" style={{ marginTop: "61.9px", width: calculateTotalWidth(matrix) + 2400 }}></div>
           <Popup trigger={buttonPopup} setTrigger={setButtonPopup} setTextEdit={setTextEdit} setScenario={setScenario} style={{ borderRadius: "25px", padding: "20px", backgroundColor: "#f9f9f9", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
