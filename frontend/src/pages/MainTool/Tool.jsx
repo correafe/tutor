@@ -1312,7 +1312,7 @@ const handleLevelSelect = async (level) => {
   };
 
   return (
-    <div className="scrollable-container"  style={{ zoom: zoomRatio }}>
+    <div className="scrollable-container">
       <ToolTour run={runToolTour} onTourEnd={stopTour} />
 
       {showLevelSelector && (
@@ -1369,7 +1369,7 @@ const handleLevelSelect = async (level) => {
         </ModalName>
       )}
 
-      <div style={{ minWidth: "100vw", width: calculateTotalWidth(matrix) + 2400, height: "1000px" }}>
+      <div style={{ zoom: zoomRatio, minWidth: "100vw", width: calculateTotalWidth(matrix) + 2400, height: "1000px", position: "relative" }}>
         <>
           {loading && (
             <div className="loading-overlay">

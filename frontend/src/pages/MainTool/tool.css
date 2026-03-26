@@ -5,14 +5,14 @@ body {
   flex-direction: column;
   background-color: #E6E6E6;
   height: 100vh;
-  overflow: hidden; /* ❌ Trava TUDO no body (impede que a tela pule pra cima e pra baixo) */
+  overflow: hidden;
 }
 
 .scrollable-container {
   width: 100vw;
   height: 100vh;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: auto; 
 }
 
 .content {
