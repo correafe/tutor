@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'; 
 import { ScoreContext } from '../contexts/ScoreContext'; 
-import { LogOut, GraduationCap, HelpCircle, Trophy, Map, Download } from 'lucide-react';
+import { LogOut, GraduationCap, HelpCircle, Trophy, Map, Download, Compass } from 'lucide-react';
 import axios from 'axios';
 import './Navbar.css';
 import teste1 from '../assets/teste1.png';
@@ -135,7 +135,7 @@ const Navbar = ({
           id="tourButton" 
           onClick={onStartTour}
           >
-          <Map size={24}/>
+          <Compass size={24}/>
         </button>
         )}
 
