@@ -127,7 +127,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #FF5858;
+  background-color: #FF6B6B;
   color: white;
   border: none;
   cursor: pointer;
@@ -136,7 +136,7 @@
 }
 
 .button.logout:hover {
-  background-color: #a80505;
+  background-color: #E65C5C;
   transform: scale(1.05);
 }
 

@@ -131,7 +131,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #FF5858;
+  background-color: #FF6B6B;
   color: white;
   border: none;
   cursor: pointer;
@@ -140,7 +140,7 @@ body {
 }
 
 .botaologout:hover {
-  background-color: #a80505;
+  background-color: #E65C5C;
   transform: scale(1.05); 
 }
 
@@ -369,19 +369,16 @@ body {
 #faq-dashboard-btn:hover {
   background-color: #9C75B0 !important;
   transition: all 0.2s ease;
-  transform: scale(1.05); 
 }
 
 #dashboard-tour-btn:hover {
   background-color: #7293ED !important; 
   transition: all 0.2s ease;
-  transform: scale(1.05);
 }
 
 #dashboard-ranking-btn:hover {
   background-color: #E08945 !important;
   transition: all 0.2s ease;
-  transform: scale(1.05);
 }
 
 .avatar-wrapper {
