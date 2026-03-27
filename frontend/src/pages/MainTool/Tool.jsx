@@ -227,7 +227,6 @@ const Tool = ({ }) => {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-
       toast.success('Download concluído com sucesso!');
       const user = JSON.parse(localStorage.getItem('user'));
       const downloadKey = `hasDownloadedMap_${user?.uid}`;
