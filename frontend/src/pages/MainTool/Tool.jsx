@@ -116,7 +116,7 @@ const Tool = ({ }) => {
 
   const [loading, setLoading] = useState(false);
 
- const handleExport = async () => {
+const handleExport = async () => {
     try {
       toast.info('Preparando download do mapa...', { duration: 2000 });
       
@@ -146,7 +146,7 @@ const Tool = ({ }) => {
       
       const contentWidth = calculateTotalWidth(matrix) + 1260;
       const contentHeight = 1000;
-      const headerHeight = 80; 
+      // Removido o headerHeight
 
       const canvasHTML = await html2canvas(parentNode, {
         backgroundColor: '#E6E6E6',
@@ -181,18 +181,15 @@ const Tool = ({ }) => {
       const ctx = finalCanvas.getContext('2d');
       
       finalCanvas.width = contentWidth * 2;
-      finalCanvas.height = (contentHeight + headerHeight) * 2;
+      finalCanvas.height = contentHeight * 2; // Altura original
 
       ctx.fillStyle = '#E6E6E6';
       ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
 
-      ctx.font = 'bold 70px Inter, sans-serif';
-      ctx.fillStyle = '#333333';
-      ctx.textAlign = 'left';
-      const tituloMapa = sceneName && sceneName.trim() !== '' ? sceneName : 'Mapa de Jornada';
-      ctx.fillText(tituloMapa, 160 * 2, 110); 
+      // Removido o bloco de código que desenhava o título (ctx.fillText)
 
-      ctx.drawImage(canvasHTML, 0, headerHeight * 2, finalCanvas.width, contentHeight * 2);
+      // Desenha o fundo começando do topo (Y: 0)
+      ctx.drawImage(canvasHTML, 0, 0, finalCanvas.width, contentHeight * 2);
 
       const imgKonva = new Image();
       await new Promise((resolve, reject) => {
@@ -201,7 +198,8 @@ const Tool = ({ }) => {
         imgKonva.src = dataURLKonva;
       });
 
-      const konvaMarginTop = (headerHeight + 28) * 2; 
+      // Volta a usar apenas a margem original do seu CSS (28px) multiplicada pelo pixelRatio
+      const konvaMarginTop = 28 * 2; 
       const konvaMarginLeft = 160 * 2;
 
       ctx.drawImage(
@@ -217,6 +215,9 @@ const Tool = ({ }) => {
       ctx.textAlign = 'right';
       ctx.fillText('JEM - JourneyEasyMap', finalCanvas.width - 40, finalCanvas.height - 30);
 
+      // Mantive a lógica de usar o nome do cenário para nomear o arquivo final salvo no PC
+      const tituloMapa = sceneName && sceneName.trim() !== '' ? sceneName : 'Mapa de Jornada';
+      
       // Baixa a imagem
       const finalDataUrl = finalCanvas.toDataURL('image/png');
       const link = document.createElement('a');
