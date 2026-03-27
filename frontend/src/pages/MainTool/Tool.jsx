@@ -121,39 +121,39 @@ const Tool = ({ }) => {
       toast.info('Preparando download do mapa...', { duration: 2000 });
       
       const node = document.querySelector('.teste-1');
+      const parentNode = node.parentElement; // Pega o container real para alinhar tudo
+      
       if (!node || !stageRef.current) {
         throw new Error('Elementos não encontrados para exportação');
       }
 
-      // 1. Guarda o zoom atual e a posição do scroll para restaurar depois
-      const originalZoom = node.parentElement.style.zoom;
+      // 1. Guarda o zoom atual
+      const originalZoom = parentNode.style.zoom;
       const scrollContainer = document.querySelector('.scrollable-container');
       const originalScrollLeft = scrollContainer ? scrollContainer.scrollLeft : 0;
       const originalScrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
 
-      // 2. Remove temporariamente o zoom do contêiner pai para o html2canvas não se confundir
-      node.parentElement.style.zoom = '1';
-      
-      // Força um pequeno reflow do navegador para garantir que ele entendeu a remoção do zoom
+      // 2. Remove o zoom temporariamente
+      parentNode.style.zoom = '1';
       await new Promise(resolve => setTimeout(resolve, 100));
 
       const stage = stageRef.current;
       const currentScale = stage.scaleX();
+      stage.scale({ x: 1, y: 1 }); // Reseta escala
       
-      // Reseta a escala do Konva para garantir qualidade máxima
-      stage.scale({ x: 1, y: 1 });
+      const contentWidth = calculateTotalWidth(matrix) + 1260;
+      const contentHeight = 1000;
       
-      // Pega as dimensões reais que precisamos capturar (baseado na largura do mapa)
-      const contentWidth = calculateTotalWidth(matrix) + 1260; // Largura do Konva + Margens
-      const contentHeight = 1000; // Altura fixa do seu mapa
+      // ✅ NOVO: Define um espaço extra de 80px no topo para caber o título
+      const headerHeight = 80; 
 
-      // 3. Captura o fundo HTML com html2canvas
-      const canvasHTML = await html2canvas(node, {
+      // 3. Captura o fundo HTML
+      const canvasHTML = await html2canvas(parentNode, {
         backgroundColor: '#E6E6E6',
-        scale: 2, // Aumenta a resolução do print
+        scale: 2,
         width: contentWidth,
         height: contentHeight,
-        windowWidth: contentWidth, // Força a janela do print a ter o tamanho total
+        windowWidth: contentWidth,
         windowHeight: contentHeight,
         scrollX: 0,
         scrollY: 0,
@@ -161,32 +161,43 @@ const Tool = ({ }) => {
         logging: false
       });
 
-      // 4. Restaura o zoom e o scroll do usuário IMEDIATAMENTE após o print
-      node.parentElement.style.zoom = originalZoom;
+      // 4. Restaura a tela do usuário
+      parentNode.style.zoom = originalZoom;
       if (scrollContainer) {
         scrollContainer.scrollLeft = originalScrollLeft;
         scrollContainer.scrollTop = originalScrollTop;
       }
       stage.scale({ x: currentScale, y: currentScale });
 
-      // 5. Captura os cards do Konva
+      // 5. Captura os Cards do Konva
       const dataURLKonva = stage.toDataURL({
         pixelRatio: 2,
         mimeType: 'image/png'
       });
 
-      // 6. Junta o fundo cinza e os cards em um Canvas final
+      // 6. Junta tudo em um Canvas final maior
       const finalCanvas = document.createElement('canvas');
       const ctx = finalCanvas.getContext('2d');
       
-      // Define o tamanho final da imagem (multiplicado por 2 para qualidade HD)
+      // ✅ NOVO: Aumenta a altura total da imagem somando o mapa + o cabeçalho
       finalCanvas.width = contentWidth * 2;
-      finalCanvas.height = contentHeight * 2;
+      finalCanvas.height = (contentHeight + headerHeight) * 2;
 
-      // Desenha o fundo primeiro
-      ctx.drawImage(canvasHTML, 0, 0, finalCanvas.width, finalCanvas.height);
+      // Pinta o fundo todo de cinza claro
+      ctx.fillStyle = '#E6E6E6';
+      ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
 
-      // Desenha os cards por cima
+      // ✅ NOVO: Desenha o Título do Cenário no topo da imagem!
+      ctx.font = 'bold 70px Inter, sans-serif';
+      ctx.fillStyle = '#333333';
+      ctx.textAlign = 'left';
+      // Pega o nome do cenário digitado, ou usa um nome padrão se estiver vazio
+      const tituloMapa = sceneName && sceneName.trim() !== '' ? sceneName : 'Mapa de Jornada';
+      ctx.fillText(tituloMapa, 160 * 2, 110); 
+
+      // Desenha o fundo HTML empurrado para baixo para dar espaço ao título
+      ctx.drawImage(canvasHTML, 0, headerHeight * 2, finalCanvas.width, contentHeight * 2);
+
       const imgKonva = new Image();
       await new Promise((resolve, reject) => {
         imgKonva.onload = resolve;
@@ -194,9 +205,11 @@ const Tool = ({ }) => {
         imgKonva.src = dataURLKonva;
       });
 
-      // Compensa as margens que o seu container do Konva (stage-container) tem na tela
-      const konvaMarginTop = 28 * 2; // margin-top: 28px * scale
-      const konvaMarginLeft = 160 * 2; // margin-left: 160px * scale
+      // ✅ CORREÇÃO DO ALINHAMENTO: 
+      // Puxamos os cards para cima. Antes a margem somava quase 60px para baixo.
+      // O 'headerHeight * 2' empurra eles para baixo do título, e o '+ 10' é o micro-ajuste visual.
+      const konvaMarginTop = (headerHeight * 2) + 10; 
+      const konvaMarginLeft = 160 * 2;
 
       ctx.drawImage(
         imgKonva, 
@@ -212,10 +225,10 @@ const Tool = ({ }) => {
       ctx.textAlign = 'right';
       ctx.fillText('JEM - JourneyEasyMap', finalCanvas.width - 40, finalCanvas.height - 30);
 
-      // Baixa a imagem
+      // Baixa a imagem (agora o nome do arquivo também puxa o nome do cenário!)
       const finalDataUrl = finalCanvas.toDataURL('image/png');
       const link = document.createElement('a');
-      link.download = `mapa_de_jornada_${sceneName || 'jem'}.png`;
+      link.download = `mapa_${tituloMapa.replace(/\s+/g, '_').toLowerCase()}.png`;
       link.href = finalDataUrl;
       document.body.appendChild(link);
       link.click();
