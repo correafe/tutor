@@ -183,14 +183,14 @@ const Tool = ({ }) => {
       finalCanvas.width = contentWidth * 2;
       finalCanvas.height = (contentHeight + headerHeight) * 2;
 
-      ctx.fillStyle = '#E6E6E6';
-      ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+      // ctx.fillStyle = '#E6E6E6';
+      // ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
 
-      ctx.font = 'bold 70px Inter, sans-serif';
-      ctx.fillStyle = '#333333';
-      ctx.textAlign = 'left';
-      const tituloMapa = sceneName && sceneName.trim() !== '' ? sceneName : 'Mapa de Jornada';
-      ctx.fillText(tituloMapa, 160 * 2, 110); 
+      // ctx.font = 'bold 70px Inter, sans-serif';
+      // ctx.fillStyle = '#333333';
+      // ctx.textAlign = 'left';
+      // const tituloMapa = sceneName && sceneName.trim() !== '' ? sceneName : 'Mapa de Jornada';
+      // ctx.fillText(tituloMapa, 160 * 2, 110); 
 
       ctx.drawImage(canvasHTML, 0, headerHeight * 2, finalCanvas.width, contentHeight * 2);
 
