@@ -117,78 +117,114 @@ const Tool = ({ }) => {
   const [loading, setLoading] = useState(false);
 
   const handleExport = async () => {
-    setLoading(true);
-    // console.log("entrou em handleExport");
     try {
-      // Capturar a imagem do stage Konva
-      const stage = stageRef.current.getStage();
+      toast.info('Preparando download do mapa...', { duration: 2000 });
       
-      // Salvar a escala atual
-      const originalScale = stage.scaleX();
+      const node = document.querySelector('.teste-1');
+      if (!node || !stageRef.current) {
+        throw new Error('Elementos não encontrados para exportação');
+      }
+
+      // 1. Guarda o zoom atual e a posição do scroll para restaurar depois
+      const originalZoom = node.parentElement.style.zoom;
+      const scrollContainer = document.querySelector('.scrollable-container');
+      const originalScrollLeft = scrollContainer ? scrollContainer.scrollLeft : 0;
+      const originalScrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
+
+      // 2. Remove temporariamente o zoom do contêiner pai para o html2canvas não se confundir
+      node.parentElement.style.zoom = '1';
       
-      // Redefinir a escala para 1 (tamanho original)
+      // Força um pequeno reflow do navegador para garantir que ele entendeu a remoção do zoom
+      await new Promise(resolve => setTimeout(resolve, 100));
+
+      const stage = stageRef.current;
+      const currentScale = stage.scaleX();
+      
+      // Reseta a escala do Konva para garantir qualidade máxima
       stage.scale({ x: 1, y: 1 });
       
-      const konvaDataURL = stage.toDataURL({ pixelRatio: 2 }); // Usar uma resolução maior para melhor qualidade
-  
-      const konvaImage = await new Promise((resolve, reject) => {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => resolve(img);
-        img.onerror = reject;
-        img.src = konvaDataURL;
+      // Pega as dimensões reais que precisamos capturar (baseado na largura do mapa)
+      const contentWidth = calculateTotalWidth(matrix) + 1260; // Largura do Konva + Margens
+      const contentHeight = 1000; // Altura fixa do seu mapa
+
+      // 3. Captura o fundo HTML com html2canvas
+      const canvasHTML = await html2canvas(node, {
+        backgroundColor: '#E6E6E6',
+        scale: 2, // Aumenta a resolução do print
+        width: contentWidth,
+        height: contentHeight,
+        windowWidth: contentWidth, // Força a janela do print a ter o tamanho total
+        windowHeight: contentHeight,
+        scrollX: 0,
+        scrollY: 0,
+        useCORS: true,
+        logging: false
       });
-  
-      // Restaurar a escala original
-      stage.scale({ x: originalScale, y: originalScale });
-      
-      // Capturar a imagem de fundo
-      const backgroundCanvas = await html2canvas(document.querySelector('.teste-1'), {
-        backgroundColor: null,
-        scale: 2, // Capturar com uma resolução maior
+
+      // 4. Restaura o zoom e o scroll do usuário IMEDIATAMENTE após o print
+      node.parentElement.style.zoom = originalZoom;
+      if (scrollContainer) {
+        scrollContainer.scrollLeft = originalScrollLeft;
+        scrollContainer.scrollTop = originalScrollTop;
+      }
+      stage.scale({ x: currentScale, y: currentScale });
+
+      // 5. Captura os cards do Konva
+      const dataURLKonva = stage.toDataURL({
+        pixelRatio: 2,
+        mimeType: 'image/png'
       });
-  
-      // Capturar a largura da div .teste-1
-      const teste1Div = document.querySelector('.teste-1');
-      const totalWidth = konvaImage.width; // Use offsetWidth para capturar a largura aplicada pelo CSS
-      const totalHeight = Math.max(backgroundCanvas.height, konvaImage.height);
-  
-      // console.log("konva width: ", konvaImage.width);
-      // console.log("konva height: ", konvaImage.height);
-      // console.log("backgroundCanvas width: ", backgroundCanvas.width);
-      // console.log("backgroundCanvas height: ", backgroundCanvas.height);
-      // console.log(totalWidth);
-      // console.log(totalHeight);
-  
+
+      // 6. Junta o fundo cinza e os cards em um Canvas final
       const finalCanvas = document.createElement('canvas');
-      finalCanvas.width = totalWidth;
-      finalCanvas.height = totalHeight;
       const ctx = finalCanvas.getContext('2d');
-  
-      // Preencher o fundo com a cor quase branca
-      ctx.fillStyle = "#f8f8f8";
-      ctx.fillRect(0, 0, totalWidth, totalHeight);
-  
-      // Desenhar a imagem de fundo
-      ctx.drawImage(backgroundCanvas, 0, 12);
-  
-      // Desenhar a imagem do stage Konva
-      ctx.drawImage(konvaImage, 330, -95);
-  
-      // Desenhar o texto
-      ctx.fillStyle = "#000000"; // Cor do texto
-      ctx.font = "40px Arial"; // Estilo da fonte
-      ctx.textAlign = "center"; // Centralizar o texto
-      ctx.fillText("JEM - JourneyEasyMap", totalWidth / 2, totalHeight - 20);
-  
-      // Exportar o canvas final como imagem
-      const finalImage = finalCanvas.toDataURL('image/png');
-      downloadURI(finalImage, 'mapa_de_jornada.png');
-      window.location.reload();
+      
+      // Define o tamanho final da imagem (multiplicado por 2 para qualidade HD)
+      finalCanvas.width = contentWidth * 2;
+      finalCanvas.height = contentHeight * 2;
+
+      // Desenha o fundo primeiro
+      ctx.drawImage(canvasHTML, 0, 0, finalCanvas.width, finalCanvas.height);
+
+      // Desenha os cards por cima
+      const imgKonva = new Image();
+      await new Promise((resolve, reject) => {
+        imgKonva.onload = resolve;
+        imgKonva.onerror = reject;
+        imgKonva.src = dataURLKonva;
+      });
+
+      // Compensa as margens que o seu container do Konva (stage-container) tem na tela
+      const konvaMarginTop = 28 * 2; // margin-top: 28px * scale
+      const konvaMarginLeft = 160 * 2; // margin-left: 160px * scale
+
+      ctx.drawImage(
+        imgKonva, 
+        konvaMarginLeft, 
+        konvaMarginTop, 
+        imgKonva.width, 
+        imgKonva.height
+      );
+
+      // Adiciona o texto de rodapé
+      ctx.font = 'bold 30px Inter, sans-serif';
+      ctx.fillStyle = '#666666';
+      ctx.textAlign = 'right';
+      ctx.fillText('JEM - JourneyEasyMap', finalCanvas.width - 40, finalCanvas.height - 30);
+
+      // Baixa a imagem
+      const finalDataUrl = finalCanvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = `mapa_de_jornada_${sceneName || 'jem'}.png`;
+      link.href = finalDataUrl;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      toast.success('Download concluído com sucesso!');
     } catch (error) {
-      console.error('Erro ao exportar o mapa de jornada:', error);
-    } finally {
-      setLoading(false);
+      console.error('Erro detalhado exportação:', error);
+      toast.error('Erro ao gerar o arquivo de download. Tente novamente.');
     }
   };
   
