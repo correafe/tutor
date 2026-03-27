@@ -10,48 +10,51 @@ import teste4 from '../assets/teste4.png';
 import teste5 from '../assets/teste5.png';
 
 const RankingModal = ({ onClose }) => {
-  const { score } = useContext(ScoreContext);
+  const { score, addPoints } = useContext(ScoreContext); 
   const usuario = JSON.parse(localStorage.getItem('user'));
   const [rankingList, setRankingList] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Função para pegar os dados do rank
   const getRankInfo = (currentScore) => {
-    if (currentScore < 100) return { title: "Aprendiz", icon: "🥉", frameUrl: teste1 };
-    if (currentScore < 300) return { title: "Explorador", icon: "🥈", frameUrl: teste2 };
-    if (currentScore < 500) return { title: "Mapeador", icon: "🥇", frameUrl: teste3 };
-    if (currentScore < 700) return { title: "Especialista", icon: "🔮", frameUrl: teste4 };
-    return { title: "Mestre", icon: "👑", frameUrl: teste5 };
+    if (currentScore < 150) return { title: "Aprendiz", icon: "🥉", frameUrl: teste1 };
+    if (currentScore < 350) return { title: "Explorador", icon: "🥈", frameUrl: teste2 };
+    if (currentScore < 550) return { title: "Mapeador", icon: "🥇", frameUrl: teste3 };
+    if (currentScore < 770) return { title: "Especialista", icon: "🔮", frameUrl: teste4 };
+    return { title: "Mestre", icon: "👑", frameUrl: teste5 }; 
   };
 
   useEffect(() => {
+    // ✅ NOVO: Dá pontos na primeira vez que o usuário abre o Ranking
+    if (usuario) {
+      const rankingKey = `hasOpenedRanking_${usuario.uid}`;
+      if (!localStorage.getItem(rankingKey)) {
+        addPoints(20, 'Visualizou a tabela de Ranking');
+        localStorage.setItem(rankingKey, 'true');
+      }
+    }
+
     const fetchRanking = async () => {
       try {
-        // Substitua a URL base pela da sua API na Vercel, se necessário
-        // ex: const apiUrl = import.meta.env.VITE_API_URL + '/ranking';
         const response = await fetch('https://tutor-api-jem.duckdns.org/ranking');
         const data = await response.json();
         
-        // Formata os dados vindos do banco para o padrão do componente
         const formattedRanking = data.map(user => ({
           name: user.display_name,
           score: user.score,
           photo: user.photo_url,
-          isCurrentUser: usuario?.uid === user.firebase_uid // Verifica se é o usuário logado
+          isCurrentUser: usuario?.uid === user.firebase_uid 
         }));
 
-        // Adiciona o usuário logado caso ele ainda não esteja no ranking (com pontuação 0)
         const userInRanking = formattedRanking.find(u => u.isCurrentUser);
         if (!userInRanking && usuario) {
             formattedRanking.push({
                 name: usuario?.displayName || "Você",
-                score: score, // Pontuação local atual
+                score: score, 
                 photo: usuario?.providerData?.[0]?.photoURL || "https://www.pngall.com/wp-content/uploads/5/User-Profile-PNG.png",
                 isCurrentUser: true
             });
         }
 
-        // Garante que a lista fique ordenada do maior para o menor
         const sortedUsers = formattedRanking.sort((a, b) => b.score - a.score);
         setRankingList(sortedUsers);
       } catch (error) {
@@ -62,10 +65,9 @@ const RankingModal = ({ onClose }) => {
     };
 
     fetchRanking();
-  }, [score, usuario]);
+  }, [score, usuario, addPoints]); // ✅ Importante adicionar as dependências corretas
 
   return (
-    
     <div className="ranking-overlay">
       <div className="ranking-box" style={{ position: 'relative' }}>
         

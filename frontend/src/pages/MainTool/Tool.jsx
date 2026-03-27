@@ -97,6 +97,7 @@ const Tool = ({ }) => {
   const [runToolTour, setRunToolTour] = useState(false);
   const navigate = useNavigate();
   const { id_mapa } = useParams();
+  const { addPoints } = React.useContext(ScoreContext);
 
   const [showClearConfirmModal, setShowClearConfirmModal] = useState(false);
   const [pendingLevelToLoad, setPendingLevelToLoad] = useState(null);
@@ -227,6 +228,12 @@ const Tool = ({ }) => {
       document.body.removeChild(link);
 
       toast.success('Download concluído com sucesso!');
+      const user = JSON.parse(localStorage.getItem('user'));
+      const downloadKey = `hasDownloadedMap_${user?.uid}`;
+      if (!localStorage.getItem(downloadKey) && user) {
+        addPoints(30, 'Realizou o primeiro Download de Mapa');
+        localStorage.setItem(downloadKey, 'true');
+      }
     } catch (error) {
       console.error('Erro detalhado exportação:', error);
       toast.error('Erro ao gerar o arquivo de download. Tente novamente.');

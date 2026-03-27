@@ -54,14 +54,16 @@ const FAQContent = () => {
         <summary style={{ fontSize: "20px", fontWeight: "bold", color: "#333" }}>Como funciona o sistema de pontos e ranking?</summary>
         <p style={{ marginTop: "10px", fontSize: "16px", lineHeight: "1.5", color: "#555" }}>
           O JEM possui um sistema de gamificação para tornar sua experiência mais divertida! Você ganha pontos de experiência ao interagir com a plataforma e aprender a usar a ferramenta. 
-          <br />
+          <br /><br />
           <strong>Como ganhar pontos:</strong>
           <ul style={{ paddingLeft: "20px", marginTop: "10px" }}>
-            <li>Completar a <strong>Prática Guiada</strong>.</li>
+            <li>Gabaritar e superar seus recordes na <strong>Prática Guiada</strong> (níveis 1, 2 e 3).</li>
             <li>Finalizar os <strong>Tours</strong> de navegação do painel e da ferramenta.</li>
-            <li>Descobrir áreas novas da plataforma.</li>
+            <li>Fazer o <strong>Download</strong> do seu primeiro mapa.</li>
+            <li>Acessar a tabela de <strong>Ranking</strong>.</li>
+            <li>Descobrir áreas novas da plataforma (como ler este FAQ!).</li>
           </ul>
-          Acumulando pontos, você sobe no <strong>Ranking</strong>, muda seu título de especialista e ganha novas molduras para o seu avatar!
+          Acumulando pontos, você sobe no <strong>Ranking</strong>, muda seu título de especialista e ganha novas molduras para o seu avatar. O desafio final é alcançar o cobiçado título de <strong>Mestre</strong>, mas para isso você precisará conquistar <strong>absolutamente todos</strong> os pontos oferecidos pela plataforma!
         </p>
       </details>
 
