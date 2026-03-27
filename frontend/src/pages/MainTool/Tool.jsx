@@ -106,6 +106,8 @@ const Tool = ({ }) => {
 
   const [showRankingModal, setShowRankingModal] = useState(false);
 
+  const [isExporting, setIsExporting] = useState(false);
+
   const location = useLocation();
   const isTutorialMode = location.state?.startTour;
 
@@ -116,9 +118,13 @@ const Tool = ({ }) => {
 
   const [loading, setLoading] = useState(false);
 
-const handleExport = async () => {
+  const handleExport = async () => {
     try {
-      toast.info('Preparando download do mapa...', { duration: 2000 });
+      // 1. LIGA A TELA DE CARREGAMENTO
+      setIsExporting(true);
+      
+      // 2. Dá um pequeno fôlego (100ms) para o React renderizar a tela de carregamento ANTES de travar o navegador com a exportação
+      await new Promise(resolve => setTimeout(resolve, 100));
       
       const node = document.querySelector('.teste-1');
       const parentNode = node.parentElement;
@@ -146,7 +152,6 @@ const handleExport = async () => {
       
       const contentWidth = calculateTotalWidth(matrix) + 1260;
       const contentHeight = 1000;
-      // Removido o headerHeight
 
       const canvasHTML = await html2canvas(parentNode, {
         backgroundColor: '#E6E6E6',
@@ -181,14 +186,11 @@ const handleExport = async () => {
       const ctx = finalCanvas.getContext('2d');
       
       finalCanvas.width = contentWidth * 2;
-      finalCanvas.height = contentHeight * 2; // Altura original
+      finalCanvas.height = contentHeight * 2;
 
       ctx.fillStyle = '#E6E6E6';
       ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
 
-      // Removido o bloco de código que desenhava o título (ctx.fillText)
-
-      // Desenha o fundo começando do topo (Y: 0)
       ctx.drawImage(canvasHTML, 0, 0, finalCanvas.width, contentHeight * 2);
 
       const imgKonva = new Image();
@@ -198,7 +200,6 @@ const handleExport = async () => {
         imgKonva.src = dataURLKonva;
       });
 
-      // Volta a usar apenas a margem original do seu CSS (28px) multiplicada pelo pixelRatio
       const konvaMarginTop = 28 * 2; 
       const konvaMarginLeft = 160 * 2;
 
@@ -215,10 +216,8 @@ const handleExport = async () => {
       ctx.textAlign = 'right';
       ctx.fillText('JEM - JourneyEasyMap', finalCanvas.width - 40, finalCanvas.height - 30);
 
-      // Mantive a lógica de usar o nome do cenário para nomear o arquivo final salvo no PC
       const tituloMapa = sceneName && sceneName.trim() !== '' ? sceneName : 'Mapa de Jornada';
       
-      // Baixa a imagem
       const finalDataUrl = finalCanvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.download = `mapa_${tituloMapa.replace(/\s+/g, '_').toLowerCase()}.png`;
@@ -231,6 +230,8 @@ const handleExport = async () => {
     } catch (error) {
       console.error('Erro detalhado exportação:', error);
       toast.error('Erro ao gerar o arquivo de download. Tente novamente.');
+    } finally {
+      setIsExporting(false);
     }
   };
   
@@ -1355,6 +1356,18 @@ const handleLevelSelect = async (level) => {
 
   return (
     <div className="scrollable-container">
+
+      {isExporting && (
+        <div data-html2canvas-ignore="true" style={{
+          position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+          backgroundColor: '#E6E6E6', zIndex: 99999, display: 'flex',
+          flexDirection: 'column', alignItems: 'center', justifyContent: 'center'
+        }}>
+          <div className="loading-spinner" style={{ borderColor: 'rgba(0,0,0,0.1)', borderTopColor: '#4CAF50', width: '80px', height: '80px', borderWidth: '8px' }}></div>
+          <h2 style={{ marginTop: '30px', color: '#333', fontFamily: 'Inter' }}>Preparando seu mapa em alta qualidade...</h2>
+        </div>
+      )}
+
       <div style={{ zoom: zoomRatio }}>
       <ToolTour run={runToolTour} onTourEnd={stopTour} />
 
