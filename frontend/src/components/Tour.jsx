@@ -36,9 +36,9 @@ const DASHBOARD_STEPS = [
     content: 'Aqui você acompanha sua pontuação total de experiência e seu título atual. Confira o FAQ para descobrir todas as formas de ganhar pontos!',
     placement: 'bottom',
   },
-  {
+{
     target: '.botaologout',
-    content: 'Aqui você pode sair da sua conta ou fazer Login em outra.',
+    content: 'Aqui você pode encerrar sua sessão atual para sair ou acessar outra conta.',
     placement: 'bottom',
   },
   {
@@ -95,8 +95,8 @@ const TOOL_STEPS = [
   },
 
   {
-    target: '.button.logout',
-    content: 'Use este botão quando desejar sair da sua conta com segurança.',
+    target: '.botaologout',
+    content: 'Aqui você pode encerrar sua sessão atual para sair ou acessar outra conta.',
     placement: 'bottom',
   },
   {

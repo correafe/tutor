@@ -39,14 +39,14 @@ const FAQContent = () => {
       <details style={{ marginBottom: "15px", cursor: "pointer" }}>
         <summary style={{ fontSize: "20px", fontWeight: "bold", color: "#333" }}>O salvamento do meu mapa é automático?</summary>
         <p style={{ marginTop: "10px", fontSize: "16px", lineHeight: "1.5", color: "#555" }}>
-          <strong>Não.</strong> Para garantir que você tenha controle total sobre as edições e não perca informações por engano, o salvamento é manual. Recomendamos clicar no botão <strong>Salvar</strong> (verde, no menu superior) sempre que fizer alterações importantes no seu cenário ou nos cards.
+          <strong>Não.</strong> Para garantir que você tenha controle total sobre as edições e não perca informações por engano, o salvamento é manual. Recomendamos clicar no botão <strong>Salvar</strong> sempre que fizer alterações importantes no seu cenário ou nos cards.
         </p>
       </details>
 
       <details style={{ marginBottom: "15px", cursor: "pointer" }}>
         <summary style={{ fontSize: "20px", fontWeight: "bold", color: "#333" }}>Como exportar ou baixar meu mapa?</summary>
         <p style={{ marginTop: "10px", fontSize: "16px", lineHeight: "1.5", color: "#555" }}>
-          É muito simples! No menu superior direito da ferramenta de edição, clique no botão de <strong>Download</strong> (ícone de uma seta apontando para baixo). A plataforma irá processar seu mapa e baixar automaticamente uma imagem PNG em alta qualidade para você usar em apresentações ou relatórios.
+          É muito simples! No menu superior direito da ferramenta de edição, clique no botão de <strong>Download</strong>. A plataforma irá processar seu mapa e baixar automaticamente uma imagem PNG em alta qualidade para você usar em apresentações ou relatórios.
         </p>
       </details>
 
@@ -57,9 +57,9 @@ const FAQContent = () => {
           <br /><br />
           <strong>Como ganhar pontos:</strong>
           <ul style={{ paddingLeft: "20px", marginTop: "10px" }}>
-            <li>Completar a <strong>Prática Guiada</strong> (Tutorial de cenários).</li>
+            <li>Completar a <strong>Prática Guiada</strong>.</li>
             <li>Finalizar os <strong>Tours</strong> de navegação do painel e da ferramenta.</li>
-            <li>Descobrir áreas novas da plataforma (inclusive, você acabou de ganhar pontos por abrir este FAQ!).</li>
+            <li>Descobrir áreas novas da plataforma.</li>
           </ul>
           Acumulando pontos, você sobe no <strong>Ranking</strong>, muda seu título de especialista e ganha novas molduras para o seu avatar!
         </p>
