@@ -1382,7 +1382,7 @@ const handleLevelSelect = async (level) => {
           <div style={{ pointerEvents: (runToolTour || showTutorialWizard) ? 'none' : 'auto' }}>
             <Navbar
               onSaveClick={() => { handleSaveClick(); showAlert() }}
-              onInfoClick={() => setButtonPopup(true)}
+              onInfoClick={handleExport}
               onFAQClick={() => setShowFAQ(true)}
               onScenarioClick={() => { setButtonPopup(true); setScenario(true) }}
               onRankingClick={() => setShowRankingModal(true)}
@@ -1502,50 +1502,7 @@ const handleLevelSelect = async (level) => {
                   </div>
                 </div>
               </>
-            ) : (
-              <>
-                <div style={{ textAlign: "left", display: "flex", alignItems: "center" }}>
-                  <h1 style={{ fontSize: "50px" }}>Mapas de jornada</h1>
-                  <button className="button info" style={{ marginLeft: "1.5vh", cursor: "auto" }}>
-                    i
-                  </button>
-                </div>
-                <div style={{ display: "flex", alignItems: "flex-start", marginTop: "50px" }}>
-                  <div style={{ marginRight: "20px", textAlign: "center", width: "80%" }}>
-                    <img
-                      src="https://github.com/luca-ferro/imagestest/blob/main/mascote.png?raw=true"
-                      style={{ width: "100%", maxWidth: "200px" }}
-                      alt="Mascote"
-                    />
-                    <button
-                      onClick={() => { handleExport(); }}
-                      style={{
-                        backgroundColor: "#4CAF50",
-                        width: "100%", 
-                        color: "white",
-                        padding: "10px 25px",
-                        borderRadius: "5px",
-                        border: "none",
-                        cursor: "pointer",
-                        fontSize: "16px",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Download size={40} />
-                      <p style={{ fontSize: "18px", lineHeight: "1.6" }}>Download</p>
-                    </button>
-                  </div>
-                  <div>
-                    <p style={{ fontSize: "25px", lineHeight: "1.6", marginLeft: "40px" }}>
-                      Mapas de jornada de usuário são representações visuais que ilustram as etapas pelas quais os usuários passam ao interagir com um produto ou serviço. Eles ajudam a entender a experiência do usuário, identificando pontos de contato, emoções e possíveis obstáculos.
-                      <br /> <br />
-                      <i>Você pode baixar o seu mapa clicando no botão de download!</i>
-                    </p>
-                  </div>
-                </div>
-              </>
-            )}
+            ) : null}
           </Popup>
           {isPickerVisible && (
             <Popup trigger={isPickerVisible} setTrigger={setPickerVisible}>
