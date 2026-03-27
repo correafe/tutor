@@ -11,7 +11,6 @@ export const PIZZA_SCENARIO = {
     CENÁRIO COMPLETO:
     
     Persona: Lucas, 28 anos, desenvolvedor. Teve uma semana exaustiva de trabalho e só quer relaxar.
-    
     Contexto: É sexta-feira à noite, Lucas chega em casa com muita fome, mas não tem nenhuma disposição para cozinhar. Ele decide usar um aplicativo de delivery para resolver o problema rapidamente.
 
     1. FASE DA FOME (19:00): Lucas chega em casa, abre a geladeira e vê que está vazia. Ele se sente frustrado e pensa: "Vou ter que pedir algo".
@@ -212,7 +211,6 @@ export const STREAMING_SCENARIO = {
     CENÁRIO COMPLETO:
     
     Persona: Camila, 32 anos. É aficionada por séries, tem pouca paciência para sites lentos e faz questão de alta qualidade de imagem (4K).
-    
     Contexto: Camila quer assinar um novo serviço de streaming porque sua série favorita mudou de plataforma.
 
     1. FASE DE PESQUISA: Camila abre um buscador na internet e procura por "melhores serviços de streaming 2024". Ela lê comparativos em blogs de tecnologia e fica em dúvida sobre os preços.
@@ -451,7 +449,6 @@ export const ADVANCED_SCENARIO = {
     CENÁRIO COMPLETO:
     
     Persona: Sofia, 29 anos, analista financeira. É super organizada com seu dinheiro. Sonha em conhecer a Europa, mas tem muito medo de fazer escolhas ruins que estraguem as férias ou seu orçamento.
-
     Contexto: Sofia decidiu tirar férias internacionais e precisa planejar toda a viagem por conta própria, desde a escolha do destino até o embarque, garantindo que tudo caiba no seu bolso.
     
     1. FASE DE INSPIRAÇÃO: Sofia decide que quer viajar nas férias. Ela passa horas em redes sociais e buscadores de voos pesquisando destinos exóticos e baratos, sonhando acordada.
