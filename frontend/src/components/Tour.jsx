@@ -95,7 +95,7 @@ const TOOL_STEPS = [
   },
 
   {
-    target: '.botaologout',
+    target: '.buttonlogout',
     content: 'Aqui você pode encerrar sua sessão atual para sair ou acessar outra conta.',
     placement: 'bottom',
   },
