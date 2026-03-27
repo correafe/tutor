@@ -116,38 +116,38 @@ const Tool = ({ }) => {
 
   const [loading, setLoading] = useState(false);
 
-  const handleExport = async () => {
+ const handleExport = async () => {
     try {
       toast.info('Preparando download do mapa...', { duration: 2000 });
       
       const node = document.querySelector('.teste-1');
-      const parentNode = node.parentElement; // Pega o container real para alinhar tudo
+      const parentNode = node.parentElement;
       
       if (!node || !stageRef.current) {
         throw new Error('Elementos não encontrados para exportação');
       }
 
-      // 1. Guarda o zoom atual
       const originalZoom = parentNode.style.zoom;
       const scrollContainer = document.querySelector('.scrollable-container');
       const originalScrollLeft = scrollContainer ? scrollContainer.scrollLeft : 0;
       const originalScrollTop = scrollContainer ? scrollContainer.scrollTop : 0;
 
-      // 2. Remove o zoom temporariamente
+      const stageContainer = document.querySelector('.stage-container');
+      if (stageContainer) {
+        stageContainer.style.opacity = '0';
+      }
+
       parentNode.style.zoom = '1';
       await new Promise(resolve => setTimeout(resolve, 100));
 
       const stage = stageRef.current;
       const currentScale = stage.scaleX();
-      stage.scale({ x: 1, y: 1 }); // Reseta escala
+      stage.scale({ x: 1, y: 1 }); 
       
       const contentWidth = calculateTotalWidth(matrix) + 1260;
       const contentHeight = 1000;
-      
-      // ✅ NOVO: Define um espaço extra de 80px no topo para caber o título
       const headerHeight = 80; 
 
-      // 3. Captura o fundo HTML
       const canvasHTML = await html2canvas(parentNode, {
         backgroundColor: '#E6E6E6',
         scale: 2,
@@ -161,41 +161,37 @@ const Tool = ({ }) => {
         logging: false
       });
 
-      // 4. Restaura a tela do usuário
       parentNode.style.zoom = originalZoom;
       if (scrollContainer) {
         scrollContainer.scrollLeft = originalScrollLeft;
         scrollContainer.scrollTop = originalScrollTop;
       }
+      
+      if (stageContainer) {
+        stageContainer.style.opacity = '1'; 
+      }
       stage.scale({ x: currentScale, y: currentScale });
 
-      // 5. Captura os Cards do Konva
       const dataURLKonva = stage.toDataURL({
         pixelRatio: 2,
         mimeType: 'image/png'
       });
 
-      // 6. Junta tudo em um Canvas final maior
       const finalCanvas = document.createElement('canvas');
       const ctx = finalCanvas.getContext('2d');
       
-      // ✅ NOVO: Aumenta a altura total da imagem somando o mapa + o cabeçalho
       finalCanvas.width = contentWidth * 2;
       finalCanvas.height = (contentHeight + headerHeight) * 2;
 
-      // Pinta o fundo todo de cinza claro
       ctx.fillStyle = '#E6E6E6';
       ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
 
-      // ✅ NOVO: Desenha o Título do Cenário no topo da imagem!
       ctx.font = 'bold 70px Inter, sans-serif';
       ctx.fillStyle = '#333333';
       ctx.textAlign = 'left';
-      // Pega o nome do cenário digitado, ou usa um nome padrão se estiver vazio
       const tituloMapa = sceneName && sceneName.trim() !== '' ? sceneName : 'Mapa de Jornada';
       ctx.fillText(tituloMapa, 160 * 2, 110); 
 
-      // Desenha o fundo HTML empurrado para baixo para dar espaço ao título
       ctx.drawImage(canvasHTML, 0, headerHeight * 2, finalCanvas.width, contentHeight * 2);
 
       const imgKonva = new Image();
@@ -205,10 +201,7 @@ const Tool = ({ }) => {
         imgKonva.src = dataURLKonva;
       });
 
-      // ✅ CORREÇÃO DO ALINHAMENTO: 
-      // Puxamos os cards para cima. Antes a margem somava quase 60px para baixo.
-      // O 'headerHeight * 2' empurra eles para baixo do título, e o '+ 10' é o micro-ajuste visual.
-      const konvaMarginTop = (headerHeight * 2) + 10; 
+      const konvaMarginTop = (headerHeight + 28) * 2; 
       const konvaMarginLeft = 160 * 2;
 
       ctx.drawImage(
@@ -219,13 +212,12 @@ const Tool = ({ }) => {
         imgKonva.height
       );
 
-      // Adiciona o texto de rodapé
       ctx.font = 'bold 30px Inter, sans-serif';
       ctx.fillStyle = '#666666';
       ctx.textAlign = 'right';
       ctx.fillText('JEM - JourneyEasyMap', finalCanvas.width - 40, finalCanvas.height - 30);
 
-      // Baixa a imagem (agora o nome do arquivo também puxa o nome do cenário!)
+      // Baixa a imagem
       const finalDataUrl = finalCanvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.download = `mapa_${tituloMapa.replace(/\s+/g, '_').toLowerCase()}.png`;
