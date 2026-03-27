@@ -5,13 +5,15 @@ import './TutorialLevelSelector.css';
 import { auth } from '../services/firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 
-const TutorialLevelSelector = ({ onClose, onSelectLevel }) => {
-  const [unlockedLevel, setUnlockedLevel] = useState(1);
+  const TutorialLevelSelector = ({ onClose, onSelectLevel }) => {
+  const [unlockedLevel, setUnlockedLevel] = useState(() => {
+    const userLocal = JSON.parse(localStorage.getItem('user'));
+    return userLocal ? parseInt(localStorage.getItem(`unlockedTutorialLevel_${userLocal.uid}`)) || 1 : 1;
+  });
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // Agora o navegador vai procurar 'unlockedTutorialLevel_NOME_DO_ID'
         const savedLevel = parseInt(localStorage.getItem(`unlockedTutorialLevel_${user.uid}`)) || 1;
         setUnlockedLevel(savedLevel);
       } else {
@@ -19,7 +21,6 @@ const TutorialLevelSelector = ({ onClose, onSelectLevel }) => {
       }
     });
 
-    // Limpa o observador
     return () => unsubscribe();
   }, []);
 

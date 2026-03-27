@@ -146,6 +146,18 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
                   addPoints(pointsToAdd, `Bateu seu recorde no nível ${scenarioType}`);
                   localStorage.setItem(maxPointsKey, sessionPoints);
                 }
+
+                const currentUserUid = user?.uid || 'anonimo';
+                let nextLevel = 1;
+                if (scenarioType === 'pizza') nextLevel = 2;
+                if (scenarioType === 'streaming') nextLevel = 3;
+
+                const currentUnlocked = parseInt(localStorage.getItem(`unlockedTutorialLevel_${currentUserUid}`)) || 1;
+                
+                if (nextLevel > currentUnlocked) {
+                  localStorage.setItem(`unlockedTutorialLevel_${currentUserUid}`, nextLevel.toString());
+                }
+
                 onComplete();
               }}
               style={{ backgroundColor: '#4caf50', color: '#fff', border: 'none', flex: 1, padding: '15px', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold' }}
@@ -203,10 +215,20 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
     if (currentStepIndex < scenarioData.steps.length - 1) {
       setCurrentStepIndex(prev => prev + 1);
     } else {
-      // Salva que concluiu o nível 1
-      if (!isAssessmentMode) {
-        localStorage.setItem(`completed_pizza_${userUid}`, 'true');
+      // Salva que concluiu o nível atual independentemente de ser assessment ou não
+      const currentUserUid = user?.uid || 'anonimo';
+      
+      let nextLevel = 1;
+      if (scenarioType === 'pizza') nextLevel = 2;
+      if (scenarioType === 'streaming') nextLevel = 3;
+
+      const currentUnlocked = parseInt(localStorage.getItem(`unlockedTutorialLevel_${currentUserUid}`)) || 1;
+      
+      // Só sobe o nível se o próximo nível a liberar for maior que o que ele já tem
+      if (nextLevel > currentUnlocked) {
+        localStorage.setItem(`unlockedTutorialLevel_${currentUserUid}`, nextLevel.toString());
       }
+      
       onComplete();
     }
   };

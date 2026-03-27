@@ -1250,18 +1250,19 @@ const handleLevelSelect = async (level) => {
         });
       }
 
-      // --- Lógica de Desbloqueio de Níveis ---
-      const currentUser = auth.currentUser;
-      if (currentUser) {
-        const currentUnlocked = parseInt(localStorage.getItem(`unlockedTutorialLevel_${currentUser.uid}`)) || 1;
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      const currentUnlocked = parseInt(localStorage.getItem(`unlockedTutorialLevel_${currentUser.uid}`)) || 1;
 
-        if (targetScenario === 'pizza' && currentUnlocked < 2) {
-          localStorage.setItem(`unlockedTutorialLevel_${currentUser.uid}`, '2');
-        }
-        else if (targetScenario === 'streaming' && currentUnlocked < 3) {
-          localStorage.setItem(`unlockedTutorialLevel_${currentUser.uid}`, '3');
-        }
+      // Se completou o nível 1 (pizza), libera o 2
+      if (targetScenario === 'pizza' && currentUnlocked < 2) {
+        localStorage.setItem(`unlockedTutorialLevel_${currentUser.uid}`, '2');
       }
+      // Se completou o nível 2 (streaming), libera o 3 ✅
+      else if (targetScenario === 'streaming' && currentUnlocked < 3) {
+        localStorage.setItem(`unlockedTutorialLevel_${currentUser.uid}`, '3');
+      }
+    }
 
       toast.success('Tutorial concluído! Mapa e Cenário salvos.');
       window.location.reload();
