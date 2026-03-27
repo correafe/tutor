@@ -61,9 +61,9 @@ const FAQContent = () => {
             <li>Finalizar os <strong>Tours</strong> de navegação do painel e da ferramenta.</li>
             <li>Fazer o <strong>Download</strong> do seu primeiro mapa.</li>
             <li>Acessar a tabela de <strong>Ranking</strong>.</li>
-            <li>Descobrir áreas novas da plataforma (como ler este FAQ!).</li>
+            <li>Descobrir áreas novas da plataforma.</li>
           </ul>
-          Acumulando pontos, você sobe no <strong>Ranking</strong>, muda seu título de especialista e ganha novas molduras para o seu avatar. O desafio final é alcançar o cobiçado título de <strong>Mestre</strong>, mas para isso você precisará conquistar <strong>absolutamente todos</strong> os pontos oferecidos pela plataforma!
+          Acumulando pontos, você sobe no <strong>Ranking</strong>, muda seu título de especialista e ganha novas molduras para o seu avatar. O desafio final é alcançar o título de <strong>Mestre</strong>, mas para isso você precisará conquistar <strong>todos</strong> os pontos oferecidos pela plataforma!
         </p>
       </details>
 

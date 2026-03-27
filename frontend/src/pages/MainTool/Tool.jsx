@@ -23,6 +23,7 @@ import { PIZZA_SCENARIO, STREAMING_SCENARIO, ADVANCED_SCENARIO } from "../../com
 import TutorialLevelSelector from "../../components/TutorialLevelSelector";
 import FAQContent from "../../components/FAQContent";
 import RankingModal from "../../components/RankingModal";
+import { ScoreContext } from '../contexts/ScoreContext';
 
 import './tool.css';
 
