@@ -99,11 +99,13 @@ const TOOL_STEPS = [
     content: 'Aqui você pode encerrar sua sessão atual para sair ou acessar outra conta.',
     placement: 'bottom',
   },
+
   {
     target: '.teste-1',
     content: 'Estas são as 5 seções da sua jornada: Fases, Ações, Emoções, Pensamentos e Pontos de Contato.',
     placement: 'right',
   },
+
   {
     target: 'body',
     content: 'Nesta área, você pode clicar para criar novos cards, ou arrastar e editar os existentes.',
@@ -114,6 +116,7 @@ const TOOL_STEPS = [
       }
     }
   },
+  
   {
     target: '#tourButton', 
     content: 'Clique neste botão sempre que quiser rever este tutorial.',
