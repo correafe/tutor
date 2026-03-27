@@ -53,8 +53,8 @@ const FAQContent = () => {
       <details style={{ marginBottom: "15px", cursor: "pointer" }}>
         <summary style={{ fontSize: "20px", fontWeight: "bold", color: "#333" }}>Como funciona o sistema de pontos e ranking?</summary>
         <p style={{ marginTop: "10px", fontSize: "16px", lineHeight: "1.5", color: "#555" }}>
-          O JEM possui um sistema de gamificação para tornar sua experiência mais divertida! Você ganha pontos de experiência (XP) ao interagir com a plataforma e aprender a usar a ferramenta. 
-          <br /><br />
+          O JEM possui um sistema de gamificação para tornar sua experiência mais divertida! Você ganha pontos de experiência ao interagir com a plataforma e aprender a usar a ferramenta. 
+          <br />
           <strong>Como ganhar pontos:</strong>
           <ul style={{ paddingLeft: "20px", marginTop: "10px" }}>
             <li>Completar a <strong>Prática Guiada</strong>.</li>
