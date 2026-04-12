@@ -65,6 +65,7 @@ const Tool = ({ }) => {
 
   useEffect(() => {
     const ajustarZoom = () => {
+      // 950px é a altura necessária para as 5 linhas do mapa caberem perfeitamente
       const proporcao = window.innerHeight / 950;
       setZoomRatio(proporcao);
     };
@@ -77,14 +78,15 @@ const Tool = ({ }) => {
 
   useEffect(() => {
     const handleResize = () => {
+      // 960px é a altura aproximada que a ferramenta precisa para mostrar tudo
       const minHeight = 960; 
       if (window.innerHeight < minHeight) {
-         setZoomLevel(window.innerHeight / minHeight);
+         setZoomLevel(window.innerHeight / minHeight); // Aplica o zoom proporcional
       } else {
-         setZoomLevel(1);
+         setZoomLevel(1); // Tela grande = 100% de zoom
       }
     };
-    handleResize(); 
+    handleResize(); // Aplica o zoom ao abrir a página
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -122,7 +124,10 @@ const Tool = ({ }) => {
 
   const handleExport = async () => {
     try {
+      // 1. LIGA A TELA DE CARREGAMENTO
       setIsExporting(true);
+      
+      // 2. Dá um pequeno fôlego (100ms) para o React renderizar a tela de carregamento ANTES de travar o navegador com a exportação
       await new Promise(resolve => setTimeout(resolve, 100));
       
       const node = document.querySelector('.teste-1');
@@ -240,6 +245,7 @@ const Tool = ({ }) => {
   };
   
   const downloadURI = (uri, name) => {
+    // console.log("entrou em downloadURI");
     const link = document.createElement('a');
     link.download = name;
     link.href = uri;
@@ -247,6 +253,7 @@ const Tool = ({ }) => {
     link.click();
     document.body.removeChild(link);
   };
+  
 
   const handlePostClick = async () => {
     try {
@@ -326,6 +333,7 @@ const Tool = ({ }) => {
         axios.get(import.meta.env.VITE_BACKEND + "/contactPoint", { params: { journeyMap_id: id_mapa } }),
       ]);
 
+      // Mapeie os dados da API para o formato desejado na matriz
       const journeyMatrix = journeyData.data.map(item => ({
         type: 'journeyPhase',
         journeyPhase_id: item.journeyPhase_id.toString(),
@@ -404,12 +412,13 @@ const Tool = ({ }) => {
 
 
   useEffect(() => {
+      // Lê a flag que acabamos de salvar no MapCreation
       const tutorialFlag = localStorage.getItem('startToolTutorial');
       const hasSeenToolTour = localStorage.getItem('hasSeenToolTour');
 
       if (tutorialFlag === 'true') {
-        setDataLoaded(true);
-        setRunToolTour(true); 
+        setDataLoaded(true); // Garante que a tela não fique branca
+        setRunToolTour(true); // INICIA O TOUR AUTOMATICAMENTE
       } 
       else if (!hasSeenToolTour) {
         setRunToolTour(true);
@@ -443,32 +452,61 @@ const Tool = ({ }) => {
 
 
   const updateMatrixWithX = (matrix, id, newX, tipo, length, x, closeY, xoriginal) => {
+    // console.log("Iniciando updateMatrixWithX");
+    // console.log("Parâmetros: id:", id, "newX:", newX, "tipo:", tipo, "length:", length, "x:", x, "closeY:", closeY, "xoriginal:", xoriginal);
+  
     let updatedX;
+  
+    // Verificar quantos intervalos de 270 cabem em newX
     const intervalCount = Math.floor(newX / 270);
     updatedX = intervalCount * 270;
+  
+    // console.log("intervalCount:", intervalCount);
+    // console.log("updatedX:", updatedX);
+  
     const newXStart = xoriginal + updatedX;
     const newXEnd = newXStart + length;
+  
+    // console.log("newXStart:", newXStart);
+    // console.log("newXEnd:", newXEnd);
+  
     const tamanhoRectMovido = Math.round(length / 270);
+    // console.log("length:", length);
+    // console.log("tamanhoRectMovido:", tamanhoRectMovido);
   
     return matrix.map((row, rowIndex) => {
+      // console.log("Analisando linha:", rowIndex);
+  
+      // Verificar se há sobreposição apenas na mesma linha
       const rectIndex = row.findIndex(rect => rect[tipo + "_id"] !== undefined && rect[tipo + "_id"].toString() === id.toString());
       if (rectIndex === -1) {
+        // console.log("Rect não encontrado na linha:", rowIndex);
         return row;
       }
   
+      // console.log("Rect encontrado na linha:", rowIndex);
+  
+      // Verificar se há um retângulo no qual o usuário arrastou por cima
       const overlappingRect = row.find(rect => {
         if (rect[tipo + "_id"] !== undefined && rect[tipo + "_id"].toString() !== id.toString()) {
           const rectStart = rect.x;
           const rectEnd = rect.x + rect.width;
           const isOverlapping = !(newXEnd <= rectStart || newXStart >= rectEnd);
+          if (isOverlapping) {
+            // console.log("Sobreposição detectada com rect:", rect);
+          }
           return isOverlapping;
         }
         return false;
       });
   
+      // Se há um retângulo sobreposto, ajustar as posições
       if (overlappingRect) {
+        // console.log("Encontrado retângulo sobreposto:", overlappingRect);
+  
         return row.map(rect => {
           if (rect[tipo + "_id"] !== undefined && rect[tipo + "_id"].toString() === id.toString()) {
+            // console.log("Atualizando rect movido:", rect, "Novo X:", newXStart);
             return {
               ...rect,
               x: Math.max(20, newXStart),
@@ -476,6 +514,7 @@ const Tool = ({ }) => {
           }
           if (updatedX < 0) {
             if (rect.x >= newXStart && rect.x <= xoriginal) {
+              // console.log("Movendo rect para frente (esquerda):", rect, "Novo X:", rect.x + 270 * tamanhoRectMovido);
               return {
                 ...rect,
                 x: rect.x + 270 * tamanhoRectMovido,
@@ -483,6 +522,7 @@ const Tool = ({ }) => {
             }
           } else {
             if (rect.x >= newXStart) {
+              // console.log("Movendo rect para frente (direita):", rect, "Novo X:", rect.x + 270 * tamanhoRectMovido);
               return {
                 ...rect,
                 x: rect.x + 270 * tamanhoRectMovido,
@@ -493,12 +533,14 @@ const Tool = ({ }) => {
         });
       }
   
+      // Caso contrário, verifique se há sobreposição com tamanho diferente e, se houver, retorne a matriz original
       const isOverlappingWithDifferentSize = row.some(rect => {
         if (rect[tipo + "_id"] !== undefined && rect[tipo + "_id"].toString() !== id.toString()) {
           const rectStart = rect.x;
           const rectEnd = rect.x + rect.width;
           const isOverlapping = !(newXEnd <= rectStart || newXStart >= rectEnd);
           if (isOverlapping && rect.width !== length) {
+            // console.log("Sobreposição detectada com tamanho diferente para rect:", rect);
             return true;
           }
         }
@@ -506,19 +548,23 @@ const Tool = ({ }) => {
       });
   
       if (isOverlappingWithDifferentSize) {
+        // console.log("Sobreposição detectada com retângulo de tamanho diferente, operação não permitida.");
         return row;
       }
   
       return row.map((rect) => {
         if (rect.type === 'emotion' && rect.emotion_id.toString() === id.toString()) {
+          // Limita o valor de lineY aos valores permitidos
           const allowedValues = [35, -15, -60];
           const newLineY = allowedValues.reduce((prev, curr) => (Math.abs(curr - (rect.lineY + closeY)) < Math.abs(prev - (rect.lineY + closeY)) ? curr : prev));
+          // console.log("Atualizando rect de emotion:", rect, "Novo X:", newXStart, "Novo LineY:", newLineY);
           return {
             ...rect,
             x: Math.max(20, newXStart),
             lineY: newLineY,
           };
         } else if (rect[tipo + "_id"] !== undefined && rect[tipo + "_id"].toString() === id.toString()) {
+          // console.log("Atualizando rect:", rect, "Novo X:", newXStart);
           return {
             ...rect,
             x: Math.max(20, newXStart),
@@ -528,9 +574,11 @@ const Tool = ({ }) => {
         }
       });
     }).map((row) => {
+      // Verificar e corrigir as posições duplicadas após a troca
       const positions = new Set();
       return row.map((rect) => {
         if (positions.has(rect.x)) {
+          // console.log("Corrigindo posição duplicada para rect:", rect);
           rect.x = newXStart;
         }
         positions.add(rect.x);
@@ -539,12 +587,18 @@ const Tool = ({ }) => {
     });
   };
   
+
+
+
   const handleDragEnd = (e, id, tipo, length, x, closeY, xoriginal) => {
     const newX = e.target.x();
+    // console.log(newX);
+    // console.log(x);
     setMatrix((prevMatrix) => {
       const rearrangedMatrix = updateMatrixWithX(prevMatrix, id, newX, tipo, length, x, closeY, xoriginal);
   
       const updatedMatrix = rearrangedMatrix.map((row) => {
+        // Ajustar x para o intervalo mais próximo de 270 em 270, começando em 20
         const adjustedRow = row.map((rect) => {
           const intervalCount = Math.round((rect.x - 20) / 270);
           const adjustedX = 20 + intervalCount * 270;
@@ -556,6 +610,7 @@ const Tool = ({ }) => {
           return (a.x - 20) / 270 - (b.x - 20) / 270;
         });
   
+        // Verificar e corrigir sobreposições na linha
         for (let i = 0; i < adjustedRow.length - 1; i++) {
           const currentRect = adjustedRow[i];
           const nextRect = adjustedRow[i + 1];
@@ -567,6 +622,8 @@ const Tool = ({ }) => {
   
         return adjustedRow;
       });
+  
+      // console.log(updatedMatrix);
       return updatedMatrix;
     });
     setEditedRectId(id);
@@ -575,15 +632,17 @@ const Tool = ({ }) => {
     setShowMessage(false);
   };
   
+  
+
   const handleSaveClick = () => {
     const dataToPut = matrix.reduce((acc, row) => {
       row.forEach((rect) => {
-        // Base Data limpa para evitar undefined em rotas críticas
+        // Cria um objeto base com garantias contra undefined
         const baseData = {
           journeyMap_id: id_mapa,
-          posX: rect.x !== undefined ? rect.x : 20,
+          posX: rect.x || 20,
           length: rect.width || 230,
-          description: rect.text || rect.description || " " 
+          description: rect.text || rect.description || "" // Fallback para string vazia
         };
 
         if (rect.contactPoint_id !== undefined) {
@@ -603,7 +662,7 @@ const Tool = ({ }) => {
               emotion_id: rect.emotion_id, 
               journeyMap_id: id_mapa, 
               posX: rect.x, 
-              lineY: rect.lineY !== undefined ? rect.lineY : -15, 
+              lineY: rect.lineY || -15, 
               emojiTag: rect.emojiTag || "😀" 
             },
           });
@@ -622,6 +681,7 @@ const Tool = ({ }) => {
       return acc;
     }, []);
 
+    // Fila Sequencial
     savePromiseRef.current = savePromiseRef.current.then(async () => {
       for (const req of dataToPut) {
         try {
@@ -645,11 +705,12 @@ const Tool = ({ }) => {
   const handleRectClick = (currentText, id, rectY, tamanho) => {
     const tamanhorect = (tamanho + 40) / 270;
     setSelectedHouses(tamanhorect);
-    setEditedText(currentText); 
+    setEditedText(currentText); // Define o texto atual para edição no popup
     setEditedRectId(id);
     setEditedRowIndex(rectY);
-    setButtonPopup(true); 
-    setTextEdit(true); 
+    setButtonPopup(true); // Abre o popup
+    setTextEdit(true); // Define a edição de texto como verdadeira
+
 
     setMatrix((prevMatrix) => {
       const updatedMatrix = prevMatrix.map((row) =>
@@ -663,8 +724,11 @@ const Tool = ({ }) => {
           );
         })
       );
+
       return updatedMatrix;
     });
+
+
   };
 
   const [tempWidth, setTempWidth] = useState()
@@ -673,6 +737,7 @@ const Tool = ({ }) => {
     let tempMatrix = [];
     let foundExtendedRect = null;
   
+    // Function to adjust the X position of rectangles
     const adjustRowXPositions = (row) => {
       return row.map((rect) => {
         const intervalCount = Math.round((rect.x - 20) / 270);
@@ -726,6 +791,7 @@ const Tool = ({ }) => {
     setShowMessage(false);
   };
   
+
   const [saveTriggered, setSaveTriggered] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
 
@@ -734,21 +800,35 @@ const Tool = ({ }) => {
       handleSaveClick();
       setSaveTriggered(false);
     }
-  }, [saveTriggered, matrix]); 
+  }, [saveTriggered, matrix]); // Run when saveTriggered or matrix changes
+
+
+
 
   const handleTextChange = (rowIndex, colIndex, newText) => {
     const newMatrix = [...matrix];
+
+    // Se o novo texto tiver mais de 30 caracteres, abrevie com reticências
+    // console.log(newText);
+    // console.log(newText.length);
     const abbreviatedText = newText.length > 30 ? newText.slice(0, 27) + '...' : newText;
 
+    // Crie uma nova constante que guarde o valor do texto original
     const newTextOriginal = newText;
-    setEditedText(newTextOriginal); 
+    setEditedText(newTextOriginal); // Atualize a constante do texto original
     setEditedRowIndex(rowIndex);
 
+    // Atualize o texto na matriz
     newMatrix[rowIndex][colIndex].text = abbreviatedText;
-    setMatrix(newMatrix); 
+    setMatrix(newMatrix); // Atualiza a matriz
+
   };
 
   const handleTextSubmit = () => {
+    // console.log("rectid:", editedRectId);
+    // console.log("editedRowIndex:", editedRowIndex);
+
+    // Salvar o texto editado quando o usuário confirmar
     const updatedMatrix = matrix.map((row) =>
       row.map((rect) => {
         const type = rect.y === 61 ? 'journeyPhase' : rect.y === 231 ? 'userAction' : rect.y === 467 ? 'emotion' : rect.y === 571 ? 'thought' : rect.y === 741 ? 'contactPoint' : null;
@@ -761,6 +841,7 @@ const Tool = ({ }) => {
       })
     );
 
+    // console.log("editedText:", editedText);
     setMatrix(updatedMatrix);
     setEditedText("");
     setSaveTriggered(true);
@@ -770,59 +851,65 @@ const Tool = ({ }) => {
   const [newSquareId, setNewSquareId] = useState(null);
 
   const handleAddSquare = async (rowIndex, colIndex, squarewidth) => {
+    // console.log("handleAddSquare rowIndex, colIndex, squarewidth:", rowIndex, colIndex, squarewidth);
     try {
       const rowIndexToType = {
-        0: 'journeyPhase', 1: 'userAction', 2: 'emotion', 3: 'thought', 4: 'contactPoint'
+        0: 'journeyPhase',
+        1: 'userAction',
+        2: 'emotion',
+        3: 'thought',
+        4: 'contactPoint'
       };
+
       const type = rowIndexToType[rowIndex];
 
+      // Calculate novoX based on colIndex, handling cases beyond the predefined columns
       let novoX;
       if (colIndex !== undefined) {
-        novoX = 290 + colIndex * 270;
+        novoX = 290 + colIndex * 270; // Ajuste a posição inicial se necessário
       } else {
+        console.error("colIndex is undefined");
         return;
       }
 
-      if (!type) return;
-
-      const isOverlapping = matrix[rowIndex].some(rect => rect.type === type && rect.x === novoX);
-
-      if (isOverlapping) {
-        // 1. Atualizar visualmente ANTES para impedir bug visual do React sobrescrevendo cards
-        setMatrix(prevMatrix => {
-          const novaMatriz = [...prevMatrix];
-          novaMatriz[rowIndex] = novaMatriz[rowIndex].map(card => {
-            if (card.x >= novoX) {
-              return { ...card, x: card.x + 270 };
-            }
-            return card;
-          });
-          return novaMatriz;
-        });
-
-        // 2. Persistir no BD com valores 100% seguros (evita falha 500 silenciosa que cancelava os blocos da UI)
-        savePromiseRef.current = savePromiseRef.current.then(async () => {
-          const cardsToPush = matrix[rowIndex].filter(c => c.x >= novoX);
-          for (const card of cardsToPush) {
-            const putData = {
-              [`${type}_id`]: card[`${type}_id`] || card.id,
-              journeyMap_id: id_mapa,
-              posX: card.x + 270, 
-              length: card.width || 230,
-              lineY: card.lineY !== undefined ? card.lineY : -15,
-              description: card.text || " " 
-            };
-            
-            if (!putData[`${type}_id`]) continue;
-
-            try {
-              await axios.put(import.meta.env.VITE_BACKEND + `/${type}`, putData);
-            } catch (err) {
-              console.error("Erro ao atualizar posição", err);
-            }
-          }
-        });
+      if (!type) {
+        console.error(`Tipo não encontrado para o rowIndex ${rowIndex}`);
+        return;
       }
+
+      // Check if there's a rect with the same novoX and type
+      const isOverlapping = matrix[rowIndex].some(rect =>
+        rect.type === type &&
+        rect.x === novoX
+      );
+
+      // If there is an overlap, push subsequent cards forward sequentially
+      // Localize este trecho dentro de handleAddSquare em Tool.jsx
+if (isOverlapping) {
+  savePromiseRef.current = savePromiseRef.current.then(async () => {
+    for (let i = 0; i < matrix[rowIndex].length; i++) {
+      const card = matrix[rowIndex][i];
+      if (card.x >= novoX) {
+        card.x += 270; 
+        const putData = {
+          [`${type}_id`]: card[`${type}_id`],
+          journeyMap_id: id_mapa,
+          posX: card.x,
+          length: card.width || 230,
+          lineY: card.lineY || -15, // Evita undefined em emoções
+          // GARANTA QUE DESCRIPTION NÃO SEJA UNDEFINED
+          description: card.text || card.description || "" 
+        };
+        
+        try {
+          await axios.put(import.meta.env.VITE_BACKEND + `/${type}`, putData);
+        } catch (err) {
+          console.error("Erro ao atualizar posição", err);
+        }
+      }
+    }
+  });
+}
 
       if (type === 'emotion') {
         setCurrentCellId('new');
@@ -840,6 +927,7 @@ const Tool = ({ }) => {
   const [pendingPostData, setPendingPostData] = useState(null);
 
   const postNewCard = async ({ novoX, rowIndex, colIndex, squarewidth }, type, emojiTag = "😀") => {
+    // A MÁGICA ACONTECE AQUI: Aguarda invisivelmente toda a fila de salvamentos (textos e tamanhos) terminar
     await savePromiseRef.current; 
 
     const postData = {
@@ -847,7 +935,7 @@ const Tool = ({ }) => {
       "linePos": 285,
       "posX": novoX,
       "length": 230,
-      "description": " ",
+      "description": "",
       "emojiTag": emojiTag
     };
 
@@ -859,7 +947,7 @@ const Tool = ({ }) => {
 
     try {
       await axios.post(import.meta.env.VITE_BACKEND + `/${type}`, postData);
-      fetchData(); 
+      fetchData(); // Recarrega a tela depois que tudo estiver salvo e íntegro no banco
     } catch (err) {
       console.error("Falha ao criar o novo card:", err);
     }
@@ -868,10 +956,20 @@ const Tool = ({ }) => {
   useEffect(() => {
     if (newSquareId && matrix) {
       const [journeyPhase, userAction, emotions] = matrix;
+      // console.log("[emotions]: ", emotions);
       const emotionIds = emotions.map(emotion => emotion.emotion_id);
+      // console.log("emotion ids: ", emotionIds);
+      // console.log("newSquareID: ", newSquareId);
+
       if (emotionIds.includes(newSquareId)) {
+        // console.log("ID DO EMOJI", newSquareId);
         handleCircleClick(newSquareId);
+        // console.log("handleCircleClick chamado");
+      } else {
+        // console.log("ID DO EMOJI não encontrado na lista de emoções");
       }
+    } else {
+      // console.log("newSquareId ou matrix estão ausentes");
     }
   }, [newSquareId, matrix]);
 
@@ -901,11 +999,15 @@ const Tool = ({ }) => {
 
 
   const handleCircleClick = (cellId) => {
+    // console.log("Clicked on circle with ID: ", cellId);
+    // console.log("Matrix state: ", matrix); // Verifique se matrix está atualizada
+    // console.log("cellId: ", cellId);
     setCurrentCellId(cellId);
   };
 
   useEffect(() => {
     if (currentCellId !== "") {
+      // console.log("CurrentCellId: ", currentCellId);
       setPickerVisible(true);
     }
   }, [currentCellId]);
@@ -915,6 +1017,7 @@ const Tool = ({ }) => {
     if (selectedEmoji) {
       getEmojiDataFromNative(selectedEmoji).then((emojiData) => {
         const newEmoji = emojiData.native;
+        // ✅ ALTERADO: Pega a nova altura correta
         const newLineY = getLineYForEmoji(newEmoji); 
 
         if (currentCellId === 'new' && pendingPostData) {
@@ -928,15 +1031,16 @@ const Tool = ({ }) => {
                   const updatedRect = {
                     ...rect,
                     emojiTag: newEmoji,
-                    lineY: newLineY 
+                    lineY: newLineY // ✅ ALTERADO: Atualiza a altura visualmente
                   };
 
                   axios.put(`${import.meta.env.VITE_BACKEND}/emotion`, {
                     emotion_id: rect.emotion_id,
                     posX: rect.x,
-                    lineY: newLineY, 
+                    lineY: newLineY, // ✅ ALTERADO: Salva a nova altura no banco
                     emojiTag: newEmoji
                   }).then(() => {
+                    // console.log('Emoji atualizado no backend:', updatedRect);
                   }).catch((error) => {
                     console.error('Erro ao atualizar emoji no backend:', error);
                   });
@@ -968,24 +1072,25 @@ const Tool = ({ }) => {
   const [scenarioExists, setScenarioExists] = useState(false);
 
   const fetchScenarioData = async () => {
-    try {
-      const response = await axios.get(import.meta.env.VITE_BACKEND + `/scenario/${id_mapa}`);
-      const scenario = response.data;
-      if (scenario) {
-        setSceneName(scenario.name || "");
-        setSceneDesc(scenario.description || "");
-        setScenarioExists(true);
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 404) {
-        setScenarioExists(false);
-        setSceneName("");
-        setSceneDesc("");
-      } else {
-        console.error("Erro ao buscar os dados do cenário:", error);
-      }
+  try {
+    const response = await axios.get(import.meta.env.VITE_BACKEND + `/scenario/${id_mapa}`);
+    const scenario = response.data;
+    if (scenario) {
+      setSceneName(scenario.name || "");
+      setSceneDesc(scenario.description || "");
+      setScenarioExists(true);
     }
-  };
+  } catch (error) {
+    // Se for 404, apenas definimos que não existe, sem disparar erro no console
+    if (error.response && error.response.status === 404) {
+      setScenarioExists(false);
+      setSceneName("");
+      setSceneDesc("");
+    } else {
+      console.error("Erro ao buscar os dados do cenário:", error);
+    }
+  }
+};
 
   useEffect(() => {
     if (scenario) {
@@ -1023,15 +1128,18 @@ const Tool = ({ }) => {
   };
 
 const handleLevelSelect = async (level) => {
+    // 1. Verifica se existem cards em qualquer uma das 5 linhas da matriz
     const hasCards = matrix.some(row => row.length > 0);
 
     if (hasCards) {
+      // 2. Salva o nível que o usuário tentou abrir e exibe o modal
       setPendingLevelToLoad(level);
       setShowClearConfirmModal(true);
-      setShowLevelSelector(false); 
+      setShowLevelSelector(false); // Fecha o seletor de nível para não ficar um em cima do outro
       return; 
     }
 
+    // 3. Se não tem cards, carrega o tutorial direto
     startTutorialByLevel(level);
   };
 
@@ -1071,6 +1179,7 @@ const handleLevelSelect = async (level) => {
       await Promise.all(deletePromises);
       setMatrix([[], [], [], [], []]); 
       
+      // Carrega o tutorial que estava pendente
       if (pendingLevelToLoad) {
         startTutorialByLevel(pendingLevelToLoad);
       }
@@ -1108,23 +1217,29 @@ const handleLevelSelect = async (level) => {
     try {
       const meta = currentScenarioData.scenarioMeta; 
 
+      // 🔍 CORREÇÃO: Checar direto no banco se o cenário já existe, 
+      // ignorando a variável de estado que pode estar desatualizada
       let cenarioJaExiste = false;
       try {
         const checkRes = await axios.get(import.meta.env.VITE_BACKEND + `/scenario/${id_mapa}`);
+        // Se a API retornou dados válidos, o cenário já existe!
         if (checkRes.data && (checkRes.data.name || checkRes.data.description)) {
           cenarioJaExiste = true;
         }
       } catch (err) {
+        // Se der erro (ex: 404 Not Found), assumimos que não existe
         cenarioJaExiste = false;
       }
 
       if (cenarioJaExiste) {
+        // Já tem cenário preso nesse mapa! Fazemos a atualização (PUT)
         await axios.put(import.meta.env.VITE_BACKEND + '/scenario', {
           journeyMapId: id_mapa,
           newName: meta.name,
           newDescription: meta.description
         });
       } else {
+        // Mapa novinho em folha! Criamos o cenário (POST)
         await axios.post(import.meta.env.VITE_BACKEND + '/scenario', {
           journeyMapId: id_mapa,
           name: meta.name,
@@ -1136,9 +1251,11 @@ const handleLevelSelect = async (level) => {
     if (currentUser) {
       const currentUnlocked = parseInt(localStorage.getItem(`unlockedTutorialLevel_${currentUser.uid}`)) || 1;
 
+      // Se completou o nível 1 (pizza), libera o 2
       if (targetScenario === 'pizza' && currentUnlocked < 2) {
         localStorage.setItem(`unlockedTutorialLevel_${currentUser.uid}`, '2');
       }
+      // Se completou o nível 2 (streaming), libera o 3 ✅
       else if (targetScenario === 'streaming' && currentUnlocked < 3) {
         localStorage.setItem(`unlockedTutorialLevel_${currentUser.uid}`, '3');
       }
@@ -1168,10 +1285,12 @@ const handleLevelSelect = async (level) => {
       scenarioElement.innerText = `Cenário - ${meta.name}`;
     }
     
+    // Atualiza as variáveis do seu modal de edição
     setSceneName(meta.name);
     setSceneDesc(meta.description);
     setScenarioExists(true);
 
+    // 2. Salva o nome correto no banco de dados antes da prática começar
     try {
       let cenarioJaExiste = false;
       try {
@@ -1207,8 +1326,9 @@ const handleLevelSelect = async (level) => {
     const currentX = positions[phaseIndex];
     const answer = step.correctAnswer;
 
+    // Leitura inteligente da linha (não depende mais de formatação exata)
     const sectionStr = step.section.toLowerCase();
-    let endpoint = 'journeyPhase'; 
+    let endpoint = 'journeyPhase'; // Padrão
     if (sectionStr.includes('ação') || sectionStr.includes('acoes') || sectionStr.includes('ações')) endpoint = 'userAction';
     else if (sectionStr.includes('emoç') || sectionStr.includes('emoc')) endpoint = 'emotion';
     else if (sectionStr.includes('pensamento')) endpoint = 'thought';
@@ -1222,6 +1342,7 @@ const handleLevelSelect = async (level) => {
       };
 
       if (endpoint === 'emotion') {
+        // ✅ ALTERADO: Define a altura baseada na emoção automaticamente pro tutorial também!
         payload.lineY = getLineYForEmoji(payload.emojiTag);
       } else {
         payload.linePos = 285;
@@ -1231,6 +1352,7 @@ const handleLevelSelect = async (level) => {
 
       await axios.post(`${import.meta.env.VITE_BACKEND}/${endpoint}`, payload);
       
+      // Atualiza o mapa visualmente
       fetchData(); 
     } catch (error) {
       console.error("Erro ao adicionar card em tempo real:", error);
@@ -1287,9 +1409,9 @@ const handleLevelSelect = async (level) => {
             <button 
               className="botaosavename" 
               onClick={() => { 
-                setShowExampleMapModal(false); 
+                setShowExampleMapModal(false); // Fecha o modal visualmente
                 if (!dataLoaded) {
-                   handlePostClick(); 
+                   handlePostClick(); // Cria o exemplo e recarrega a página
                 }
               }}
             >
@@ -1505,7 +1627,7 @@ const handleLevelSelect = async (level) => {
               onClick={() => {
                 setShowClearConfirmModal(false);
                 setPendingLevelToLoad(null);
-                setShowLevelSelector(true); 
+                setShowLevelSelector(true); // Opcional: Reabre o seletor se ele cancelar
               }}
               style={{ backgroundColor: '#ccc', color: '#333', flex: 1, border: "none", borderRadius: "5px", padding: "15px", fontSize: "18px", cursor: "pointer", fontWeight: "bold" }}
             >
