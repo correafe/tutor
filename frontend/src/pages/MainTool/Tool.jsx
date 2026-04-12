@@ -642,12 +642,12 @@ const Tool = ({ }) => {
         if (rect.contactPoint_id !== undefined) {
           acc.push({
             endpoint: "contactPoint",
-            data: { contactPoint_id: rect.contactPoint_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || " ", length: rect.width || 230, width: rect.width || 230 },
+            data: { contactPoint_id: rect.contactPoint_id, contactpoint_id: rect.contactPoint_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || "", length: rect.width || 230, width: rect.width || 230 },
           });
         } else if (rect.userAction_id !== undefined) {
           acc.push({
             endpoint: "userAction",
-            data: { userAction_id: rect.userAction_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || " ", length: rect.width || 230, width: rect.width || 230 },
+            data: { userAction_id: rect.userAction_id, useraction_id: rect.userAction_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || "", length: rect.width || 230, width: rect.width || 230 },
           });
         } else if (rect.emotion_id !== undefined) {
           acc.push({
@@ -657,12 +657,12 @@ const Tool = ({ }) => {
         } else if (rect.thought_id !== undefined) {
           acc.push({
             endpoint: "thought",
-            data: { thought_id: rect.thought_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || " ", length: rect.width || 230, width: rect.width || 230 },
+            data: { thought_id: rect.thought_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || "", length: rect.width || 230, width: rect.width || 230 },
           });
         } else if (rect.journeyPhase_id !== undefined) {
           acc.push({
             endpoint: "journeyPhase",
-            data: { journeyPhase_id: rect.journeyPhase_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || " ", length: rect.width || 230, width: rect.width || 230 },
+            data: { journeyPhase_id: rect.journeyPhase_id, journeyphase_id: rect.journeyPhase_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || "", length: rect.width || 230, width: rect.width || 230 },
           });
         }
       });
@@ -862,30 +862,39 @@ const Tool = ({ }) => {
 
       const isOverlapping = matrix[rowIndex].some(rect => rect.type === type && rect.x === novoX);
 
-      // VOLTAMOS AO PADRÃO QUE FUNCIONAVA: Atualiza o banco PRIMEIRO, depois a tela via fetchData
       if (isOverlapping) {
+        setMatrix(prevMatrix => {
+          const novaMatriz = [...prevMatrix];
+          novaMatriz[rowIndex] = novaMatriz[rowIndex].map(card => {
+            if (card.x >= novoX) {
+              return { ...card, x: card.x + 270 };
+            }
+            return card;
+          });
+          return novaMatriz;
+        });
+
         for (let i = 0; i < matrix[rowIndex].length; i++) {
           const card = matrix[rowIndex][i];
           if (card.x >= novoX) {
-            card.x += 270; // Empurra localmente
-
             const putData = {
               [`${type}_id`]: card[`${type}_id`] || card.id,
-              posX: card.x, 
-              width: card.width || 230,
-              length: card.width || 230 // Enviamos as duas garantindo suporte às suas várias Models diferentes
+              [`${type.toLowerCase()}_id`]: card[`${type}_id`] || card.id, 
+              journeyMap_id: id_mapa,
+              posX: card.x + 270, 
+              length: card.width || 230,
+              width: card.width || 230
             };
 
             if (type === 'emotion') {
               putData.lineY = card.lineY !== undefined ? card.lineY : -15;
               putData.emojiTag = card.emojiTag || '😀';
             } else {
-              // GARANTINDO que a descrição vá correta, e se não houver, mandamos string vazia, NÃO espaço
-              putData.description = card.text || ""; 
+              putData.description = card.text || card.description || "";
+              putData.linePos = 285;
             }
             
             try {
-              // Enviamos o PUT e aguardamos
               await axios.put(import.meta.env.VITE_BACKEND + `/${type}`, putData);
             } catch (err) {
               console.error("Erro ao atualizar posição de bloco empurrado", err);
@@ -915,7 +924,7 @@ const Tool = ({ }) => {
       "linePos": 285,
       "posX": novoX,
       "length": 230,
-      "description": " ",
+      "description": "",
       "emojiTag": emojiTag
     };
 
@@ -926,8 +935,33 @@ const Tool = ({ }) => {
     }
 
     try {
-      await axios.post(import.meta.env.VITE_BACKEND + `/${type}`, postData);
-      fetchData(); 
+      const response = await axios.post(import.meta.env.VITE_BACKEND + `/${type}`, postData);
+      
+      const newId = response.data.id;
+
+      setMatrix(prevMatrix => {
+        const newMatrix = [...prevMatrix];
+        const newCard = {
+          type: type,
+          [`${type}_id`]: newId ? newId.toString() : Date.now().toString(),
+          x: novoX,
+          y: rowIndex === 0 ? 61 : rowIndex === 1 ? 231 : rowIndex === 2 ? 467 : rowIndex === 3 ? 571 : 741,
+          width: 230,
+          height: 135,
+          color: rowIndex === 0 ? "#FFAC81" : rowIndex === 1 ? "#FF928B" : rowIndex === 2 ? "#FEC3A6" : rowIndex === 3 ? "#EFE9AE" : "#CDEAC0",
+        };
+
+        if (type === 'emotion') {
+          newCard.lineY = getLineYForEmoji(emojiTag);
+          newCard.emojiTag = emojiTag;
+        } else {
+          newCard.text = "";
+        }
+
+        newMatrix[rowIndex] = [...newMatrix[rowIndex], newCard];
+        return newMatrix;
+      });
+
     } catch (err) {
       console.error("Falha ao criar o novo card:", err);
     }
