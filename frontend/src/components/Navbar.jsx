@@ -21,7 +21,8 @@ const Navbar = ({
   dataLoaded, 
   currentJourneyMap, 
   handlePostClick, 
-  onStartTour 
+  onStartTour,
+  appliedSceneName 
 }) => {   
   const [scenarioName, setScenarioName] = useState("Nome do Cenário");
 
@@ -44,6 +45,12 @@ const Navbar = ({
     };
     fetchScenarioName();
   }, [currentJourneyMap]);
+
+  useEffect(() => {
+    if (appliedSceneName) {
+      setScenarioName(appliedSceneName);
+    }
+  }, [appliedSceneName]);
 
   const { score } = useContext(ScoreContext); 
 
