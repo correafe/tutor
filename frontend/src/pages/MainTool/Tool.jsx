@@ -839,7 +839,7 @@ const Tool = ({ }) => {
 
   const [newSquareId, setNewSquareId] = useState(null);
 
-const handleAddSquare = async (rowIndex, colIndex, squarewidth) => {
+  const handleAddSquare = async (rowIndex, colIndex, squarewidth) => {
     try {
       const rowIndexToType = {
         0: 'journeyPhase',
@@ -862,40 +862,30 @@ const handleAddSquare = async (rowIndex, colIndex, squarewidth) => {
 
       const isOverlapping = matrix[rowIndex].some(rect => rect.type === type && rect.x === novoX);
 
+      // VOLTAMOS AO PADRÃO QUE FUNCIONAVA: Atualiza o banco PRIMEIRO, depois a tela via fetchData
       if (isOverlapping) {
-        // 1. Atualiza visualmente primeiro
-        setMatrix(prevMatrix => {
-          const novaMatriz = [...prevMatrix];
-          novaMatriz[rowIndex] = novaMatriz[rowIndex].map(card => {
-            if (card.x >= novoX) {
-              return { ...card, x: card.x + 270 };
-            }
-            return card;
-          });
-          return novaMatriz;
-        });
-
-        // 2. Aguarda o banco atualizar os antigos empurrados, de forma sequencial
         for (let i = 0; i < matrix[rowIndex].length; i++) {
           const card = matrix[rowIndex][i];
           if (card.x >= novoX) {
+            card.x += 270; // Empurra localmente
+
             const putData = {
               [`${type}_id`]: card[`${type}_id`] || card.id,
-              journeyMap_id: id_mapa,
-              posX: card.x + 270, 
-              length: card.width || 230,
-              width: card.width || 230
+              posX: card.x, 
+              width: card.width || 230,
+              length: card.width || 230 // Enviamos as duas garantindo suporte às suas várias Models diferentes
             };
 
             if (type === 'emotion') {
               putData.lineY = card.lineY !== undefined ? card.lineY : -15;
               putData.emojiTag = card.emojiTag || '😀';
             } else {
-              putData.description = card.text || card.description || " ";
-              putData.linePos = 285;
+              // GARANTINDO que a descrição vá correta, e se não houver, mandamos string vazia, NÃO espaço
+              putData.description = card.text || ""; 
             }
             
             try {
+              // Enviamos o PUT e aguardamos
               await axios.put(import.meta.env.VITE_BACKEND + `/${type}`, putData);
             } catch (err) {
               console.error("Erro ao atualizar posição de bloco empurrado", err);
