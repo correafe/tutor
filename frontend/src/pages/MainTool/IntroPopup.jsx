@@ -14,7 +14,7 @@ const IntroPopup = ({ onClose }) => {
     <div className="intro-popup">
       <div className="intro-popup-content">
         <div className="intro-popup-text">
-          <p>Seja bem vindo(a) a JourneyEasyMap!</p>
+          <p>Seja bem vindo(a) à JourneyEasyMap!</p>
           <p>Experimente criar ou acessar seus mapas de jornada de usuário.</p>
         </div>
         <img src="https://github.com/luca-ferro/imagestest/blob/main/mascote.png?raw=true" style={{ width: "80px", marginRight: "20px", marginLeft: "20px" }} alt="mascote" />

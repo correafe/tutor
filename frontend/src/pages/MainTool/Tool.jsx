@@ -637,7 +637,6 @@ const Tool = ({ }) => {
     // Mapeie os dados da matriz para os dados necessários para cada tipo de entidade
     const dataToPut = matrix.reduce((acc, row) => {
       row.forEach((rect) => {
-        // CORREÇÃO: Todos os 'width: rect.width' foram alterados para 'length: rect.width'
         if (rect.contactPoint_id !== undefined) {
           acc.push({
             endpoint: "contactPoint",
@@ -727,7 +726,6 @@ const Tool = ({ }) => {
   const [tempWidth, setTempWidth] = useState()
 
   const handleSaveHouse = async () => {
-    // CORREÇÃO: Removido o 'await fetchData()' daqui para evitar limpar a tela e causar o bug
     let tempMatrix = [];
     let foundExtendedRect = null;
   
@@ -773,8 +771,10 @@ const Tool = ({ }) => {
           });
           foundExtendedRect = extendedRect; 
         }
+  
         return updatedRow;
       });
+  
       tempMatrix = tempMatrix.map(adjustRowXPositions);
       return tempMatrix;
     });
@@ -887,12 +887,13 @@ const Tool = ({ }) => {
             const putData = {
               [`${type}_id`]: card[`${type}_id`],
               posX: card.x,
-              length: card.width, // CORREÇÃO: Alterado de width para length
+              length: card.width, // <--- AQUI TEM QUE SER LENGTH
               lineY: card.lineY
             };
             if (type !== 'emotion') {
               putData.description = card.text || "";
             }
+            // console.log(putData);
             await axios.put(import.meta.env.VITE_BACKEND + `/${type}`, putData);
           }
         }

@@ -10,12 +10,12 @@ const DASHBOARD_STEPS = [
   },
   {
     target: '.blocoadd',
-    content: 'Clique aqui para criar um novo Mapa da Jornada em branco.',
+    content: 'Clique aqui para criar um novo Mapa de Jornada em branco.',
     placement: 'right',
   },
   {
     target: '.bloco',
-    content: 'Seus mapas existentes aparecerão aqui. Clique em um para editar.',
+    content: 'Seus mapas existentes aparecerão aqui. Clique em um deles para editar.',
     placement: 'bottom',
   },
   {
@@ -69,15 +69,15 @@ const TOOL_STEPS = [
     content: 'Para voltar ao menu principal de mapas, clique aqui.',
     placement: 'bottom',
   },
-  {
-    target: '#faqButton',
-    content: 'Precisa de ajuda rápida sobre como usar a ferramenta? Consulte o FAQ aqui.',
-  },
-  {
-    target: '.button.info.ranking',
-    content: 'Acompanhe a tabela de classificação e veja sua posição no Ranking sem sair da ferramenta.',
-    placement: 'bottom',
-  },
+  // {
+  //   target: '#faqButton',
+  //   content: 'Precisa de ajuda rápida sobre como usar a ferramenta? Consulte o FAQ aqui.',
+  // },
+  // {
+  //   target: '.button.info.ranking',
+  //   content: 'Acompanhe a tabela de classificação e veja sua posição no Ranking sem sair da ferramenta.',
+  //   placement: 'bottom',
+  // },
   {
     target: '#tutorialButton', 
     content: 'Clique aqui para abrir a "Prática Guiada", onde você aprende a usar a ferramenta passo a passo.',
@@ -94,11 +94,11 @@ const TOOL_STEPS = [
     placement: 'bottom',
   },
 
-  {
-    target: '.buttonlogout',
-    content: 'Aqui você pode encerrar sua sessão atual para sair ou acessar outra conta.',
-    placement: 'bottom',
-  },
+  // {
+  //   target: '.buttonlogout',
+  //   content: 'Aqui você pode encerrar sua sessão atual para sair ou acessar outra conta.',
+  //   placement: 'bottom',
+  // },
 
   {
     target: '.teste-1',
