@@ -53,10 +53,10 @@ class ScenarioModel {
 
   async updateScenario(journeyMapId, newName, newDescription) {
     try {
-      // Removemos o "const [result] =" pois não precisamos mais validar as linhas afetadas
-      await db.execute("UPDATE scenario SET name = ?, description = ? WHERE journeyMap_id = ?", [newName, newDescription, journeyMapId]);
+      // 1. O código AQUI mudou de "const result = ..." para "const [result] = ..."
+      const [result] = await db.execute("UPDATE scenario SET name = ?, description = ? WHERE journeyMap_id = ?", [newName, newDescription, journeyMapId]);
       
-      // Retorna true sempre que o comando não der erro
+      // 2. Se der erro de "affectedRows" por texto igual, não tem problema, retorna true sempre.
       return true; 
     } catch (error) {
       console.error("Error updating scenario:", error);
