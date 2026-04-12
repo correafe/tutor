@@ -53,9 +53,11 @@ class ScenarioModel {
 
   async updateScenario(journeyMapId, newName, newDescription) {
     try {
-      // CORREÇÃO: Adicione os colchetes [result] aqui embaixo!
-      const [result] = await db.execute("UPDATE scenario SET name = ?, description = ? WHERE journeyMap_id = ?", [newName, newDescription, journeyMapId]);
-      return result.affectedRows > 0;
+      // Removemos o "const [result] =" pois não precisamos mais validar as linhas afetadas
+      await db.execute("UPDATE scenario SET name = ?, description = ? WHERE journeyMap_id = ?", [newName, newDescription, journeyMapId]);
+      
+      // Retorna true sempre que o comando não der erro
+      return true; 
     } catch (error) {
       console.error("Error updating scenario:", error);
       throw error;
