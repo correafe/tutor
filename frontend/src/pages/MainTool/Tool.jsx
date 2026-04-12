@@ -633,34 +633,33 @@ const Tool = ({ }) => {
   
 
   const handleSaveClick = () => {
-    const putConfig = { method: "PUT" };
     // Mapeie os dados da matriz para os dados necessários para cada tipo de entidade
     const dataToPut = matrix.reduce((acc, row) => {
       row.forEach((rect) => {
         if (rect.contactPoint_id !== undefined) {
           acc.push({
             endpoint: "contactPoint",
-            data: { contactPoint_id: rect.contactPoint_id, posX: rect.x, description: rect.text, length: rect.width },
+            data: { contactPoint_id: rect.contactPoint_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width },
           });
         } else if (rect.userAction_id !== undefined) {
           acc.push({
             endpoint: "userAction",
-            data: { userAction_id: rect.userAction_id, posX: rect.x, description: rect.text, length: rect.width },
+            data: { userAction_id: rect.userAction_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width },
           });
         } else if (rect.emotion_id !== undefined) {
           acc.push({
             endpoint: "emotion",
-            data: { emotion_id: rect.emotion_id, posX: rect.x, lineY: rect.lineY, emojiTag: rect.emojiTag },
+            data: { emotion_id: rect.emotion_id, journeyMap_id: id_mapa, posX: rect.x, lineY: rect.lineY, emojiTag: rect.emojiTag },
           });
         } else if (rect.thought_id !== undefined) {
           acc.push({
             endpoint: "thought",
-            data: { thought_id: rect.thought_id, posX: rect.x, description: rect.text, length: rect.width },
+            data: { thought_id: rect.thought_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width },
           });
         } else if (rect.journeyPhase_id !== undefined) {
           acc.push({
             endpoint: "journeyPhase",
-            data: { journeyPhase_id: rect.journeyPhase_id, posX: rect.x, description: rect.text, length: rect.width },
+            data: { journeyPhase_id: rect.journeyPhase_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width },
           });
         }
       });
@@ -670,16 +669,15 @@ const Tool = ({ }) => {
     // Envie as solicitações para a API usando os dados mapeados
     const requests = dataToPut.map(({ endpoint, data }) => {
       const url = import.meta.env.VITE_BACKEND + `/${endpoint}`;
-      return axios.put(url, data, putConfig);
+      // Removemos o putConfig para evitar problemas com os Headers do Axios
+      return axios.put(url, data); 
     });
 
     // Execute todas as solicitações
     Promise.all(requests)
       .then(() => {
-        if (showMessage) {
-          // console.log("Dados salvos com sucesso!");
-        } else {
-          setShowMessage(true)
+        if (!showMessage) {
+          setShowMessage(true);
         }
       })
       .catch((error) => {
@@ -883,17 +881,20 @@ const Tool = ({ }) => {
           const card = matrix[rowIndex][i];
           if (card.x >= novoX) {
             card.x += 270; // Empurrar para frente
+            
             // Update the position of the card on the backend
             const putData = {
               [`${type}_id`]: card[`${type}_id`],
+              journeyMap_id: id_mapa,  // <- Adicionado para garantir a atualização
+              linePos: 285,            // <- Adicionado para garantir a atualização
               posX: card.x,
-              length: card.width, // <--- AQUI TEM QUE SER LENGTH
+              length: card.width,      // Mantido como length
               lineY: card.lineY
             };
             if (type !== 'emotion') {
               putData.description = card.text || "";
             }
-            // console.log(putData);
+            
             await axios.put(import.meta.env.VITE_BACKEND + `/${type}`, putData);
           }
         }
