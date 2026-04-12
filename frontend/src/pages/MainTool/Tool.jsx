@@ -840,8 +840,7 @@ const Tool = ({ }) => {
 
   const [newSquareId, setNewSquareId] = useState(null);
 
-  const handleAddSquare = async (rowIndex, colIndex, squarewidth) => {
-    // console.log("handleAddSquare rowIndex, colIndex, squarewidth:", rowIndex, colIndex, squarewidth);
+const handleAddSquare = async (rowIndex, colIndex, squarewidth) => {
     try {
       const rowIndexToType = {
         0: 'journeyPhase',
@@ -852,29 +851,18 @@ const Tool = ({ }) => {
       };
 
       const type = rowIndexToType[rowIndex];
-
-      // Calculate novoX based on colIndex, handling cases beyond the predefined columns
       let novoX;
+      
       if (colIndex !== undefined) {
-        novoX = 290 + colIndex * 270; // Ajuste a posição inicial se necessário
+        novoX = 290 + colIndex * 270;
       } else {
-        console.error("colIndex is undefined");
         return;
       }
 
-      if (!type) {
-        console.error(`Tipo não encontrado para o rowIndex ${rowIndex}`);
-        return;
-      }
+      if (!type) return;
 
-      // Check if there's a rect with the same novoX and type
-      const isOverlapping = matrix[rowIndex].some(rect =>
-        rect.type === type &&
-        rect.x === novoX
-      );
+      const isOverlapping = matrix[rowIndex].some(rect => rect.type === type && rect.x === novoX);
 
-      // If there is an overlap, push subsequent cards forward sequentially
-      // Localize este trecho dentro de handleAddSquare em Tool.jsx
       if (isOverlapping) {
         // 1. Atualiza visualmente primeiro
         setMatrix(prevMatrix => {
@@ -916,6 +904,19 @@ const Tool = ({ }) => {
           }
         }
       }
+
+      if (type === 'emotion') {
+        setCurrentCellId('new');
+        setPickerVisible(true);
+        setPendingPostData({ novoX, rowIndex, colIndex, squarewidth });
+      } else {
+        await postNewCard({ novoX, rowIndex, colIndex, squarewidth }, type);
+      }
+
+    } catch (error) {
+      console.error("Erro ao adicionar quadrado:", error);
+    }
+  };
 
   const [pendingPostData, setPendingPostData] = useState(null);
 
