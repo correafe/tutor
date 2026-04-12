@@ -88,11 +88,11 @@ const TOOL_STEPS = [
     placement: 'bottom',
   },
 
-  {
-    target: '.avatar-tooltip-container',
-    content: 'Veja seus pontos e o seu nível subindo em tempo real enquanto você completa tarefas. Confira o FAQ para descobrir todas as formas de ganhar pontos!',
-    placement: 'bottom',
-  },
+  // {
+  //   target: '.avatar-tooltip-container',
+  //   content: 'Veja seus pontos e o seu nível subindo em tempo real enquanto você completa tarefas. Confira o FAQ para descobrir todas as formas de ganhar pontos!',
+  //   placement: 'bottom',
+  // },
 
   // {
   //   target: '.buttonlogout',

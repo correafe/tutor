@@ -1533,11 +1533,11 @@ const handleLevelSelect = async (level) => {
                     style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
                   />
                   <div className="separarbotoes">
-                    <button className="buttonconf" onClick={() => { setButtonPopup(false); setScenario(false); handleSaveScenario() }}>
-                      Salvar cenário
-                    </button>
                     <button className="buttonconf2" onClick={() => { setSceneName(''); setSceneDesc('') }}>
                       Limpar texto
+                    </button>
+                    <button className="buttonconf" onClick={() => { setButtonPopup(false); setScenario(false); handleSaveScenario() }}>
+                      Salvar cenário
                     </button>
                   </div>
                 </div>
