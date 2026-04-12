@@ -79,31 +79,38 @@ const TOOL_STEPS = [
     placement: 'bottom',
   },
   // INÍCIO DAS EXPLICAÇÕES CONCEITUAIS DA JEM
+  // INÍCIO DAS EXPLICAÇÕES CONCEITUAIS DA JEM
   {
-    target: '.barra1',
+    // Pega o 1º elemento que tem a classe .fases-container (Fases da Jornada)
+    target: '.fases-container:nth-child(1)',
     content: 'Fases da Jornada: A fase representa um grande momento na experiência do usuário. Ela atua como um agrupador sob o qual todas as outras interações acontecem.',
     placement: 'right',
   },
   {
-    target: '.barra2',
+    // Pega o 3º elemento (o 2º é a div separator1 que fica no meio)
+    target: '.fases-container:nth-child(3)',
     content: 'Ações do Usuário: A ação é o que a pessoa efetivamente faz. As ações sempre ocorrem dentro de uma Fase e representam os passos práticos dados na jornada.',
     placement: 'right',
   },
   {
-    target: '.barra3',
+    // Pega o 5º elemento (Emoções)
+    target: '.fases-container:nth-child(5)',
     content: 'Emoções: Como o usuário se sente? Uma emoção sempre existe atrelada à realização de uma Ação, mapeando os altos e baixos da experiência.',
     placement: 'right',
   },
   {
-    target: '.barra4',
+    // Pega o 7º elemento (Pensamentos)
+    target: '.fases-container:nth-child(7)',
     content: 'Pensamentos: O que passa pela cabeça do usuário? Um pensamento pode existir durante a realização de uma ação para mapear expectativas, dúvidas ou reflexões.',
     placement: 'right',
   },
   {
-    target: '.barra5',
+    // Pega o 9º elemento (Pontos de Contato)
+    target: '.fases-container:nth-child(9)',
     content: 'Pontos de Contato: Onde essa interação acontece? Representa o canal ou meio (ex: aplicativo, site, loja física) que o usuário interage durante a Ação.',
     placement: 'right',
   },
+  // FIM DAS EXPLICAÇÕES CONCEITUAIS
   // FIM DAS EXPLICAÇÕES CONCEITUAIS
   {
     target: 'body',
