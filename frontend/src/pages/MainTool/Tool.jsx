@@ -871,34 +871,33 @@ const Tool = ({ }) => {
       );
 
       // If there is an overlap, push subsequent cards forward sequentially
-      if (isOverlapping) {
-        savePromiseRef.current = savePromiseRef.current.then(async () => {
-          for (let i = 0; i < matrix[rowIndex].length; i++) {
-            const card = matrix[rowIndex][i];
-            if (card.x >= novoX) {
-              card.x += 270; // Empurrar para frente
-              const putData = {
-                [`${type}_id`]: card[`${type}_id`],
-                journeyMap_id: id_mapa,
-                linePos: 285,
-                posX: card.x,
-                length: card.width || 230,
-                lineY: card.lineY
-              };
-              if (type !== 'emotion') putData.description = card.text || "";
-              
-              try {
-                await axios.put(import.meta.env.VITE_BACKEND + `/${type}`, putData);
-              } catch (err) {
-                console.error("Erro ao atualizar posição de bloco empurrado", err);
-              }
-            }
-          }
-        });
+      // Localize este trecho dentro de handleAddSquare em Tool.jsx
+if (isOverlapping) {
+  savePromiseRef.current = savePromiseRef.current.then(async () => {
+    for (let i = 0; i < matrix[rowIndex].length; i++) {
+      const card = matrix[rowIndex][i];
+      if (card.x >= novoX) {
+        card.x += 270; 
+        const putData = {
+          [`${type}_id`]: card[`${type}_id`],
+          journeyMap_id: id_mapa,
+          posX: card.x,
+          length: card.width || 230,
+          lineY: card.lineY || -15, // Evita undefined em emoções
+          // GARANTA QUE DESCRIPTION NÃO SEJA UNDEFINED
+          description: card.text || card.description || "" 
+        };
+        
+        try {
+          await axios.put(import.meta.env.VITE_BACKEND + `/${type}`, putData);
+        } catch (err) {
+          console.error("Erro ao atualizar posição", err);
+        }
       }
+    }
+  });
+}
 
-      // --- PARTE QUE HAVIA SIDO APAGADA SEM QUERER ---
-      // If the type is 'emotion', open the Picker and wait for the user to select an emoji
       if (type === 'emotion') {
         setCurrentCellId('new');
         setPickerVisible(true);

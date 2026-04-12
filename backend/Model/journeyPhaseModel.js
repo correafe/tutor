@@ -38,26 +38,42 @@ class JourneyPhaseModel {
     }
   }
   
-  updateJourneyPhase(data) {
-    // Correção: Aceita os dois formatos para evitar undefined
-    const journeyphase_id = data.journeyPhase_id !== undefined ? data.journeyPhase_id : data.journeyphase_id;
-    const length = data.length !== undefined ? data.length : data.width;
-    const posX = data.posX;
-    const description = data.description;
+  // updateJourneyPhase(data) {
+  //   // Correção: Aceita os dois formatos para evitar undefined
+  //   const journeyphase_id = data.journeyPhase_id !== undefined ? data.journeyPhase_id : data.journeyphase_id;
+  //   const length = data.length !== undefined ? data.length : data.width;
+  //   const posX = data.posX;
+  //   const description = data.description;
   
-    // Proteção: se faltar algo, aborta a requisição em vez de derrubar (crashar) o servidor
-    if (journeyphase_id === undefined || posX === undefined || description === undefined || length === undefined) {
-      console.error("Erro: Dados incompletos para o update:", data);
-      return Promise.reject(new Error("Dados incompletos para updateJourneyPhase"));
-    }
+  //   // Proteção: se faltar algo, aborta a requisição em vez de derrubar (crashar) o servidor
+  //   if (journeyphase_id === undefined || posX === undefined || description === undefined || length === undefined) {
+  //     console.error("Erro: Dados incompletos para o update:", data);
+  //     return Promise.reject(new Error("Dados incompletos para updateJourneyPhase"));
+  //   }
 
-    return db.execute("UPDATE journeyphase SET posX = ?, description = ?, length = ? WHERE journeyphase_id = ?", [posX, description, length, journeyphase_id ])
-      .then(() => true)
-      .catch((error) => {
-        console.error("Error updating journeyphase:", error);
-        throw error;
-      });
+  //   return db.execute("UPDATE journeyphase SET posX = ?, description = ?, length = ? WHERE journeyphase_id = ?", [posX, description, length, journeyphase_id ])
+  //     .then(() => true)
+  //     .catch((error) => {
+  //       console.error("Error updating journeyphase:", error);
+  //       throw error;
+  //     });
+  // }
+
+  updateJourneyPhase(data) {
+  const journeyphase_id = data.journeyPhase_id || data.journeyphase_id;
+  const length = data.length || data.width || 230;
+  const posX = data.posX;
+  const description = data.description || ""; // Fallback para string vazia se for undefined
+
+  if (journeyphase_id === undefined || posX === undefined) {
+    return Promise.reject(new Error("ID ou Posição ausentes"));
   }
+
+  return db.execute(
+    "UPDATE journeyphase SET posX = ?, description = ?, length = ? WHERE journeyphase_id = ?", 
+    [posX, description, length, journeyphase_id]
+  );
+}
 
   deleteJourneyPhase(journeyphase_id) {
     return db.execute("DELETE FROM journeyphase WHERE journeyphase_id = ?", [journeyphase_id])
