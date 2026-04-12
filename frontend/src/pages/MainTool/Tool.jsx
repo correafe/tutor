@@ -120,6 +120,8 @@ const Tool = ({ }) => {
 
   const [loading, setLoading] = useState(false);
 
+  const savePromiseRef = React.useRef(Promise.resolve());
+
   const handleExport = async () => {
     try {
       // 1. LIGA A TELA DE CARREGAMENTO
@@ -633,18 +635,18 @@ const Tool = ({ }) => {
   
 
   const handleSaveClick = () => {
-    // Mapeie os dados da matriz para os dados necessários para cada tipo de entidade
+    // Mapeie os dados da matriz
     const dataToPut = matrix.reduce((acc, row) => {
       row.forEach((rect) => {
         if (rect.contactPoint_id !== undefined) {
           acc.push({
             endpoint: "contactPoint",
-            data: { contactPoint_id: rect.contactPoint_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width },
+            data: { contactPoint_id: rect.contactPoint_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width || 230 },
           });
         } else if (rect.userAction_id !== undefined) {
           acc.push({
             endpoint: "userAction",
-            data: { userAction_id: rect.userAction_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width },
+            data: { userAction_id: rect.userAction_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width || 230 },
           });
         } else if (rect.emotion_id !== undefined) {
           acc.push({
@@ -654,35 +656,30 @@ const Tool = ({ }) => {
         } else if (rect.thought_id !== undefined) {
           acc.push({
             endpoint: "thought",
-            data: { thought_id: rect.thought_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width },
+            data: { thought_id: rect.thought_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width || 230 },
           });
         } else if (rect.journeyPhase_id !== undefined) {
           acc.push({
             endpoint: "journeyPhase",
-            data: { journeyPhase_id: rect.journeyPhase_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width },
+            data: { journeyPhase_id: rect.journeyPhase_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width || 230 },
           });
         }
       });
       return acc;
     }, []);
 
-    // Envie as solicitações para a API usando os dados mapeados
+    // Envie as solicitações
     const requests = dataToPut.map(({ endpoint, data }) => {
       const url = import.meta.env.VITE_BACKEND + `/${endpoint}`;
-      // Removemos o putConfig para evitar problemas com os Headers do Axios
-      return axios.put(url, data); 
+      return axios.put(url, data);
     });
 
-    // Execute todas as solicitações
-    Promise.all(requests)
+    // Cria a Fila Invisível: Armazena a promessa de salvamento na ref
+    savePromiseRef.current = Promise.all(requests)
       .then(() => {
-        if (!showMessage) {
-          setShowMessage(true);
-        }
+        if (!showMessage) setShowMessage(true);
       })
-      .catch((error) => {
-        console.error("Erro ao salvar os dados:", error);
-      });
+      .catch((error) => console.error("Erro ao salvar:", error));
   };
 
 
@@ -877,27 +874,29 @@ const Tool = ({ }) => {
 
       // If there is an overlap, push subsequent cards forward and update their positions on the backend
       if (isOverlapping) {
+        await savePromiseRef.current; // Espera a fila silenciosa limpar
+
+        const putPromises = [];
         for (let i = 0; i < matrix[rowIndex].length; i++) {
           const card = matrix[rowIndex][i];
           if (card.x >= novoX) {
             card.x += 270; // Empurrar para frente
-            
-            // Update the position of the card on the backend
             const putData = {
               [`${type}_id`]: card[`${type}_id`],
-              journeyMap_id: id_mapa,  // <- Adicionado para garantir a atualização
-              linePos: 285,            // <- Adicionado para garantir a atualização
+              journeyMap_id: id_mapa,
+              linePos: 285,
               posX: card.x,
-              length: card.width,      // Mantido como length
+              length: card.width || 230,
               lineY: card.lineY
             };
-            if (type !== 'emotion') {
-              putData.description = card.text || "";
-            }
+            if (type !== 'emotion') putData.description = card.text || "";
             
-            await axios.put(import.meta.env.VITE_BACKEND + `/${type}`, putData);
+            putPromises.push(axios.put(import.meta.env.VITE_BACKEND + `/${type}`, putData));
           }
         }
+        
+        // Adiciona essas atualizações na fila para o POST esperar
+        savePromiseRef.current = Promise.all(putPromises);
       }
       // If the type is 'emotion', open the Picker and wait for the user to select an emoji
       if (type === 'emotion') {
@@ -917,6 +916,9 @@ const Tool = ({ }) => {
   const [pendingPostData, setPendingPostData] = useState(null);
 
   const postNewCard = async ({ novoX, rowIndex, colIndex, squarewidth }, type, emojiTag = "😀") => {
+    // A MÁGICA ACONTECE AQUI: Aguarda invisivelmente os salvamentos anteriores terminarem
+    await savePromiseRef.current; 
+
     const postData = {
       "journeyMap_id": id_mapa,
       "linePos": 285,
@@ -929,14 +931,11 @@ const Tool = ({ }) => {
     if (type === 'emotion') {
       postData.posX = novoX;
       postData.journeyMap_id = id_mapa;
-      // ✅ ALTERADO: Calcula a altura baseada no emoji assim que ele nasce
       postData.lineY = getLineYForEmoji(emojiTag); 
     }
 
-    // console.log(postData);
-    const response = await axios.post(import.meta.env.VITE_BACKEND + `/${type}`, postData);
-
-    fetchData();
+    await axios.post(import.meta.env.VITE_BACKEND + `/${type}`, postData);
+    fetchData(); // Agora é seguro recarregar a tela, pois o banco tem a verdade absoluta!
   };
 
   useEffect(() => {
