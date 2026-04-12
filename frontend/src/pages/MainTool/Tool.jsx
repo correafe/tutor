@@ -635,7 +635,7 @@ const Tool = ({ }) => {
   
 
   const handleSaveClick = () => {
-    // Mapeie os dados da matriz
+    // Mapeie os dados da matriz para as requisições
     const dataToPut = matrix.reduce((acc, row) => {
       row.forEach((rect) => {
         if (rect.contactPoint_id !== undefined) {
@@ -668,18 +668,18 @@ const Tool = ({ }) => {
       return acc;
     }, []);
 
-    // Envie as solicitações
-    const requests = dataToPut.map(({ endpoint, data }) => {
-      const url = import.meta.env.VITE_BACKEND + `/${endpoint}`;
-      return axios.put(url, data);
+    // Fila Sequencial Invisível para não sobrecarregar o banco de dados
+    savePromiseRef.current = savePromiseRef.current.then(async () => {
+      for (const req of dataToPut) {
+        try {
+          const url = import.meta.env.VITE_BACKEND + `/${req.endpoint}`;
+          await axios.put(url, req.data);
+        } catch (err) {
+          console.error(`Erro silencioso ao salvar ${req.endpoint}:`, err);
+        }
+      }
+      if (!showMessage) setShowMessage(true);
     });
-
-    // Cria a Fila Invisível: Armazena a promessa de salvamento na ref
-    savePromiseRef.current = Promise.all(requests)
-      .then(() => {
-        if (!showMessage) setShowMessage(true);
-      })
-      .catch((error) => console.error("Erro ao salvar:", error));
   };
 
 
@@ -872,51 +872,38 @@ const Tool = ({ }) => {
         rect.x === novoX
       );
 
-      // If there is an overlap, push subsequent cards forward and update their positions on the backend
+      // If there is an overlap, push subsequent cards forward and update their positions sequentially
       if (isOverlapping) {
-        await savePromiseRef.current; // Espera a fila silenciosa limpar
-
-        const putPromises = [];
-        for (let i = 0; i < matrix[rowIndex].length; i++) {
-          const card = matrix[rowIndex][i];
-          if (card.x >= novoX) {
-            card.x += 270; // Empurrar para frente
-            const putData = {
-              [`${type}_id`]: card[`${type}_id`],
-              journeyMap_id: id_mapa,
-              linePos: 285,
-              posX: card.x,
-              length: card.width || 230,
-              lineY: card.lineY
-            };
-            if (type !== 'emotion') putData.description = card.text || "";
-            
-            putPromises.push(axios.put(import.meta.env.VITE_BACKEND + `/${type}`, putData));
+        savePromiseRef.current = savePromiseRef.current.then(async () => {
+          for (let i = 0; i < matrix[rowIndex].length; i++) {
+            const card = matrix[rowIndex][i];
+            if (card.x >= novoX) {
+              card.x += 270; // Empurrar para frente
+              const putData = {
+                [`${type}_id`]: card[`${type}_id`],
+                journeyMap_id: id_mapa,
+                linePos: 285,
+                posX: card.x,
+                length: card.width || 230,
+                lineY: card.lineY
+              };
+              if (type !== 'emotion') putData.description = card.text || "";
+              
+              try {
+                await axios.put(import.meta.env.VITE_BACKEND + `/${type}`, putData);
+              } catch (err) {
+                console.error("Erro ao atualizar posição de bloco empurrado", err);
+              }
+            }
           }
-        }
-        
-        // Adiciona essas atualizações na fila para o POST esperar
-        savePromiseRef.current = Promise.all(putPromises);
+        });
       }
-      // If the type is 'emotion', open the Picker and wait for the user to select an emoji
-      if (type === 'emotion') {
-        setCurrentCellId('new');
-        setPickerVisible(true);
-        setPendingPostData({ novoX, rowIndex, colIndex, squarewidth });
-      } else {
-        await postNewCard({ novoX, rowIndex, colIndex, squarewidth }, type);
-      }
-
-    } catch (error) {
-      console.error("Erro ao adicionar quadrado:", error);
-    }
-  };
 
 
   const [pendingPostData, setPendingPostData] = useState(null);
 
   const postNewCard = async ({ novoX, rowIndex, colIndex, squarewidth }, type, emojiTag = "😀") => {
-    // A MÁGICA ACONTECE AQUI: Aguarda invisivelmente os salvamentos anteriores terminarem
+    // A MÁGICA ACONTECE AQUI: Aguarda invisivelmente toda a fila de salvamentos (textos e tamanhos) terminar
     await savePromiseRef.current; 
 
     const postData = {
@@ -934,8 +921,12 @@ const Tool = ({ }) => {
       postData.lineY = getLineYForEmoji(emojiTag); 
     }
 
-    await axios.post(import.meta.env.VITE_BACKEND + `/${type}`, postData);
-    fetchData(); // Agora é seguro recarregar a tela, pois o banco tem a verdade absoluta!
+    try {
+      await axios.post(import.meta.env.VITE_BACKEND + `/${type}`, postData);
+      fetchData(); // Recarrega a tela depois que tudo estiver salvo e íntegro no banco
+    } catch (err) {
+      console.error("Falha ao criar o novo card:", err);
+    }
   };
 
   useEffect(() => {
