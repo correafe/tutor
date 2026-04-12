@@ -63,17 +63,17 @@ class JourneyPhaseModel {
   const journeyphase_id = data.journeyPhase_id || data.journeyphase_id;
   const length = data.length || data.width || 230;
   const posX = data.posX;
-  const description = data.description || ""; // Fallback para string vazia se for undefined
+  const description = data.description || ""; 
 
   if (journeyphase_id === undefined || posX === undefined) {
-    return Promise.reject(new Error("ID ou Posição ausentes"));
+    return Promise.reject(new Error("Dados incompletos"));
   }
 
   return db.execute(
     "UPDATE journeyphase SET posX = ?, description = ?, length = ? WHERE journeyphase_id = ?", 
     [posX, description, length, journeyphase_id]
-  );
-}
+  ).then(() => true); // Importante retornar true para o Controller
+  }
 
   deleteJourneyPhase(journeyphase_id) {
     return db.execute("DELETE FROM journeyphase WHERE journeyphase_id = ?", [journeyphase_id])

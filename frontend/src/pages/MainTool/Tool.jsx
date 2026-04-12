@@ -635,47 +635,60 @@ const Tool = ({ }) => {
   
 
   const handleSaveClick = () => {
-    // Mapeie os dados da matriz para as requisições
     const dataToPut = matrix.reduce((acc, row) => {
       row.forEach((rect) => {
+        // Cria um objeto base com garantias contra undefined
+        const baseData = {
+          journeyMap_id: id_mapa,
+          posX: rect.x || 20,
+          length: rect.width || 230,
+          description: rect.text || rect.description || "" // Fallback para string vazia
+        };
+
         if (rect.contactPoint_id !== undefined) {
           acc.push({
             endpoint: "contactPoint",
-            data: { contactPoint_id: rect.contactPoint_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width || 230 },
+            data: { ...baseData, contactPoint_id: rect.contactPoint_id },
           });
         } else if (rect.userAction_id !== undefined) {
           acc.push({
             endpoint: "userAction",
-            data: { userAction_id: rect.userAction_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width || 230 },
+            data: { ...baseData, userAction_id: rect.userAction_id },
           });
         } else if (rect.emotion_id !== undefined) {
           acc.push({
             endpoint: "emotion",
-            data: { emotion_id: rect.emotion_id, journeyMap_id: id_mapa, posX: rect.x, lineY: rect.lineY, emojiTag: rect.emojiTag },
+            data: { 
+              emotion_id: rect.emotion_id, 
+              journeyMap_id: id_mapa, 
+              posX: rect.x, 
+              lineY: rect.lineY || -15, 
+              emojiTag: rect.emojiTag || "😀" 
+            },
           });
         } else if (rect.thought_id !== undefined) {
           acc.push({
             endpoint: "thought",
-            data: { thought_id: rect.thought_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width || 230 },
+            data: { ...baseData, thought_id: rect.thought_id },
           });
         } else if (rect.journeyPhase_id !== undefined) {
           acc.push({
             endpoint: "journeyPhase",
-            data: { journeyPhase_id: rect.journeyPhase_id, journeyMap_id: id_mapa, linePos: 285, posX: rect.x, description: rect.text || "", length: rect.width || 230 },
+            data: { ...baseData, journeyPhase_id: rect.journeyPhase_id },
           });
         }
       });
       return acc;
     }, []);
 
-    // Fila Sequencial Invisível para não sobrecarregar o banco de dados
+    // Fila Sequencial
     savePromiseRef.current = savePromiseRef.current.then(async () => {
       for (const req of dataToPut) {
         try {
           const url = import.meta.env.VITE_BACKEND + `/${req.endpoint}`;
           await axios.put(url, req.data);
         } catch (err) {
-          console.error(`Erro silencioso ao salvar ${req.endpoint}:`, err);
+          console.error(`Erro ao salvar ${req.endpoint}:`, err);
         }
       }
       if (!showMessage) setShowMessage(true);
@@ -1059,20 +1072,25 @@ if (isOverlapping) {
   const [scenarioExists, setScenarioExists] = useState(false);
 
   const fetchScenarioData = async () => {
-    try {
-      const response = await axios.get(import.meta.env.VITE_BACKEND + `/scenario/${id_mapa}`);
-      const scenario = response.data;
-      if (scenario) {
-        setSceneName(scenario.name);
-        setSceneDesc(scenario.description);
-        setScenarioExists(true);
-      } else {
-        setScenarioExists(false);
-      }
-    } catch (error) {
+  try {
+    const response = await axios.get(import.meta.env.VITE_BACKEND + `/scenario/${id_mapa}`);
+    const scenario = response.data;
+    if (scenario) {
+      setSceneName(scenario.name || "");
+      setSceneDesc(scenario.description || "");
+      setScenarioExists(true);
+    }
+  } catch (error) {
+    // Se for 404, apenas definimos que não existe, sem disparar erro no console
+    if (error.response && error.response.status === 404) {
+      setScenarioExists(false);
+      setSceneName("");
+      setSceneDesc("");
+    } else {
       console.error("Erro ao buscar os dados do cenário:", error);
     }
-  };
+  }
+};
 
   useEffect(() => {
     if (scenario) {
