@@ -41,9 +41,20 @@ class ScenarioModel {
   }
   
 
+  // async updateScenario(journeyMapId, newName, newDescription) {
+  //   try {
+  //     const result = await db.execute("UPDATE scenario SET name = ?, description = ? WHERE journeyMap_id = ?", [newName, newDescription, journeyMapId]);
+  //     return result.affectedRows > 0;
+  //   } catch (error) {
+  //     console.error("Error updating scenario:", error);
+  //     throw error;
+  //   }
+  // }
+
   async updateScenario(journeyMapId, newName, newDescription) {
     try {
-      const result = await db.execute("UPDATE scenario SET name = ?, description = ? WHERE journeyMap_id = ?", [newName, newDescription, journeyMapId]);
+      // CORREÇÃO: Adicione os colchetes [result] aqui embaixo!
+      const [result] = await db.execute("UPDATE scenario SET name = ?, description = ? WHERE journeyMap_id = ?", [newName, newDescription, journeyMapId]);
       return result.affectedRows > 0;
     } catch (error) {
       console.error("Error updating scenario:", error);
