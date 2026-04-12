@@ -634,21 +634,19 @@ const Tool = ({ }) => {
 
   const handleSaveClick = () => {
     const putConfig = { method: "PUT" };
-    // console.log("Final matrix: ", matrix)
     // Mapeie os dados da matriz para os dados necessários para cada tipo de entidade
     const dataToPut = matrix.reduce((acc, row) => {
       row.forEach((rect) => {
-        // console.log("Saving data for rect:", rect);
-
+        // CORREÇÃO: Todos os 'width: rect.width' foram alterados para 'length: rect.width'
         if (rect.contactPoint_id !== undefined) {
           acc.push({
             endpoint: "contactPoint",
-            data: { contactPoint_id: rect.contactPoint_id, posX: rect.x, description: rect.text, width: rect.width },
+            data: { contactPoint_id: rect.contactPoint_id, posX: rect.x, description: rect.text, length: rect.width },
           });
         } else if (rect.userAction_id !== undefined) {
           acc.push({
             endpoint: "userAction",
-            data: { userAction_id: rect.userAction_id, posX: rect.x, description: rect.text, width: rect.width },
+            data: { userAction_id: rect.userAction_id, posX: rect.x, description: rect.text, length: rect.width },
           });
         } else if (rect.emotion_id !== undefined) {
           acc.push({
@@ -658,19 +656,17 @@ const Tool = ({ }) => {
         } else if (rect.thought_id !== undefined) {
           acc.push({
             endpoint: "thought",
-            data: { thought_id: rect.thought_id, posX: rect.x, description: rect.text, width: rect.width },
+            data: { thought_id: rect.thought_id, posX: rect.x, description: rect.text, length: rect.width },
           });
         } else if (rect.journeyPhase_id !== undefined) {
           acc.push({
             endpoint: "journeyPhase",
-            data: { journeyPhase_id: rect.journeyPhase_id, posX: rect.x, description: rect.text, width: rect.width },
+            data: { journeyPhase_id: rect.journeyPhase_id, posX: rect.x, description: rect.text, length: rect.width },
           });
         }
       });
       return acc;
     }, []);
-
-    // console.log("Data to put:", dataToPut);
 
     // Envie as solicitações para a API usando os dados mapeados
     const requests = dataToPut.map(({ endpoint, data }) => {
@@ -691,7 +687,6 @@ const Tool = ({ }) => {
         console.error("Erro ao salvar os dados:", error);
       });
   };
-
 
 
   const [buttonPopup, setButtonPopup] = useState(false);
@@ -732,8 +727,7 @@ const Tool = ({ }) => {
   const [tempWidth, setTempWidth] = useState()
 
   const handleSaveHouse = async () => {
-    // Fetch the most up-to-date data
-    const fetchedData = await fetchData();
+    // CORREÇÃO: Removido o 'await fetchData()' daqui para evitar limpar a tela e causar o bug
     let tempMatrix = [];
     let foundExtendedRect = null;
   
@@ -750,59 +744,43 @@ const Tool = ({ }) => {
     };
   
     setMatrix((prevMatrix) => {
-      // console.log('Previous Matrix:', prevMatrix);
-  
       tempMatrix = prevMatrix.map((row) => {
         let rowUpdated = false;
-        let extendedRect; // To store the extended rectangle
-        let extendedIndex = -1; // To store the index of the extended rectangle
+        let extendedRect; 
+        let extendedIndex = -1; 
   
         const updatedRow = row.map((rect, index) => {
           const type = rect.y === 61 ? 'journeyPhase' : rect.y === 231 ? 'userAction' : rect.y === 467 ? 'emotion' : rect.y === 571 ? 'thought' : rect.y === 741 ? 'contactPoint' : null;
-          if (!type) return rect; // Skip if type is null
+          if (!type) return rect; 
   
           if (rect[`${type}_id`] === editedRectId && type === rect.type && rect.y === editedRowIndex) {
             rowUpdated = true;
-            // Save the original X position before extending the width
             const originalX = rect.x;
-            extendedRect = { ...rect, width: selectedHouses * 270 - 40, x: originalX }; // Maintain the original X position
+            extendedRect = { ...rect, width: selectedHouses * 270 - 40, x: originalX };
             extendedIndex = index;
-            // console.log('Extended Rect:', extendedRect);
             return extendedRect;
           }
           return rect;
         });
   
-        // If the row was updated, adjust the X position of subsequent rectangles
         if (rowUpdated) {
-          let adjustedXrect = extendedRect.x + extendedRect.width + 40; // Start X position after the extended rectangle
+          let adjustedXrect = extendedRect.x + extendedRect.width + 40; 
           updatedRow.forEach((rect) => {
             if (rect.x > extendedRect.x) {
-                // console.log("rect: ", rect);
-                rect.x = adjustedXrect; // Adjust subsequent rectangles with the updatedX
+                rect.x = adjustedXrect; 
                 adjustedXrect += rect.width + 40; 
-
             }
           });
-          // console.log('Row Updated:', updatedRow);
-          foundExtendedRect = extendedRect; // Track the extended rectangle
+          foundExtendedRect = extendedRect; 
         }
-  
         return updatedRow;
       });
-  
-      // console.log('Temporary Matrix:', tempMatrix);
-  
-      // Adjust X positions of all rectangles in all rows
       tempMatrix = tempMatrix.map(adjustRowXPositions);
-  
       return tempMatrix;
     });
   
-    // Use a state variable to trigger saving the data after the state update completes
     setSaveTriggered(true);
     setShowMessage(false);
-
   };
   
 
@@ -909,18 +887,16 @@ const Tool = ({ }) => {
             const putData = {
               [`${type}_id`]: card[`${type}_id`],
               posX: card.x,
-              width: card.width,
+              length: card.width, // CORREÇÃO: Alterado de width para length
               lineY: card.lineY
             };
             if (type !== 'emotion') {
               putData.description = card.text || "";
             }
-            // console.log(putData);
             await axios.put(import.meta.env.VITE_BACKEND + `/${type}`, putData);
           }
         }
       }
-
       // If the type is 'emotion', open the Picker and wait for the user to select an emoji
       if (type === 'emotion') {
         setCurrentCellId('new');
@@ -1506,7 +1482,7 @@ const handleLevelSelect = async (level) => {
                         onClick={handleSaveHouse}
                         style={{ backgroundColor: '#4caf50', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '18px', marginLeft: '10px', width: '100px', height: "60px", display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                       >
-                        Salvar
+                        Salvar Tamanho
                       </button>
                     </div>
 
@@ -1523,7 +1499,7 @@ const handleLevelSelect = async (level) => {
                         onClick={() => { handleTextSubmit(); setButtonPopup(false); setTextEdit(false) }}
                         style={{ backgroundColor: '#4caf50', color: 'white', padding: '10px 40px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '22px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                       >
-                        Salvar texto
+                        Salvar
                       </button>
                     </div>
 

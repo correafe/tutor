@@ -23,7 +23,6 @@ export const PIZZA_SCENARIO = {
     SUA TAREFA: Você deve mapear cada uma dessas 3 fases, preenchendo todas as linhas (Fases, Ações, Emoções, Pensamentos e Pontos de Contato).
   `,
   steps: [
-    // --- FASE 1: A FOME ---
     {
       id: 1,
       section: "Fase 1: Fases da Jornada",
@@ -81,7 +80,6 @@ export const PIZZA_SCENARIO = {
       ]
     },
 
-    // --- FASE 2: O PEDIDO ---
     {
       id: 6,
       section: "Fase 2: Fases da Jornada",
@@ -139,7 +137,6 @@ export const PIZZA_SCENARIO = {
       ]
     },
 
-    // --- FASE 3: ENTREGA ---
     {
       id: 11,
       section: "Fase 3: Fases da Jornada",
@@ -226,14 +223,13 @@ export const STREAMING_SCENARIO = {
   `,
   
   steps: [
-    // --- FASE 1: PESQUISA ---
     {
       id: 1, section: "Fase 1: Fases da Jornada", context: "Camila percebe que precisa de um novo serviço e começa a levantar opções. Como chamamos esta etapa?",
       correctAnswer: { description: "Pesquisa e Aprendizado", emojiTag: "🔍" },
       options: [
-        { id: 'a', text: "Consideração", points: 5 }, // Meio certo
+        { id: 'a', text: "Consideração", points: 5 }, 
         { id: 'b', text: "Decisão de Compra", points: 0 }, 
-        { id: 'c', text: "Pesquisa e Aprendizado", points: 10 }, // Certo
+        { id: 'c', text: "Pesquisa e Aprendizado", points: 10 }, 
         { id: 'd', text: "Reconhecimento do Problema", points: 0 } 
       ]
     },
@@ -253,8 +249,8 @@ export const STREAMING_SCENARIO = {
       options: [
         { id: 'a', text: "😀", points: 0 },
         { id: 'b', text: "😍", points: 0 },
-        { id: 'c', text: "😴", points: 5 }, // Entediada pelas opções (parcial)
-        { id: 'd', text: "🤨", points: 10 } // Analítica/Dúvida
+        { id: 'c', text: "😴", points: 5 }, 
+        { id: 'd', text: "🤨", points: 10 } 
       ]
     },
     {
@@ -264,7 +260,7 @@ export const STREAMING_SCENARIO = {
         { id: 'a', text: "O site está travando", points: 0 },
         { id: 'b', text: "Será que vale a pena assinar?", points: 10 },
         { id: 'c', text: "A imagem 4K é perfeita", points: 0 },
-        { id: 'd', text: "Vou cancelar os outros", points: 5 } // Pensamento plausível, mas secundário
+        { id: 'd', text: "Vou cancelar os outros", points: 5 } 
       ]
     },
     {
@@ -278,7 +274,6 @@ export const STREAMING_SCENARIO = {
       ]
     },
 
-    // --- FASE 2: ESCOLHA ---
     {
       id: 6, section: "Fase 2: Fases da Jornada", context: "Camila agora está focada apenas no site do serviço. Que etapa é esta?",
       correctAnswer: { description: "Consideração da Solução", emojiTag: "⚖️" },
@@ -295,7 +290,7 @@ export const STREAMING_SCENARIO = {
       options: [
         { id: 'a', text: "Lê a política de privacidade", points: 0 },
         { id: 'b', text: "Cria uma senha forte", points: 0 },
-        { id: 'c', text: "Assiste a um trailer", points: 5 }, // Plausível, mas foge do foco financeiro
+        { id: 'c', text: "Assiste a um trailer", points: 5 }, 
         { id: 'd', text: "Analisa planos e recursos", points: 10 }
       ]
     },
@@ -303,7 +298,7 @@ export const STREAMING_SCENARIO = {
       id: 8, section: "Fase 2: Emoções", context: "Ela decide pelo Premium, mas o preço a incomoda um pouco. Como ela se sente?",
       isEmojiSelection: true, correctAnswer: { description: "Preocupada", emojiTag: "😟", lineY: -15 },
       options: [
-        { id: 'a', text: "😭", points: 5 }, // Exagerado, mas na mesma linha negativa
+        { id: 'a', text: "😭", points: 5 }, 
         { id: 'b', text: "🤩", points: 0 },
         { id: 'c', text: "😟", points: 10 },
         { id: 'd', text: "😡", points: 0 }
@@ -313,7 +308,7 @@ export const STREAMING_SCENARIO = {
       id: 9, section: "Fase 2: Pensamentos", context: "O que Camila pensa ao escolher o plano mais caro?",
       correctAnswer: { description: "Preciso de 4K na TV", emojiTag: "📺" },
       options: [
-        { id: 'a', text: "Vou dividir a conta", points: 5 }, // Hipótese válida, mas não citada no texto
+        { id: 'a', text: "Vou dividir a conta", points: 5 },
         { id: 'b', text: "O site está muito lerdo", points: 0 },
         { id: 'c', text: "Preciso de 4K para a minha TV", points: 10 },
         { id: 'd', text: "O suporte é bom?", points: 0 }
@@ -326,18 +321,17 @@ export const STREAMING_SCENARIO = {
         { id: 'a', text: "Banner Publicitário", points: 0 },
         { id: 'b', text: "E-mail de Boas-vindas", points: 0 },
         { id: 'c', text: "Site Oficial (Preços)", points: 10 },
-        { id: 'd', text: "Redes Sociais", points: 5 } // Ela pode ter vindo de lá
+        { id: 'd', text: "Redes Sociais", points: 5 } 
       ]
     },
 
-    // --- FASE 3: CADASTRO ---
     {
       id: 11, section: "Fase 3: Fases da Jornada", context: "Camila preenche os dados e paga. Como chamamos este momento?",
       correctAnswer: { description: "Conversão / Compra", emojiTag: "💳" },
       options: [
         { id: 'a', text: "Inscrição em Newsletter", points: 0 },
         { id: 'b', text: "Conversão / Compra", points: 10 },
-        { id: 'c', text: "Configuração de Conta", points: 5 }, // Faz parte, mas o foco é o cartão
+        { id: 'c', text: "Configuração de Conta", points: 5 }, 
         { id: 'd', text: "Adoção do Produto", points: 0 }
       ]
     },
@@ -357,7 +351,7 @@ export const STREAMING_SCENARIO = {
       options: [
         { id: 'a', text: "🤩", points: 0 },
         { id: 'b', text: "😴", points: 0 },
-        { id: 'c', text: "🤨", points: 5 }, // Fraco para a situação
+        { id: 'c', text: "🤨", points: 5 }, 
         { id: 'd', text: "😡", points: 10 }
       ]
     },
@@ -365,7 +359,7 @@ export const STREAMING_SCENARIO = {
       id: 14, section: "Fase 3: Pensamentos", context: "O que ela pensa enquanto a barra de carregamento trava?",
       correctAnswer: { description: "Que site horrível!", emojiTag: "💢" },
       options: [
-        { id: 'a', text: "Será que meu cartão tem limite?", points: 5 }, // Dúvida comum no checkout
+        { id: 'a', text: "Será que meu cartão tem limite?", points: 5 }, 
         { id: 'b', text: "Vou pedir uma pizza", points: 0 },
         { id: 'c', text: "Que site horrível!", points: 10 },
         { id: 'd', text: "Amanhã eu tento de novo", points: 0 }
@@ -378,17 +372,16 @@ export const STREAMING_SCENARIO = {
         { id: 'a', text: "Gateway de Pagamento", points: 10 },
         { id: 'b', text: "Fórum de Usuários", points: 0 },
         { id: 'c', text: "Página inicial do buscador", points: 0 },
-        { id: 'd', text: "Aplicativo da Smart TV", points: 5 } // Ela usará no futuro
+        { id: 'd', text: "Aplicativo da Smart TV", points: 5 } 
       ]
     },
 
-    // --- FASE 4: USO ---
     {
       id: 16, section: "Fase 4: Fases da Jornada", context: "Camila finalmente utiliza o serviço na TV. Que etapa é esta?",
       correctAnswer: { description: "Experiência de Uso", emojiTag: "🎬" },
       options: [
         { id: 'a', text: "Suporte ao Cliente", points: 0 },
-        { id: 'b', text: "Pós-Venda", points: 5 }, // Uso é parte do pós-venda
+        { id: 'b', text: "Pós-Venda", points: 5 }, 
         { id: 'c', text: "Experiência de Uso", points: 10 },
         { id: 'd', text: "Fidelização", points: 0 }
       ]
@@ -397,7 +390,7 @@ export const STREAMING_SCENARIO = {
       id: 17, section: "Fase 4: Ações do Usuário", context: "O que Camila faz ao abrir o app na TV?",
       correctAnswer: { description: "Encontra a série e assiste", emojiTag: "🍿" },
       options: [
-        { id: 'a', text: "Cria um novo perfil", points: 5 }, // Ela até poderia fazer, mas o texto foca no conteúdo
+        { id: 'a', text: "Cria um novo perfil", points: 5 }, 
         { id: 'b', text: "Muda a senha", points: 0 },
         { id: 'c', text: "Luta com o controle remoto", points: 0 },
         { id: 'd', text: "Encontra a série e assiste", points: 10 }
@@ -418,7 +411,7 @@ export const STREAMING_SCENARIO = {
       correctAnswer: { description: "Valeu o investimento!", emojiTag: "💎" },
       options: [
         { id: 'a', text: "Vou cancelar amanhã", points: 0 },
-        { id: 'b', text: "O Básico era melhor", points: 5 }, // Falso, pois ela curtiu o 4K
+        { id: 'b', text: "O Básico era melhor", points: 5 }, 
         { id: 'c', text: "Valeu o investimento!", points: 10 },
         { id: 'd', text: "O site ainda está lento", points: 0 }
       ]
@@ -428,7 +421,7 @@ export const STREAMING_SCENARIO = {
       correctAnswer: { description: "App na Smart TV", emojiTag: "📺" },
       options: [
         { id: 'a', text: "Site no Navegador", points: 0 },
-        { id: 'b', text: "Controle Remoto", points: 5 }, // Dispositivo de apoio, mas não o canal central
+        { id: 'b', text: "Controle Remoto", points: 5 }, 
         { id: 'c', text: "Notificação Push", points: 0 },
         { id: 'd', text: "App na Smart TV", points: 10 }
       ]
@@ -466,7 +459,6 @@ export const ADVANCED_SCENARIO = {
   `,
   
   steps: [
-    // FASE 1
     {
       id: 1, section: "Fase 1: Fases da Jornada", context: "Sofia busca destinos sem ter nada definido. Qual é o nome dessa etapa?",
       correctAnswer: { description: "Pesquisa e Inspiração", emojiTag: "💡" },
@@ -496,7 +488,7 @@ export const ADVANCED_SCENARIO = {
         { id: 'a', text: "😰", points: 0 },
         { id: 'b', text: "🤩", points: 10 },
         { id: 'c', text: "🧐", points: 0 },
-        { id: 'd', text: "😵‍💫", points: 5 }, // Leve confusão pelas opções, mas menos provável
+        { id: 'd', text: "😵‍💫", points: 5 }, 
         { id: 'e', text: "😌", points: 0 }
       ]
     },
@@ -507,7 +499,7 @@ export const ADVANCED_SCENARIO = {
         { id: 'a', text: "Vou precisar cortar o delivery", points: 0 },
         { id: 'b', text: "A transação vai aprovar?", points: 0 },
         { id: 'c', text: "Qual destino cabe no orçamento?", points: 10 },
-        { id: 'd', text: "Espero que o hotel seja bom", points: 5 }, // Tão longe que não é o foco principal
+        { id: 'd', text: "Espero que o hotel seja bom", points: 5 }, 
         { id: 'e', text: "Será que meu voo atrasa?", points: 0 }
       ]
     },
@@ -523,14 +515,13 @@ export const ADVANCED_SCENARIO = {
       ]
     },
 
-    // FASE 2
     {
       id: 7, section: "Fase 2: Fases da Jornada", context: "Sofia escolheu a Itália e analisa os custos. Que fase é esta?",
       correctAnswer: { description: "Planejamento Financeiro", emojiTag: "📈" },
       options: [
         { id: 'a', text: "Pagamento do Voo", points: 0 },
         { id: 'b', text: "Planejamento Financeiro", points: 10 },
-        { id: 'c', text: "Organização do Roteiro", points: 5 }, // Faz parte do plano geral, mas o foco é financeiro
+        { id: 'c', text: "Organização do Roteiro", points: 5 },
         { id: 'd', text: "Avaliação Pós-Compra", points: 0 },
         { id: 'e', text: "Reserva de Serviços", points: 0 }
       ]
@@ -554,7 +545,7 @@ export const ADVANCED_SCENARIO = {
         { id: 'b', text: "😡", points: 0 },
         { id: 'c', text: "🧐", points: 10 },
         { id: 'd', text: "🥰", points: 0 },
-        { id: 'e', text: "😰", points: 5 } // Muito tensa para ser só a planilha
+        { id: 'e', text: "😰", points: 5 } 
       ]
     },
     {
@@ -580,7 +571,6 @@ export const ADVANCED_SCENARIO = {
       ]
     },
 
-    // FASE 3
     {
       id: 13, section: "Fase 3: Fases da Jornada", context: "O mês da viagem chegou, hora de pagar as passagens. Que etapa é essa?",
       correctAnswer: { description: "Checkout e Compra", emojiTag: "💳" },
@@ -637,7 +627,6 @@ export const ADVANCED_SCENARIO = {
       ]
     },
 
-    // FASE 4
     {
       id: 19, section: "Fase 4: Fases da Jornada", context: "Voo garantido! Sofia vai buscar onde dormir. Como definir esta fase?",
       correctAnswer: { description: "Seleção de Hospedagem", emojiTag: "🏨" },
@@ -694,7 +683,6 @@ export const ADVANCED_SCENARIO = {
       ]
     },
 
-    // FASE 5
     {
       id: 25, section: "Fase 5: Fases da Jornada", context: "O grande dia chegou. Sofia está no aeroporto para viajar. Como chamamos essa etapa?",
       correctAnswer: { description: "Uso / Início da Experiência", emojiTag: "🛫" },
