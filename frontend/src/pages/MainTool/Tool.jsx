@@ -1084,7 +1084,7 @@ const Tool = ({ }) => {
   const [sceneName, setSceneName] = useState("")
   const [sceneDesc, setSceneDesc] = useState("")
   const [scenarioExists, setScenarioExists] = useState(false);
-  const [appliedSceneName, setAppliedSceneName] = useState("");
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const fetchScenarioData = async () => {
   try {
@@ -1129,8 +1129,8 @@ const Tool = ({ }) => {
         });
       }
       
-      setAppliedSceneName(sceneName); 
       setScenarioExists(true); 
+      setRefreshTrigger(prev => prev + 1); 
       
     } catch (error) {
       console.error("Erro ao salvar o cenário:", error);
@@ -1473,7 +1473,7 @@ const handleLevelSelect = async (level) => {
               dataLoaded={dataLoaded}
               currentJourneyMap={id_mapa}
               onTutorialClick={handleOpenLevelSelector}
-              appliedSceneName={appliedSceneName}
+              refreshTrigger={refreshTrigger}
             />
           </div>
 

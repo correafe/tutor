@@ -22,12 +22,13 @@ const Navbar = ({
   currentJourneyMap, 
   handlePostClick, 
   onStartTour,
-  appliedSceneName 
+  refreshTrigger // <--- 1. MUDAMOS O NOME DA PROPRIEDADE AQUI
 }) => {   
   const [scenarioName, setScenarioName] = useState("Nome do Cenário");
 
   const usuario = JSON.parse(localStorage.getItem('user'));
 
+  // 2. UNIFICAMOS TUDO NESTE ÚNICO USEEFFECT:
   useEffect(() => {
     const fetchScenarioName = async () => {
       try {
@@ -44,15 +45,10 @@ const Navbar = ({
       }
     };
     fetchScenarioName();
-  }, [currentJourneyMap]);
-
-  useEffect(() => {
-    if (appliedSceneName) {
-      setScenarioName(appliedSceneName);
-    }
-  }, [appliedSceneName]);
+  }, [currentJourneyMap, refreshTrigger]); 
 
   const { score } = useContext(ScoreContext); 
+
 
   // LOGICA DO RANKING
   const getRankInfo = (currentScore) => {
