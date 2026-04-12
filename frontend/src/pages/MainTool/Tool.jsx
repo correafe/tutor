@@ -864,15 +864,13 @@ const Tool = ({ }) => {
         return;
       }
 
-      // console.log(novoX);
-
       // Check if there's a rect with the same novoX and type
       const isOverlapping = matrix[rowIndex].some(rect =>
         rect.type === type &&
         rect.x === novoX
       );
 
-      // If there is an overlap, push subsequent cards forward and update their positions sequentially
+      // If there is an overlap, push subsequent cards forward sequentially
       if (isOverlapping) {
         savePromiseRef.current = savePromiseRef.current.then(async () => {
           for (let i = 0; i < matrix[rowIndex].length; i++) {
@@ -899,6 +897,20 @@ const Tool = ({ }) => {
         });
       }
 
+      // --- PARTE QUE HAVIA SIDO APAGADA SEM QUERER ---
+      // If the type is 'emotion', open the Picker and wait for the user to select an emoji
+      if (type === 'emotion') {
+        setCurrentCellId('new');
+        setPickerVisible(true);
+        setPendingPostData({ novoX, rowIndex, colIndex, squarewidth });
+      } else {
+        await postNewCard({ novoX, rowIndex, colIndex, squarewidth }, type);
+      }
+
+    } catch (error) {
+      console.error("Erro ao adicionar quadrado:", error);
+    }
+  };
 
   const [pendingPostData, setPendingPostData] = useState(null);
 
