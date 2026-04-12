@@ -642,12 +642,12 @@ const Tool = ({ }) => {
         if (rect.contactPoint_id !== undefined) {
           acc.push({
             endpoint: "contactPoint",
-            data: { contactPoint_id: rect.contactPoint_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || " ", length: rect.width || 230 },
+            data: { contactPoint_id: rect.contactPoint_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || " ", length: rect.width || 230, width: rect.width || 230 },
           });
         } else if (rect.userAction_id !== undefined) {
           acc.push({
             endpoint: "userAction",
-            data: { userAction_id: rect.userAction_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || " ", length: rect.width || 230 },
+            data: { userAction_id: rect.userAction_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || " ", length: rect.width || 230, width: rect.width || 230 },
           });
         } else if (rect.emotion_id !== undefined) {
           acc.push({
@@ -657,12 +657,12 @@ const Tool = ({ }) => {
         } else if (rect.thought_id !== undefined) {
           acc.push({
             endpoint: "thought",
-            data: { thought_id: rect.thought_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || " ", length: rect.width || 230 },
+            data: { thought_id: rect.thought_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || " ", length: rect.width || 230, width: rect.width || 230 },
           });
         } else if (rect.journeyPhase_id !== undefined) {
           acc.push({
             endpoint: "journeyPhase",
-            data: { journeyPhase_id: rect.journeyPhase_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || " ", length: rect.width || 230 },
+            data: { journeyPhase_id: rect.journeyPhase_id, journeyMap_id: id_mapa, posX: rect.x, description: rect.text || " ", length: rect.width || 230, width: rect.width || 230 },
           });
         }
       });
@@ -684,7 +684,6 @@ const Tool = ({ }) => {
         console.error("Erro ao salvar os dados:", error);
       });
   };
-
 
   const [buttonPopup, setButtonPopup] = useState(false);
   const [editedRowIndex, setEditedRowIndex] = useState("0");
