@@ -36,7 +36,7 @@ const DASHBOARD_STEPS = [
     content: 'Aqui você acompanha sua pontuação total de experiência e seu título atual. Confira o FAQ para descobrir todas as formas de ganhar pontos!',
     placement: 'bottom',
   },
-{
+  {
     target: '.botaologout',
     content: 'Aqui você pode encerrar sua sessão atual para sair ou acessar outra conta.',
     placement: 'bottom',
@@ -69,15 +69,6 @@ const TOOL_STEPS = [
     content: 'Para voltar ao menu principal de mapas, clique aqui.',
     placement: 'bottom',
   },
-  // {
-  //   target: '#faqButton',
-  //   content: 'Precisa de ajuda rápida sobre como usar a ferramenta? Consulte o FAQ aqui.',
-  // },
-  // {
-  //   target: '.button.info.ranking',
-  //   content: 'Acompanhe a tabela de classificação e veja sua posição no Ranking sem sair da ferramenta.',
-  //   placement: 'bottom',
-  // },
   {
     target: '#tutorialButton', 
     content: 'Clique aqui para abrir a "Prática Guiada", onde você aprende a usar a ferramenta passo a passo.',
@@ -87,25 +78,33 @@ const TOOL_STEPS = [
     content: 'Pronto para exportar? Clique aqui para fazer o Download do seu mapa de jornada.',
     placement: 'bottom',
   },
-
-  // {
-  //   target: '.avatar-tooltip-container',
-  //   content: 'Veja seus pontos e o seu nível subindo em tempo real enquanto você completa tarefas. Confira o FAQ para descobrir todas as formas de ganhar pontos!',
-  //   placement: 'bottom',
-  // },
-
-  // {
-  //   target: '.buttonlogout',
-  //   content: 'Aqui você pode encerrar sua sessão atual para sair ou acessar outra conta.',
-  //   placement: 'bottom',
-  // },
-
+  // INÍCIO DAS EXPLICAÇÕES CONCEITUAIS DA JEM
   {
-    target: '.teste-1',
-    content: 'Estas são as 5 seções da sua jornada: Fases, Ações, Emoções, Pensamentos e Pontos de Contato.',
+    target: '.barra1',
+    content: 'Fases da Jornada: A fase representa um grande momento na experiência do usuário. Ela atua como um agrupador sob o qual todas as outras interações acontecem.',
     placement: 'right',
   },
-
+  {
+    target: '.barra2',
+    content: 'Ações do Usuário: A ação é o que a pessoa efetivamente faz. As ações sempre ocorrem dentro de uma Fase e representam os passos práticos dados na jornada.',
+    placement: 'right',
+  },
+  {
+    target: '.barra3',
+    content: 'Emoções: Como o usuário se sente? Uma emoção sempre existe atrelada à realização de uma Ação, mapeando os altos e baixos da experiência.',
+    placement: 'right',
+  },
+  {
+    target: '.barra4',
+    content: 'Pensamentos: O que passa pela cabeça do usuário? Um pensamento pode existir durante a realização de uma ação para mapear expectativas, dúvidas ou reflexões.',
+    placement: 'right',
+  },
+  {
+    target: '.barra5',
+    content: 'Pontos de Contato: Onde essa interação acontece? Representa o canal ou meio (ex: aplicativo, site, loja física) que o usuário interage durante a Ação.',
+    placement: 'right',
+  },
+  // FIM DAS EXPLICAÇÕES CONCEITUAIS
   {
     target: 'body',
     content: 'Nesta área, você pode clicar para criar novos cards, ou arrastar e editar os existentes.',
@@ -116,7 +115,6 @@ const TOOL_STEPS = [
       }
     }
   },
-  
   {
     target: '#tourButton', 
     content: 'Clique neste botão sempre que quiser rever este tutorial.',
