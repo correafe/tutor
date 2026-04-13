@@ -109,7 +109,7 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
               {sessionPoints} <span style={{ fontSize: '24px', color: '#888' }}>/ {maxPoints}</span>
             </h1>
             
-            {/* NOVO: Feedback de pontos extras */}
+            {/* Feedback de pontos extras */}
             {pointsToAdd > 0 ? (
                <p style={{ color: '#4caf50', fontWeight: 'bold', marginTop: '10px', fontSize: '18px' }}>
                  +{pointsToAdd} pontos novos alcançados!
@@ -143,7 +143,11 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
             <button 
               onClick={() => {
                 if (pointsToAdd > 0) {
-                  addPoints(pointsToAdd, `Bateu seu recorde no nível ${scenarioType}`);
+                  const mensagemDePonto = scenarioType === 'pizza' 
+                    ? 'Completou a prática guiada básica' 
+                    : `Bateu seu recorde no nível ${scenarioType}`;
+                  
+                  addPoints(pointsToAdd, mensagemDePonto);
                   localStorage.setItem(maxPointsKey, sessionPoints);
                 }
 
@@ -194,11 +198,11 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
       }
     } else {
       if (option.correct) {
-        // Controle de pontuação apenas na primeira vez do tutorial básico (Pizza)
-        const pizzaKey = `completed_pizza_${userUid}`;
-        if (!localStorage.getItem(pizzaKey)) {
-          addPoints(10, 'Resposta correta no tutorial básico');
+        // Controla a pontuação visualmente, garantindo que pegue os 10 pontos por etapa certa
+        if (sessionPoints < (currentStepIndex + 1) * 10) {
+          setSessionPoints((currentStepIndex + 1) * 10);
         }
+        
         setFeedback('success');
         setFeedbackMessage(option.feedback);
         if (onCorrectAnswer) onCorrectAnswer(currentStep, currentStepIndex);
@@ -215,21 +219,8 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
     if (currentStepIndex < scenarioData.steps.length - 1) {
       setCurrentStepIndex(prev => prev + 1);
     } else {
-      // Salva que concluiu o nível atual independentemente de ser assessment ou não
-      const currentUserUid = user?.uid || 'anonimo';
-      
-      let nextLevel = 1;
-      if (scenarioType === 'pizza') nextLevel = 2;
-      if (scenarioType === 'streaming') nextLevel = 3;
-
-      const currentUnlocked = parseInt(localStorage.getItem(`unlockedTutorialLevel_${currentUserUid}`)) || 1;
-      
-      // Só sobe o nível se o próximo nível a liberar for maior que o que ele já tem
-      if (nextLevel > currentUnlocked) {
-        localStorage.setItem(`unlockedTutorialLevel_${currentUserUid}`, nextLevel.toString());
-      }
-      
-      onComplete();
+      // Agora a fase básica (pizza) também cai na tela de resultados
+      setViewState('results');
     }
   };
 
