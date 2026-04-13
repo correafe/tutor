@@ -938,12 +938,14 @@ const Tool = ({ }) => {
       const response = await axios.post(import.meta.env.VITE_BACKEND + `/${type}`, postData);
       
       const newId = response.data.id;
+      // Isolamos o ID gerado para poder usá-lo tanto na matriz quanto no dicionário de emojis
+      const generatedId = newId ? newId.toString() : Date.now().toString(); 
 
       setMatrix(prevMatrix => {
         const newMatrix = [...prevMatrix];
         const newCard = {
           type: type,
-          [`${type}_id`]: newId ? newId.toString() : Date.now().toString(),
+          [`${type}_id`]: generatedId,
           x: novoX,
           y: rowIndex === 0 ? 61 : rowIndex === 1 ? 231 : rowIndex === 2 ? 467 : rowIndex === 3 ? 571 : 741,
           width: 230,
@@ -961,6 +963,13 @@ const Tool = ({ }) => {
         newMatrix[rowIndex] = [...newMatrix[rowIndex], newCard];
         return newMatrix;
       });
+
+      if (type === 'emotion') {
+        setEmojis(prevEmojis => ({
+          ...prevEmojis,
+          [generatedId]: emojiTag
+        }));
+      }
 
     } catch (err) {
       console.error("Falha ao criar o novo card:", err);
