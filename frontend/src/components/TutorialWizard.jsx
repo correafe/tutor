@@ -100,7 +100,7 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
     return (
       <div className="wizard-overlay">
         <div className="wizard-box" style={{ textAlign: 'center' }}>
-          <h2>🏁 Avaliação Concluída!</h2>
+          <h2>Avaliação Concluída!</h2>
           <p style={{ fontSize: '18px', marginTop: '10px' }}>Você terminou o cenário: {scenarioData.scenarioMeta.name}</p>
           
           <div style={{ margin: '30px 0', padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '10px' }}>

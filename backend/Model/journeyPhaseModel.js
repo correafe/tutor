@@ -55,12 +55,14 @@ class JourneyPhaseModel {
     }
 
     try {
-      const [result] = await db.execute(
+      await db.execute(
         "UPDATE journeyphase SET posX = ?, description = ?, length = ? WHERE journeyphase_id = ?", 
         [posX, description, length, journeyphase_id]
       );
-      // Aqui usamos a mesma correção do Scenario: valida se realmente atualizou a linha!
-      return result.affectedRows > 0;
+      
+      // MUDE AQUI: Retorna true direto!
+      return true;
+      
     } catch (error) {
       console.error("Error updating journeyphase:", error);
       throw error;
@@ -90,7 +92,8 @@ class JourneyPhaseModel {
   async deleteByJourneyMapId(journeyMapId) {
     try {
       const [result] = await db.execute("DELETE FROM journeyphase WHERE journeyMap_id = ?", [journeyMapId]);
-      return result.affectedRows > 0;
+      // return result.affectedRows > 0;
+      return true;
     } catch (error) {
       console.error("Error deleting journeyphase:", error);
       throw error;
