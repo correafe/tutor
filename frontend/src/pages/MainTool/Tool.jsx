@@ -1650,22 +1650,21 @@ const handleLevelSelect = async (level) => {
               Todos os cards atuais deste mapa serão <b>excluídos permanentemente</b>. Deseja continuar?
             </p>
           </div>
-          <div style={{ display: "flex", justifyContent: "space-between", gap: "15px" }}>
+          <div style={{ display: "flex", justifyContent: "center" }}>
             <button 
-              className="buttonconf2" 
+              className="botaocancelname" 
               onClick={() => {
                 setShowClearConfirmModal(false);
                 setPendingLevelToLoad(null);
-                setShowLevelSelector(true); // Opcional: Reabre o seletor se ele cancelar
+                setShowLevelSelector(true); 
               }}
-              style={{ backgroundColor: '#ccc', color: '#333', flex: 1, border: "none", borderRadius: "5px", padding: "15px", fontSize: "18px", cursor: "pointer", fontWeight: "bold" }}
             >
               Cancelar
             </button>
             <button 
-              className="buttonconf" 
+              className="botaosavename" 
+              style={{ backgroundColor: '#f44336' }} /* Mantém apenas o vermelho do aviso de apagar */
               onClick={handleConfirmClearAndStart}
-              style={{ backgroundColor: '#f44336', color: 'white', flex: 1, border: "none", borderRadius: "5px", padding: "15px", fontSize: "18px", cursor: "pointer", fontWeight: "bold" }}
             >
               Sim, Apagar e Iniciar
             </button>
