@@ -467,12 +467,12 @@ const MapCreation = () => {
             </p>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <button className="botaocancelname" onClick={() => setShowMapCreationPrompt(false)}>Agora não</button>
             <button className="botaosavename" onClick={() => {
               setShowMapCreationPrompt(false);
               setIsTutorialMode(true); 
               setPickerVisible(true); 
             }}>Sim, vamos lá!</button>
-            <button className="botaocancelname" onClick={() => setShowMapCreationPrompt(false)}>Agora não</button>
           </div>
         </ModalName>
       )}
