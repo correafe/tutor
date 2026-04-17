@@ -1682,7 +1682,7 @@ const handleLevelSelect = async (level) => {
       {showTutorialInvite && (
         <ModalName trigger={showTutorialInvite} setTrigger={setShowTutorialInvite}>
           <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-            <h1 style={{ fontSize: "36px", marginTop: "30px", marginBottom: "20px", color: "#4caf50" }}>
+            <h1 style={{ fontSize: "36px", marginTop: "30px", marginBottom: "20px", color: "#333" }}>
               Tour Concluído!
             </h1>
             <p style={{ fontSize: "22px", marginBottom: "10px" }}>

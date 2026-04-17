@@ -83,7 +83,7 @@ const TOOL_STEPS = [
   {
     // Pega o 1º elemento que tem a classe .fases-container (Fases da Jornada)
     target: '.fases-container:nth-child(1)',
-    content: 'Fases da Jornada: A fase representa um grande momento na experiência do usuário. Ela atua como um agrupador sob o qual todas as outras interações acontecem.',
+    content: 'Fases da Jornada: A fase representa um grande momento na experiência do usuário. Representa a linha do tempo da jornada, seguindo a cronologia das ações do usuário em um cenário específico.',
     placement: 'right',
   },
   {
