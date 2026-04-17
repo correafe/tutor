@@ -1498,7 +1498,7 @@ const handleLevelSelect = async (level) => {
             />
           </div>
 
-          <div style={{ height: "61.9px", width: "100%" }}></div>
+<div style={{ height: "61.9px", width: "100%" }}></div>
           <div className="separator1" style={{ width: calculateTotalWidth(matrix) + 2400 }}></div>
           <Popup trigger={buttonPopup} setTrigger={setButtonPopup} setTextEdit={setTextEdit} setScenario={setScenario} style={{ borderRadius: "25px", padding: "20px", backgroundColor: "#f9f9f9", boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)" }}>
             {textEdit ? (
@@ -1541,7 +1541,9 @@ const handleLevelSelect = async (level) => {
                       <button
                         className="buttonconf"
                         onClick={handleSaveHouse}
-                        style={{ backgroundColor: '#4caf50', color: 'white', padding: '12px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '18px', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                        style={{ backgroundColor: '#4caf50', color: 'white', padding: '12px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '18px', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center', transition: '0.3s' }}
+                        onMouseEnter={(e) => e.target.style.backgroundColor = '#388e3c'}
+                        onMouseLeave={(e) => e.target.style.backgroundColor = '#4caf50'}
                       >
                         Salvar Tamanho
                       </button>
@@ -1551,14 +1553,18 @@ const handleLevelSelect = async (level) => {
                       <button
                         className="buttonconf2"
                         onClick={() => setEditedText('')}
-                        style={{ backgroundColor: '#f44336', color: 'white', padding: '12px 30px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '18px', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                        style={{ backgroundColor: '#f44336', color: 'white', padding: '12px 30px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '18px', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center', transition: '0.3s' }}
+                        onMouseEnter={(e) => e.target.style.backgroundColor = '#d32f2f'}
+                        onMouseLeave={(e) => e.target.style.backgroundColor = '#f44336'}
                       >
                         Limpar Texto
                       </button>
                       <button
                         className="buttonconf"
                         onClick={() => { handleTextSubmit(); setButtonPopup(false); setTextEdit(false) }}
-                        style={{ backgroundColor: '#4caf50', color: 'white', padding: '12px 40px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '18px', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                        style={{ backgroundColor: '#4caf50', color: 'white', padding: '12px 40px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '18px', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center', transition: '0.3s' }}
+                        onMouseEnter={(e) => e.target.style.backgroundColor = '#388e3c'}
+                        onMouseLeave={(e) => e.target.style.backgroundColor = '#4caf50'}
                       >
                         Salvar
                       </button>
