@@ -1409,7 +1409,7 @@ const handleLevelSelect = async (level) => {
           flexDirection: 'column', alignItems: 'center', justifyContent: 'center'
         }}>
           <div className="loading-spinner" style={{ borderColor: 'rgba(0,0,0,0.1)', borderTopColor: '#4CAF50', width: '80px', height: '80px', borderWidth: '8px' }}></div>
-          <h2 style={{ marginTop: '30px', color: '#333', fontFamily: 'Inter' }}>Baixando seu mapa.</h2>
+          <h2 style={{ marginTop: '30px', color: '#333', fontFamily: 'Inter' }}>Baixando seu mapa...</h2>
         </div>
       )}
 
