@@ -412,18 +412,21 @@ const Tool = ({ }) => {
   };
 
 
-  useEffect(() => {
-      // Lê a flag que acabamos de salvar no MapCreation
+    useEffect(() => {
       const tutorialFlag = localStorage.getItem('startToolTutorial');
-      const hasSeenToolTour = localStorage.getItem('hasSeenToolTour');
+      const user = JSON.parse(localStorage.getItem('user'));
+      
+      // CRIAMOS UMA CHAVE ÚNICA PARA CADA USUÁRIO
+      const hasSeenToolTourKey = `hasSeenToolTour_${user?.uid}`;
+      const hasSeenToolTour = localStorage.getItem(hasSeenToolTourKey);
 
       if (tutorialFlag === 'true') {
-        setDataLoaded(true); // Garante que a tela não fique branca
-        setRunToolTour(true); // INICIA O TOUR AUTOMATICAMENTE
+        setDataLoaded(true); 
+        setRunToolTour(true); 
       } 
-      else if (!hasSeenToolTour) {
+      else if (!hasSeenToolTour && user) { // Só roda se for um usuário válido e não tiver visto
         setRunToolTour(true);
-        localStorage.setItem('hasSeenToolTour', 'true');
+        localStorage.setItem(hasSeenToolTourKey, 'true');
       }
 
       fetchData();
@@ -1227,14 +1230,15 @@ const handleLevelSelect = async (level) => {
     
     const tutorialFlag = localStorage.getItem('startToolTutorial');
     const user = JSON.parse(localStorage.getItem('user'));
-    // Chave para saber se o usuário já fez a prática alguma vez na vida
     const hasCompletedAnyPractice = localStorage.getItem(`maxPoints_pizza_${user?.uid}`);
+    
+    // PEGANDO A CHAVE ÚNICA DO USUÁRIO DE NOVO
+    const hasSeenToolTourKey = `hasSeenToolTour_${user?.uid}`;
 
     if (tutorialFlag === 'true') {
       localStorage.removeItem('startToolTutorial');
-      localStorage.setItem('hasSeenToolTour', 'true');
+      localStorage.setItem(hasSeenToolTourKey, 'true'); // SALVA A CHAVE COM O UID AQUI
       
-      // Se ele ainda não completou nenhuma prática, mostra o convite!
       if (!hasCompletedAnyPractice) {
         setShowTutorialInvite(true);
       }
@@ -1678,7 +1682,6 @@ const handleLevelSelect = async (level) => {
         </ModalName>
       )}
 
-      {/* NOVO MODAL DE CONVITE PARA O TUTORIAL */}
       {showTutorialInvite && (
         <ModalName trigger={showTutorialInvite} setTrigger={setShowTutorialInvite}>
           <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>

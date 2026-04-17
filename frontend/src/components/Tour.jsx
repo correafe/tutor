@@ -78,40 +78,31 @@ const TOOL_STEPS = [
     content: 'Pronto para exportar? Clique aqui para fazer o Download do seu mapa de jornada.',
     placement: 'bottom',
   },
-  // INÍCIO DAS EXPLICAÇÕES CONCEITUAIS DA JEM
-  // INÍCIO DAS EXPLICAÇÕES CONCEITUAIS DA JEM
   {
-    // Pega o 1º elemento que tem a classe .fases-container (Fases da Jornada)
     target: '.fases-container:nth-child(1)',
     content: 'Fases da Jornada: A fase representa um grande momento na experiência do usuário. Representa a linha do tempo da jornada, seguindo a cronologia das ações do usuário em um cenário específico.',
     placement: 'right',
   },
   {
-    // Pega o 3º elemento (o 2º é a div separator1 que fica no meio)
     target: '.fases-container:nth-child(3)',
     content: 'Ações do Usuário: A ação é o que a pessoa efetivamente faz. As ações sempre ocorrem dentro de uma Fase e representam os passos práticos dados na jornada.',
     placement: 'right',
   },
   {
-    // Pega o 5º elemento (Emoções)
     target: '.fases-container:nth-child(5)',
     content: 'Emoções: Como o usuário se sente? Uma emoção sempre existe atrelada à realização de uma Ação, mapeando os altos e baixos da experiência.',
     placement: 'right',
   },
   {
-    // Pega o 7º elemento (Pensamentos)
     target: '.fases-container:nth-child(7)',
     content: 'Pensamentos: O que passa pela cabeça do usuário? Um pensamento pode existir durante a realização de uma ação para mapear expectativas, dúvidas ou reflexões.',
     placement: 'right',
   },
   {
-    // Pega o 9º elemento (Pontos de Contato)
     target: '.fases-container:nth-child(9)',
     content: 'Pontos de Contato: Onde essa interação acontece? Representa o canal ou meio (ex: aplicativo, site, loja física) que o usuário interage durante a Ação.',
     placement: 'right',
   },
-  // FIM DAS EXPLICAÇÕES CONCEITUAIS
-  // FIM DAS EXPLICAÇÕES CONCEITUAIS
   {
     target: 'body',
     content: 'Nesta área, você pode clicar para criar novos cards, ou arrastar e editar os existentes.',

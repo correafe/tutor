@@ -109,15 +109,19 @@ const MapCreation = () => {
 
     fetchUserMaps();
 
-    const hasSeenTour = localStorage.getItem('hasSeenDashboardTour');
-    if (!hasSeenTour) {
-      setShowTourPrompt(true); 
-    }
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+    
+    if (currentUser && currentUser.uid) {
+      const hasSeenTour = localStorage.getItem(`hasSeenDashboardTour_${currentUser.uid}`);
+      if (!hasSeenTour) {
+        setShowTourPrompt(true); 
+      }
 
-    const hasSeenIntro = localStorage.getItem('hasSeenIntro');
-    if (!hasSeenIntro) {
-      setShowIntroPopup(true); 
-      localStorage.setItem('hasSeenIntro', 'true');
+      const hasSeenIntro = localStorage.getItem(`hasSeenIntro_${currentUser.uid}`);
+      if (!hasSeenIntro) {
+        setShowIntroPopup(true); 
+        localStorage.setItem(`hasSeenIntro_${currentUser.uid}`, 'true');
+      }
     }
 
   }, [reloadMaps]); 
@@ -290,9 +294,12 @@ const MapCreation = () => {
   }, [filterText]);
 
   const startTour = () => {
+    const currentUser = JSON.parse(localStorage.getItem('user'));
     setShowTourPrompt(false);
     setRunDashboardTour(true);
-    localStorage.setItem('hasSeenDashboardTour', 'true');
+    if (currentUser && currentUser.uid) {
+      localStorage.setItem(`hasSeenDashboardTour_${currentUser.uid}`, 'true');
+    }
   };
 
   const stopTour = () => {
@@ -436,7 +443,15 @@ const MapCreation = () => {
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <button className="botaosavename" onClick={startTour}>Sim, por favor!</button>
-            <button className="botaocancelname" onClick={() => setShowTourPrompt(false)}>Agora não</button>
+            <button className="botaocancelname" onClick={() => {
+              const currentUser = JSON.parse(localStorage.getItem('user'));
+              if (currentUser && currentUser.uid) {
+                localStorage.setItem(`hasSeenDashboardTour_${currentUser.uid}`, 'true');
+              }
+              setShowTourPrompt(false);
+            }}>
+              Agora não
+            </button>
           </div>
         </ModalName>
       )}
