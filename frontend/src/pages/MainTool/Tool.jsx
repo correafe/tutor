@@ -1503,9 +1503,9 @@ const handleLevelSelect = async (level) => {
                     onChange={(e) => setEditedText(e.target.value)}
                     style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}
                   />
-                  <div className="separarbotoes" style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                  <div className="separarbotoes" style={{ marginTop: '20px', display: 'flex', justifyContent: 'space-between', width: '100%', gap: '20px' }}>
                     
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
                       <input
                         type="number"
                         id="houseCount"
@@ -1515,39 +1515,38 @@ const handleLevelSelect = async (level) => {
                         step={1}
                         className="houseInput"
                         style={{
-                          width: '100px',
-                          height: '60px',
+                          width: '80px',
+                          height: '50px',
                           borderRadius: '5px',
                           border: '1px solid #ccc',
                           marginRight: '10px',
                           padding: '5px',
-                          fontSize: '28px',
-                          textAlign: 'center',
-                          position: 'relative'
+                          fontSize: '24px',
+                          textAlign: 'center'
                         }}
                       />
-                      <p style={{ margin: '0', fontSize: '22px', color: '#333', marginRight: '15px' }}>Card(s)</p>
+                      <p style={{ margin: '0', fontSize: '20px', color: '#333', marginRight: '15px' }}>Card(s)</p>
                       <button
-                        className="botaosavename"
+                        className="buttonconf"
                         onClick={handleSaveHouse}
-                        style={{ width: '180px', margin: '0' }}
+                        style={{ backgroundColor: '#4caf50', color: 'white', padding: '12px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '18px', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                       >
                         Salvar Tamanho
                       </button>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px', flex: 1, justifyContent: 'flex-end' }}>
                       <button
-                        className="botaocancelname"
+                        className="buttonconf2"
                         onClick={() => setEditedText('')}
-                        style={{ margin: '0' }}
+                        style={{ backgroundColor: '#f44336', color: 'white', padding: '12px 30px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '18px', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                       >
-                        Limpar texto
+                        Limpar Texto
                       </button>
                       <button
-                        className="botaosavename"
+                        className="buttonconf"
                         onClick={() => { handleTextSubmit(); setButtonPopup(false); setTextEdit(false) }}
-                        style={{ margin: '0' }}
+                        style={{ backgroundColor: '#4caf50', color: 'white', padding: '12px 40px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '18px', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                       >
                         Salvar
                       </button>
