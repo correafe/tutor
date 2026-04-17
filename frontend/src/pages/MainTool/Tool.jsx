@@ -1683,7 +1683,7 @@ const handleLevelSelect = async (level) => {
         <ModalName trigger={showTutorialInvite} setTrigger={setShowTutorialInvite}>
           <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
             <h1 style={{ fontSize: "36px", marginTop: "30px", marginBottom: "20px", color: "#4caf50" }}>
-              🎓 Tour Concluído!
+              Tour Concluído!
             </h1>
             <p style={{ fontSize: "22px", marginBottom: "10px" }}>
               Agora você já conhece a interface da nossa ferramenta.
@@ -1694,19 +1694,19 @@ const handleLevelSelect = async (level) => {
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <button 
-              className="botaosavename" 
-              onClick={() => {
-                setShowTutorialInvite(false);
-                handleOpenLevelSelector(); // Abre a tela de escolher o nível (Pizza, etc)
-              }}
-            >
-              Sim, começar!
-            </button>
-            <button 
               className="botaocancelname" 
               onClick={() => setShowTutorialInvite(false)}
             >
               Não, obrigado
+            </button>
+                        <button 
+              className="botaosavename" 
+              onClick={() => {
+                setShowTutorialInvite(false);
+                handleOpenLevelSelector();
+              }}
+            >
+              Sim, começar!
             </button>
           </div>
         </ModalName>
