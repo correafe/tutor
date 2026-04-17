@@ -442,7 +442,6 @@ const MapCreation = () => {
             </p>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <button className="botaosavename" onClick={startTour}>Sim, por favor!</button>
             <button className="botaocancelname" onClick={() => {
               const currentUser = JSON.parse(localStorage.getItem('user'));
               if (currentUser && currentUser.uid) {
@@ -452,6 +451,7 @@ const MapCreation = () => {
             }}>
               Agora não
             </button>
+            <button className="botaosavename" onClick={startTour}>Sim, por favor!</button>
           </div>
         </ModalName>
       )}
