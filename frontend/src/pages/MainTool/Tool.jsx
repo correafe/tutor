@@ -1526,28 +1526,28 @@ const handleLevelSelect = async (level) => {
                           position: 'relative'
                         }}
                       />
-                      <p style={{ margin: '0', fontSize: '22px', color: '#333' }}>Card(s)</p>
+                      <p style={{ margin: '0', fontSize: '22px', color: '#333', marginRight: '15px' }}>Card(s)</p>
                       <button
-                        className="botaosavetamanho"
+                        className="botaosavename"
                         onClick={handleSaveHouse}
-                        style={{ backgroundColor: '#4caf50', color: 'white', padding: '10px 20px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '18px', marginLeft: '10px', width: '100px', height: "60px", display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                        style={{ width: '180px', margin: '0' }}
                       >
                         Salvar Tamanho
                       </button>
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                       <button
-                        className="buttonconf2"
+                        className="botaocancelname"
                         onClick={() => setEditedText('')}
-                        style={{ backgroundColor: '#f44336', color: 'white', padding: '10px 40px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '22px', marginRight: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                        style={{ margin: '0' }}
                       >
                         Limpar texto
                       </button>
                       <button
-                        className="buttonconf"
+                        className="botaosavename"
                         onClick={() => { handleTextSubmit(); setButtonPopup(false); setTextEdit(false) }}
-                        style={{ backgroundColor: '#4caf50', color: 'white', padding: '10px 40px', borderRadius: '5px', border: 'none', cursor: 'pointer', fontSize: '22px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                        style={{ margin: '0' }}
                       >
                         Salvar
                       </button>
