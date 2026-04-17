@@ -1652,13 +1652,13 @@ const handleLevelSelect = async (level) => {
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <button 
-              className="botaosavename" 
+              className="botaocancelname" 
               onClick={handleConfirmClearAndStart}
             >
               Sim, Apagar
             </button>
             <button 
-              className="botaocancelname" 
+              className="botaosavename" 
               onClick={() => {
                 setShowClearConfirmModal(false);
                 setPendingLevelToLoad(null);
