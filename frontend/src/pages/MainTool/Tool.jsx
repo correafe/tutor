@@ -109,6 +109,7 @@ const Tool = ({ }) => {
   const [showRankingModal, setShowRankingModal] = useState(false);
 
   const [isExporting, setIsExporting] = useState(false);
+  const [showTutorialInvite, setShowTutorialInvite] = useState(false); 
 
   const location = useLocation();
   const isTutorialMode = location.state?.startTour;
@@ -1225,11 +1226,18 @@ const handleLevelSelect = async (level) => {
     setRunToolTour(false);
     
     const tutorialFlag = localStorage.getItem('startToolTutorial');
+    const user = JSON.parse(localStorage.getItem('user'));
+    // Chave para saber se o usuário já fez a prática alguma vez na vida
+    const hasCompletedAnyPractice = localStorage.getItem(`maxPoints_pizza_${user?.uid}`);
 
     if (tutorialFlag === 'true') {
       localStorage.removeItem('startToolTutorial');
       localStorage.setItem('hasSeenToolTour', 'true');
       
+      // Se ele ainda não completou nenhuma prática, mostra o convite!
+      if (!hasCompletedAnyPractice) {
+        setShowTutorialInvite(true);
+      }
     }
   };
 
@@ -1665,6 +1673,40 @@ const handleLevelSelect = async (level) => {
               }}
             >
               Cancelar
+            </button>
+          </div>
+        </ModalName>
+      )}
+
+      {/* NOVO MODAL DE CONVITE PARA O TUTORIAL */}
+      {showTutorialInvite && (
+        <ModalName trigger={showTutorialInvite} setTrigger={setShowTutorialInvite}>
+          <div style={{ textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+            <h1 style={{ fontSize: "36px", marginTop: "30px", marginBottom: "20px", color: "#4caf50" }}>
+              🎓 Tour Concluído!
+            </h1>
+            <p style={{ fontSize: "22px", marginBottom: "10px" }}>
+              Agora você já conhece a interface da nossa ferramenta.
+            </p>
+            <p style={{ fontSize: "20px", marginBottom: "40px", color: "#666" }}>
+              Gostaria de iniciar a <b>Prática Guiada</b> para aprender na prática como preencher as informações de um mapa e ganhar pontos?
+            </p>
+          </div>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <button 
+              className="botaosavename" 
+              onClick={() => {
+                setShowTutorialInvite(false);
+                handleOpenLevelSelector(); // Abre a tela de escolher o nível (Pizza, etc)
+              }}
+            >
+              Sim, começar!
+            </button>
+            <button 
+              className="botaocancelname" 
+              onClick={() => setShowTutorialInvite(false)}
+            >
+              Não, obrigado
             </button>
           </div>
         </ModalName>
