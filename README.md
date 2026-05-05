@@ -1,6 +1,8 @@
-Aqui está o texto atualizado com a sua imagem! 
+Entendi o que aconteceu! O ícone de imagem quebrada aparece geralmente por dois motivos: ou o repositório é privado (e aí o GitHub bloqueia links externos de `raw.githubusercontent.com` por segurança), ou o link com aquele código de versão longo acabou expirando ou não renderizando bem na pré-visualização.
 
-Como você me mandou o link da página do GitHub (`/blob/`), eu fiz a conversão para o link direto da imagem (`raw.githubusercontent.com`), que é o formato necessário para que a imagem apareça corretamente no `README.md`.
+Como a imagem já está salva dentro da pasta do seu próprio repositório, a maneira **mais segura, elegante e garantida** de fazer ela aparecer no `README.md` é usar o **caminho relativo**. Assim, o GitHub puxa a imagem diretamente da sua pasta local.
+
+Aqui está o código completo corrigido (alterei o `src` da imagem para `./frontend/src/assets/mapa_mapa_de_jornada.png`):
 
 ***
 
@@ -18,15 +20,11 @@ Você pode acessar a versão adaptada **com gamificação** diretamente pelo lin
 - **Hospedagem / Infraestrutura**: O frontend está implantado na **Vercel** para garantir performance e entrega contínua, enquanto o backend e o banco de dados estão hospedados na **DigitalOcean**.
 
 <div align="center">
-  <img src="[https://raw.githubusercontent.com/correafe/tutor/da30196299f5025b5ca8718a2536b297d480ee78/frontend/src/assets/mapa_mapa_de_jornada.png](https://raw.githubusercontent.com/correafe/tutor/da30196299f5025b5ca8718a2536b297d480ee78/frontend/src/assets/mapa_mapa_de_jornada.png)" alt="Exemplo de um Mapa de Jornada do Usuário na ferramenta JEM" /><br>
+  <img src="./frontend/src/assets/mapa_mapa_de_jornada.png" alt="Exemplo de um Mapa de Jornada do Usuário na ferramenta JEM" /><br>
   <b>Figura 1. Exemplo de um Mapa de Jornada do Usuário na ferramenta JEM.</b>
 </div>
 
 ---
-
-Esperamos que você aproveite o JourneyEasyMap! Para dúvidas ou mais informações, entre em contato com a equipe de desenvolvimento:
-
-✉ felipe.correa@sou.unifal-mg.edu.br
 
 Esperamos que você aproveite o JourneyEasyMap! Para dúvidas ou mais informações, entre em contato com a equipe de desenvolvimento:
 
