@@ -11,6 +11,7 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
   const [feedbackMessage, setFeedbackMessage] = useState("");
   
   const [sessionPoints, setSessionPoints] = useState(0);
+  const [userAnswers, setUserAnswers] = useState([]); // <-- NOVO: Estado para salvar as respostas
 
   // Garante que a pontuação fique vinculada ao usuário atual
   const user = JSON.parse(localStorage.getItem('user'));
@@ -99,11 +100,11 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
 
     return (
       <div className="wizard-overlay">
-        <div className="wizard-box" style={{ textAlign: 'center' }}>
+        <div className="wizard-box" style={{ textAlign: 'center', maxWidth: '600px' }}>
           <h2>Avaliação Concluída!</h2>
           <p style={{ fontSize: '18px', marginTop: '10px' }}>Você terminou o cenário: {scenarioData.scenarioMeta.name}</p>
           
-          <div style={{ margin: '30px 0', padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '10px' }}>
+          <div style={{ margin: '20px 0', padding: '20px', backgroundColor: '#f5f5f5', borderRadius: '10px' }}>
             <p style={{ fontSize: '20px', marginBottom: '10px' }}>Sua Pontuação:</p>
             <h1 style={{ fontSize: '48px', color: isPerfect ? '#4caf50' : '#f5a623', margin: '0' }}>
               {sessionPoints} <span style={{ fontSize: '24px', color: '#888' }}>/ {maxPoints}</span>
@@ -121,18 +122,52 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
             )}
           </div>
 
-          <p style={{ fontSize: '16px', marginBottom: '20px' }}>
+          <p style={{ fontSize: '16px', marginBottom: '15px' }}>
             {isPerfect 
               ? "Incrível! Você fez as melhores escolhas possíveis e gabaritou o mapa!" 
               : "Você foi bem, mas ainda pode melhorar algumas escolhas para alcançar a pontuação máxima."}
           </p>
 
-          <div className="wizard-options" style={{ display: 'flex', flexDirection: 'row', gap: '15px', marginTop: '20px' }}>
+          {/* NOVO: Resumo de Acertos e Erros (Aparece apenas se não for a prática da pizza) */}
+          {isAssessmentMode && userAnswers.length > 0 && (
+            <div style={{ marginTop: '15px', marginBottom: '20px', maxHeight: '220px', overflowY: 'auto', textAlign: 'left', padding: '15px', backgroundColor: '#ffffff', border: '1px solid #e0e0e0', borderRadius: '8px', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.05)' }}>
+              <h3 style={{ fontSize: '16px', marginBottom: '15px', color: '#333', borderBottom: '2px solid #eee', paddingBottom: '5px' }}>Resumo das suas escolhas:</h3>
+              {scenarioData.steps.map((step, index) => {
+                const answer = userAnswers[index];
+                if (!answer) return null;
+                
+                const isCorrect = answer.points === 10;
+                const isPartial = answer.points > 0 && answer.points < 10;
+                const pointsColor = isCorrect ? '#4caf50' : (isPartial ? '#ff9800' : '#f44336');
+
+                return (
+                  <div key={step.id} style={{ marginBottom: '12px', paddingBottom: '12px', borderBottom: '1px solid #f0f0f0' }}>
+                    <div style={{ fontWeight: 'bold', color: '#555', fontSize: '13px' }}>{step.section}</div>
+                    <div style={{ fontSize: '13px', margin: '4px 0' }}>{step.context}</div>
+                    <div style={{ fontSize: '14px' }}>
+                      <span style={{ fontWeight: 'bold', color: pointsColor }}>
+                        {isCorrect ? '✅ Acertou (10 pts)' : (isPartial ? `⚠️ Parcial (${answer.points} pts)` : '❌ Errou (0 pts)')}
+                      </span>
+                      {!isCorrect && (
+                        <div style={{ color: '#666', marginTop: '6px', fontSize: '13px', backgroundColor: '#f9f9f9', padding: '8px', borderRadius: '5px' }}>
+                          <span style={{ color: '#d32f2f', fontWeight: '500' }}>Sua escolha:</span> {answer.text} <br/>
+                          <span style={{ color: '#388e3c', fontWeight: '500' }}>A ideal era:</span> {step.options.find(opt => opt.points === 10)?.text}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+
+          <div className="wizard-options" style={{ display: 'flex', flexDirection: 'row', gap: '15px', marginTop: '10px' }}>
             {!isPerfect && (
               <button 
                 onClick={() => {
                   setSessionPoints(0);
                   setCurrentStepIndex(0);
+                  setUserAnswers([]); // Limpa as respostas para tentar novamente
                   setViewState('quiz');
                 }}
                 style={{ backgroundColor: '#ff9800', color: '#fff', border: 'none', flex: 1, padding: '15px', borderRadius: '8px', fontSize: '16px', fontWeight: 'bold' }}
@@ -175,6 +210,15 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
   }
 
   const handleOptionClick = (option) => {
+    // NOVO: Salva a resposta dada pelo usuário no momento do clique (apenas a primeira tentativa de cada passo)
+    setUserAnswers(prev => {
+      const newAnswers = [...prev];
+      if (!newAnswers[currentStepIndex]) {
+        newAnswers[currentStepIndex] = option;
+      }
+      return newAnswers;
+    });
+
     if (isAssessmentMode) {
       const pointsScored = option.points !== undefined ? option.points : (option.correct ? 10 : 0);
       setSessionPoints(prev => prev + pointsScored);
@@ -198,7 +242,6 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
       }
     } else {
       if (option.correct) {
-        // Controla a pontuação visualmente, garantindo que pegue os 10 pontos por etapa certa
         if (sessionPoints < (currentStepIndex + 1) * 10) {
           setSessionPoints((currentStepIndex + 1) * 10);
         }
@@ -219,7 +262,6 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
     if (currentStepIndex < scenarioData.steps.length - 1) {
       setCurrentStepIndex(prev => prev + 1);
     } else {
-      // Agora a fase básica (pizza) também cai na tela de resultados
       setViewState('results');
     }
   };
