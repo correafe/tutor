@@ -128,8 +128,8 @@ const TutorialWizard = ({ onClose, onComplete, onCorrectAnswer, onStartTutorial,
               : "Você foi bem, mas ainda pode melhorar algumas escolhas para alcançar a pontuação máxima."}
           </p>
 
-          {/* NOVO: Resumo de Acertos e Erros (Aparece apenas se não for a prática da pizza) */}
-          {isAssessmentMode && userAnswers.length > 0 && (
+          {/* ALTERADO: Resumo de Acertos e Erros (Aparece APENAS no cenário de STREAMING) */}
+          {scenarioType === 'streaming' && userAnswers.length > 0 && (
             <div style={{ marginTop: '15px', marginBottom: '20px', maxHeight: '220px', overflowY: 'auto', textAlign: 'left', padding: '15px', backgroundColor: '#ffffff', border: '1px solid #e0e0e0', borderRadius: '8px', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.05)' }}>
               <h3 style={{ fontSize: '16px', marginBottom: '15px', color: '#333', borderBottom: '2px solid #eee', paddingBottom: '5px' }}>Resumo das suas escolhas:</h3>
               {scenarioData.steps.map((step, index) => {
