@@ -446,7 +446,7 @@ const MapCreation = () => {
         </button>
       </div>
 
-      {showIntroPopup && <IntroPopup onClose={() => setShowIntroPopup(false)} />}
+      {/* {showIntroPopup && <IntroPopup onClose={() => setShowIntroPopup(false)} />} */}
       
       {showTourPrompt && (
         <ModalName trigger={showTourPrompt} setTrigger={setShowTourPrompt}>
