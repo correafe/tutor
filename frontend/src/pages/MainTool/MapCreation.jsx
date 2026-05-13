@@ -16,6 +16,7 @@ import teste4 from '../../assets/teste4.png';
 import teste5 from '../../assets/teste5.png';
 import { Trophy } from 'lucide-react';
 import RankingModal from '../../components/RankingModal';
+import { AuthContext } from '../../contexts/AuthContext';
 
 import fundomapas from "../../assets/Fundomapas.png";
 import "./MapCreation.css";
@@ -46,7 +47,23 @@ const MapCreation = () => {
   const [newMapNameUpdate, setNewMapNameUpdate] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
-  const usuario = JSON.parse(localStorage.getItem('user'));
+  
+  
+  // 1. Puxamos o usuário e o estado de "carregando" do Contexto
+  const { user: usuario, loading } = useContext(AuthContext);
+
+  // 2. Criamos uma tela de espera enquanto o Firebase não responde se o usuário está logado
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#E6E6E6' }}>
+        <h2>Carregando seu perfil...</h2>
+      </div>
+    );
+  }
+
+  // Se por acaso passar daqui e não tiver usuário, não renderiza a tela (vai ser jogado pro login)
+  if (!usuario) return null;
+
   const [isPickerVisible, setPickerVisible] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [modalUpdate, setmodalUpdate] = useState(false);
@@ -326,7 +343,7 @@ const MapCreation = () => {
         <img src="https://github.com/luca-ferro/imagestest/blob/main/mascote.png?raw=true" style={{ width: "50px", marginRight: "20px" }} alt="mascote"></img>
         <p>JEM</p>
         <div className="textoboas" style={{ flex: "1" }}>
-          <h1 style={{ margin: "0", textAlign: "center" }}>Olá {usuario.displayName ? usuario.displayName : ""}, seja muito bem-vindo(a)!</h1>
+          <h1 style={{ margin: "0", textAlign: "center" }}>Olá {usuario?.displayName || ""}, seja muito bem-vindo(a)!</h1>
         </div>
         
         <button 

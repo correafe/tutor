@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from '../../contexts/AuthContext'; // <-- Importe o Contexto
 
 const ProtectedRoute = ({ children }) => {
   const { id_mapa } = useParams();
-  const user = JSON.parse(localStorage.getItem('user'));
+  
+  // Pegamos o user e o loading diretamente do Contexto
+  const { user, loading: authLoading } = useContext(AuthContext);
   const [isAuthorized, setIsAuthorized] = useState(null);
 
   useEffect(() => {
     const checkPermission = async () => {
+      // Só faz a verificação se o Firebase já terminou de carregar (authLoading === false)
+      if (authLoading) return; 
+
       if (user && user.uid) {
         try {
           const response = await axios.get(`${import.meta.env.VITE_BACKEND}/journeyMap/${id_mapa}/owner`);
@@ -28,10 +34,15 @@ const ProtectedRoute = ({ children }) => {
     };
 
     checkPermission();
-  }, [id_mapa, user]);
+  }, [id_mapa, user, authLoading]); // Adicionamos o authLoading como dependência
 
-  if (isAuthorized === null) {
-    return <div>Loading...</div>;
+  // Se o Firebase está pensando OU se nossa API está checando permissão, mostra Loading
+  if (authLoading || isAuthorized === null) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <h2>Verificando permissões...</h2>
+      </div>
+    );
   }
 
   return isAuthorized ? children : <Navigate to="/login" />;
