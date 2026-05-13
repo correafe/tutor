@@ -6,7 +6,7 @@ import ModalName from "../../components/ModalName";
 import { auth } from '../../services/firebase';
 import { signOut } from 'firebase/auth';
 import { DashboardTour } from '../../components/Tour'; 
-import IntroPopup from "./IntroPopup"; 
+//import IntroPopup from "./IntroPopup"; 
 import FAQContent from "../../components/FAQContent";
 import { ScoreContext } from '../../contexts/ScoreContext';
 import teste1 from '../../assets/teste1.png';
