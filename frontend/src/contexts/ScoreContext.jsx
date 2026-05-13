@@ -23,9 +23,13 @@ export const ScoreProvider = ({ children }) => {
           const userInDb = rankingData.find(r => r.firebase_uid === user.uid);
           
           if (userInDb) {
-            // Se achou no banco, essa é a pontuação verdadeira (Sincroniza entre PCs)
-            setScore(Number(userInDb.score));
-            localStorage.setItem(`userScore_${user.uid}`, userInDb.score);
+            // Se achou no banco, compara com o local para evitar perdas se um POST for cancelado
+            const dbScore = Number(userInDb.score);
+            const localScore = Number(localStorage.getItem(`userScore_${user.uid}`)) || 0;
+            const actualScore = Math.max(dbScore, localScore); // Mantém sempre a maior pontuação
+            
+            setScore(actualScore);
+            localStorage.setItem(`userScore_${user.uid}`, actualScore);
           } else {
             // Se não achou no banco (conta novinha), tenta ver se tem algo salvo localmente
             const savedScore = localStorage.getItem(`userScore_${user.uid}`);

@@ -5,7 +5,7 @@ import Joyride, { STATUS } from 'react-joyride';
 const DASHBOARD_STEPS = [
   {
     target: 'body',
-    content: 'Bem-vindo ao JEM! Vamos fazer um tour pelas funcionalidades.',
+    content: 'Vamos fazer um tour pelas funcionalidades.',
     placement: 'center',
   },
   {
@@ -38,12 +38,12 @@ const DASHBOARD_STEPS = [
   },
   {
     target: '.botaologout',
-    content: 'Aqui você pode encerrar sua sessão atual para sair ou acessar outra conta.',
+    content: 'Aqui você pode encerrar sua sessão atual ou acessar outra conta.',
     placement: 'bottom',
   },
   {
     target: '#dashboard-tour-btn',
-    content: 'Se tiver dúvidas ou quiser rever este tutorial, basta clicar neste botão.',
+    content: 'Se quiser rever este tutorial, basta clicar neste botão.',
     placement: 'bottom',
   },
 ];
@@ -71,7 +71,7 @@ const TOOL_STEPS = [
   },
   {
     target: '#tutorialButton', 
-    content: 'Clique aqui para abrir a "Prática Guiada", onde você aprende a usar a ferramenta passo a passo.',
+    content: 'Clique aqui para abrir a "Prática Guiada", onde você aprende a criar mapas passo a passo.',
   },
   {
     target: '#aboutButton', 

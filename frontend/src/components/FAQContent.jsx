@@ -32,7 +32,7 @@ const FAQContent = () => {
       <details style={{ marginBottom: "15px", cursor: "pointer" }}>
         <summary style={{ fontSize: "20px", fontWeight: "bold", color: "#333" }}>Como adiciono novos cards no mapa?</summary>
         <p style={{ marginTop: "10px", fontSize: "16px", lineHeight: "1.5", color: "#555" }}>
-          Passe o mouse sobre as faixas cinzas vazias do seu mapa e clique no botão verde <strong>"+"</strong> que aparecerá para criar um novo card naquela posição. Para a linha de "Emoções", ao clicar no botão, um menu se abrirá para você escolher o emoji que melhor representa o momento.
+          Passe o mouse sobre as faixas cinzas vazias do seu mapa e clique no botão <strong>"+"</strong> que aparecerá para criar um novo card naquela posição. Para a linha de "Emoções", ao clicar no botão, um menu se abrirá para você escolher o emoji que melhor representa o momento.
         </p>
       </details>
 

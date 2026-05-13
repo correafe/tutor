@@ -438,7 +438,7 @@ const MapCreation = () => {
               Boas-vindas ao JEM!
             </h1>
             <p style={{ fontSize: "24px", marginBottom: "40px" }}>
-              Percebemos que é sua primeira vez aqui. Você gostaria de fazer um tour rápido pela ferramenta?
+              Percebemos que é sua primeira vez aqui. Você gostaria de fazer um tour pela ferramenta?
             </p>
           </div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>

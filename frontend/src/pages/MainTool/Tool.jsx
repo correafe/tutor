@@ -1302,7 +1302,9 @@ const handleLevelSelect = async (level) => {
     }
 
       toast.success('Tutorial concluído! Mapa e Cenário salvos.');
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
 
     } catch (error) {
       console.error("Erro ao completar tutorial:", error);
