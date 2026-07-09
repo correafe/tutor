@@ -13,17 +13,36 @@
 
 // module.exports = pool;
 
+// require('dotenv').config();
+// const mysql = require('mysql2/promise'); // ou apenas 'mysql2' dependendo do que usou
+
+// const pool = mysql.createPool({
+//     host: 'localhost',
+//     user: process.env.DB_USER || 'root',
+//     password: process.env.DB_PASSWORD || '',
+//     database: 'mapjourney',
+//     waitForConnections: true,
+//     connectionLimit: 10,
+//     queueLimit: 0
+// });
+
+// module.exports = pool;
+
 require('dotenv').config();
-const mysql = require('mysql2/promise'); // ou apenas 'mysql2' dependendo do que usou
+const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool({
-    host: 'localhost',
-    user: process.env.DB_USER || 'root',
-    password: process.env.DB_PASSWORD || '',
-    database: 'mapjourney',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    port: process.env.DB_PORT,
     waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
+    connectionLimit: 2,
+    queueLimit: 0,
+    ssl: {
+        minVersion: 'TLSv1.2',
+        rejectUnauthorized: false
+    }
 });
-
 module.exports = pool;
