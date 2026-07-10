@@ -16,7 +16,7 @@ export const ScoreProvider = ({ children }) => {
         
         try {
           // 1. Busca a pontuação OFICIAL do backend na nuvem
-          const response = await fetch('https://tutor-api-jem.duckdns.org/ranking');
+          const response = await fetch('/api/ranking');
           const rankingData = await response.json();
           
           // 2. Procura o usuário logado na lista do ranking
@@ -60,7 +60,7 @@ export const ScoreProvider = ({ children }) => {
     
     // Só envia se o utilizador estiver logado e a pontuação for maior que 0
     if (user && score > 0) {
-      fetch('https://tutor-api-jem.duckdns.org/ranking', {
+      fetch('/api/ranking', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

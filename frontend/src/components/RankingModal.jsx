@@ -35,7 +35,7 @@ const RankingModal = ({ onClose }) => {
 
     const fetchRanking = async () => {
       try {
-        const response = await fetch('https://tutor-api-jem.duckdns.org/ranking');
+        const response = await fetch('/api/ranking');
         const data = await response.json();
         
         const formattedRanking = data.map(user => ({
