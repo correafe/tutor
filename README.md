@@ -1,9 +1,3 @@
-Entendi o que aconteceu! O ícone de imagem quebrada aparece geralmente por dois motivos: ou o repositório é privado (e aí o GitHub bloqueia links externos de `raw.githubusercontent.com` por segurança), ou o link com aquele código de versão longo acabou expirando ou não renderizando bem na pré-visualização.
-
-Como a imagem já está salva dentro da pasta do seu próprio repositório, a maneira **mais segura, elegante e garantida** de fazer ela aparecer no `README.md` é usar o **caminho relativo**. Assim, o GitHub puxa a imagem diretamente da sua pasta local.
-
-Aqui está o código completo corrigido (alterei o `src` da imagem para `./frontend/src/assets/mapa_mapa_de_jornada.png`):
-
 ***
 
 # **JourneyEasyMap (JEM)** <img src="[https://raw.githubusercontent.com/GuilhermeHenq/Journey-map/refs/heads/main/frontend/src/assets/mascote.png](https://raw.githubusercontent.com/GuilhermeHenq/Journey-map/refs/heads/main/frontend/src/assets/mascote.png)" width="40px"></img>
