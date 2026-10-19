@@ -1,8 +1,8 @@
 ***
 
-# **JourneyEasyMap (JEM)** <img src="[https://raw.githubusercontent.com/GuilhermeHenq/Journey-map/refs/heads/main/frontend/src/assets/mascote.png](https://raw.githubusercontent.com/GuilhermeHenq/Journey-map/refs/heads/main/frontend/src/assets/mascote.png)" width="40px"></img>
+# **g-JourneyEasyMap (g-JEM)** <img src="[https://raw.githubusercontent.com/GuilhermeHenq/Journey-map/refs/heads/main/frontend/src/assets/mascote.png](https://raw.githubusercontent.com/GuilhermeHenq/Journey-map/refs/heads/main/frontend/src/assets/mascote.png)" width="40px"></img>
 
-O **JourneyEasyMap (JEM)** é uma ferramenta de criação de Mapa de Jornada do Usuário (UJM), desenvolvida para um Trabalho de Conclusão de Curso na Universidade Federal de Alfenas <b>(UNIFAL-MG)</b>.
+O **g-JourneyEasyMap (g-JEM)** é uma ferramenta de criação de Mapa de Jornada do Usuário (UJM), desenvolvida para um Trabalho de Conclusão de Curso na Universidade Federal de Alfenas <b>(UNIFAL-MG)</b>.
 
 Esta ferramenta é uma adaptação do projeto original, disponível em: [https://github.com/GuilhermeHenq/EasyJourneyMap](https://github.com/GuilhermeHenq/EasyJourneyMap). 
 
